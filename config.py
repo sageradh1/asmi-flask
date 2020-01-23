@@ -28,6 +28,9 @@ class Config(object):
     ALLOWED_VIDEO_EXTENSIONS = set(['mp4', 'mkv'])
     ALLOWED_USERDATA_EXTENSIONS = set(['csv'])
 
+    STRIPE_SECRET_KEY="sadasdasdasdasdasd"
+    STRIPE_PUBLISHABLE_KEY="awdasdasdasdasd"
+
     SESSION_COOKIE_SECURE = True
     
 class DevelopmentConfig(Config):

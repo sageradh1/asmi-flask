@@ -1,0 +1,54 @@
+{% extends "public/stripe_master.html" %}
+{% block content %}
+  <form action="/stripecharge" method="post">
+    <article>
+      <label>
+        <span>Amount is $5.00</span>
+      </label>
+    </article>
+
+	<input type="text" name="email" id="email" placeholder="Email" />
+
+  	<input type="number" name="amount" id="amount" placeholder="Amount"/>
+
+  	<input type="text" name="description" id="description" placeholder="Description" />  	
+
+<!--     <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+            data-key="{{ key }}"
+            data-description="A Flask Charge"
+            data-amount="500"
+            data-locale="auto"></script> -->
+
+            <input type="submit" value="Submit"/>
+  </form>
+
+<!-- 
+
+<button class="btn btn-primary btn-lg" id="stripe-button">
+        Custom Checkout <span class="glyphicon glyphicon-shopping-cart"></span>
+      </button>
+
+      <script>
+        $('#stripe-button').click(function(){
+          var token = function(res){
+            var $id = $('<input type=hidden name=stripeToken />').val(res.id);
+            var $email = $('<input type=hidden name=stripeEmail />').val(res.email);
+            $('form').append($id).append($email).submit();
+          };
+
+          var amount = $("#stripeAmount").val();
+          StripeCheckout.open({
+            key:         '{{ STRIPE_PUBLIC_KEY }}',
+            amount:      amount,
+            name:        'Serendipity Artisan Blends',
+            image:       "{{url_for('static', filename='img/icon6.png')}}",
+            description: 'Purchase Products',
+            panelLabel:  'Checkout',
+            token:       token
+          });
+
+          return false;
+        });
+      </script> -->
+
+{% endblock %}

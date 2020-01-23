@@ -1,0 +1,55 @@
+{% extends "public/public_master.html" %}
+
+{% block title %}
+Upload page
+{% endblock %}
+
+{% block content %}
+<div class="jumbotron">
+<div class=flashes>
+	{% with messages = get_flashed_messages(with_categories=true) %}
+	  {% if messages %}		
+		{% for category, message in messages %}
+		  <div class="alert alert-{{ category }}" role="alert">{{ message }}</li>
+		{% endfor %}
+		</div>
+	  {% endif %}
+	{% endwith %}
+</div>
+
+
+
+
+ <form method="POST" action="/" enctype="multipart/form-data" >
+	<main class="main_full">
+	<div class="container">
+		<div class="panel">
+			<p class="loading_text"></p>
+			<div class="button_outer">
+				<div class="btn_upload">
+					<input type="file" name="file" id="upload_file" name=""/><i class="fa fa-upload 2x"></i> Upload File
+				</div>				
+				<div class="processing_bar"></div>
+				<div class="success_box"></div>
+			</div>
+		</div>
+		<div class="error_msg"></div>
+		<div class="success_msg"></div><br/>
+		<div class="btn-submit"></div>
+		<div class="uploaded_file_view" id="uploaded_view">
+			<span class="file_remove">X</span>
+		</div>
+		
+	</div>
+</main>
+    
+	
+	
+</form> 
+
+
+<script src="{{ url_for('static', filename='js/upload.js')}}"></script>
+
+</div>
+
+{% endblock  %}

@@ -1,0 +1,52 @@
+<html>
+	<head>
+		<title>Canavs Video Tracking Test</title>
+		<link rel="stylesheet" href="{{ url_for('static', filename='tylerfolder/tylerstyle.css') }}">
+		<meta name="robots" content="noindex" />
+	</head>
+	<body>
+		<div class="container">
+			<div class="padding-container">
+				<h1 class="main-title">Canvas Video Demo</h1>
+				<div class="selector" id="selector"></div>
+			</div>
+			<div class="video-container-outer">
+				<div class="video-stage" id="stage">
+					<div
+						class="interaction-overlay"
+						id="interaction_overlay"
+					></div>
+					<canvas
+						id="market_overlay"
+						width="1616"
+						height="1077"
+						class="market-overlay overlay-video"
+					></canvas>
+					<video class="video" id="video" controls>
+						<source src="{{ url_for('static', filename='tylerfolder/tylervideo.mp4') }}" type="video/mp4" />
+						Your browser does not support playing HTML5 videos.
+					</video>
+				</div>
+			</div>
+			<div class="button-container">
+				<button id="magic">CLICK HERE</button>
+			</div>
+		</div>
+
+		<script src="{{ url_for('static', filename='tylerfolder/oldinjector.js') }}">
+			
+		</script>
+
+<!-- 		<script src="{{ url_for('static', filename='tylerfolder/canvas-render.js') }}">
+ -->			
+		</script>
+
+		<script>
+			document.querySelector("#magic").addEventListener("click", () => {
+				document.querySelector("#stage").classList.contains("magic")
+					? document.querySelector("#stage").classList.remove("magic")
+					: document.querySelector("#stage").classList.add("magic")
+			})
+		</script>
+	</body>
+</html>

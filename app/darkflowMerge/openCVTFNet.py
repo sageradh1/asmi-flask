@@ -146,10 +146,6 @@ def extractFrameInfosFromVideo(_videoname):
             # frame = cv2.putText(frame, label, tl, cv2.FONT_HERSHEY_COMPLEX, 1, (0, 0, 0), 2)
             #cv2.imshow('frame', frame)
             
-            #print('FPS {:.2f}'.format(1 / (time.time() - stime)))
-
-            if cv2.waitKey(1) & 0xFF == ord('q'):
-                break            
         else:
             capture.release()
             cv2.destroyAllWindows()

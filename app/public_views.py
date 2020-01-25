@@ -22,28 +22,23 @@ def stripeindex():
 
 @app.route('/stripecharge', methods=['POST'])
 def stripecharge():
-
 	print("Amount : {}".format(amount))
+	amount=request.form['amount']
+	email=request.form['email']
+	description=request.form['description']
 
 
-    #Amount in cents
-    #amount = 500
-    amount=request.form['amount']
-    email=request.form['email']
-    description=request.form['description']
+	customer = stripe.Customer.create(
+	    email=email,
+	    source=request.form['stripeToken']
+	)
 
-
-    customer = stripe.Customer.create(
-        email=email,
-        source=request.form['stripeToken']
-    )
-
-    charge = stripe.Charge.create(
-        customer=customer.id,
-        amount=amount,
-        currency='usd',
-        description=description
-    )
+	charge = stripe.Charge.create(
+	    customer=customer.id,
+	    amount=amount,
+	    currency='usd',
+	    description=description
+	)
 
 	return render_template('public/stripecharge.html', amount=amount)
 

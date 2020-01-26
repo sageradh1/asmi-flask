@@ -1,25 +1,28 @@
 {% extends "public/stripe_master.html" %}
+
+{% block title %}
+Title
+{% endblock %}
+
 {% block content %}
-  <form action="/stripecharge" method="post">
+  <form action="/stripe-create-pi" method="post">
+
     <article>
       <label>
-        <span>Amount is $5.00</span>
+        <span>Please the amount must me more than 50cents 0.50$ </span>
       </label>
     </article>
 
-	<input type="text" name="email" id="email" placeholder="Email" />
+     <input type="text" name="name" id="name" placeholder="Name" />
 
-  	<input type="number" name="amount" id="amount" placeholder="Amount"/>
+    <input type="text" name="email" id="email" placeholder="Email" />
 
-  	<input type="text" name="description" id="description" placeholder="Description" />  	
+    <input type="number" name="amount" id="amount" placeholder="Amount"/>
 
-<!--     <script src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-            data-key="{{ key }}"
-            data-description="A Flask Charge"
-            data-amount="500"
-            data-locale="auto"></script> -->
+    <input type="text" name="description" id="description" placeholder="Description" />  	
 
-            <input type="submit" value="Submit"/>
+    <input type="submit" value="Submit"/>
+
   </form>
 
 <!-- 

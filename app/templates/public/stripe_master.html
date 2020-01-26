@@ -1,19 +1,17 @@
 <!DOCTYPE html>
 <html>
-<head>
-  <title>Stripe</title>
-  <style type="text/css" media="screen">
-    form article label {
-      display: block;
-      margin: 5px;
-    }
+  <head>
+    <title>{% block title %}{% endblock %}</title>
+    {% block head %}{% endblock %}
+  </head>
 
-    form .submit {
-      margin: 15px 0;
-    }
-  </style>
-</head>
-<body>
-  {% block content %}{% endblock %}
-</body>
+
+  <body>
+    {% block content %}
+    {% endblock %}
+  </body>
+
+  {% block script %}
+  {% endblock %}
+
 </html>

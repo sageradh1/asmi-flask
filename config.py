@@ -52,8 +52,10 @@ class DevelopmentConfig(Config):
 
     SESSION_COOKIE_SECURE = False
 
-    
+    STRIPE_SECRET_KEY ="sk_test_3rUXF8eICXBIyTb07dpVxEuj00VPXAr9gJ"
+    STRIPE_PUBLISHABLE_KEY ="pk_test_iOZGtdHjiFXbd91jpsQ7l8gZ00QyQTB69Y"
 
+    
 class TestingConfig(Config):
     TESTING = True
     DB_NAME = "testing-db"

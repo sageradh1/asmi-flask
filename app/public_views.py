@@ -8,6 +8,12 @@ from werkzeug.utils import secure_filename
 import stripe
 
 
+@app.route('/')
+def empty():
+    # u = User(username='susan', email='susan@example.com')
+    # print(u)
+    return 'yes'
+    
 stripe_keys = {
   'secret_key': app.config['STRIPE_SECRET_KEY'],
   'publishable_key': app.config['STRIPE_PUBLISHABLE_KEY']

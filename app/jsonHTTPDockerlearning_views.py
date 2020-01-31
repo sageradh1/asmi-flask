@@ -11,6 +11,11 @@ from app.utils.dataUtilsCode import uniqueClassSetAndDict,uniqueDictonairies,arr
 from app.darkflowMerge.openCVTFNet import extractFrameInfosFromVideo,extractIndicesFromTuple,frameToVid
 
 
+@app.route('/')
+def empty():
+    # u = User(username='susan', email='susan@example.com')
+    # print(u)
+    return 'yes'
 
 @app.route('/database', methods=["GET", "POST"])
 def database():

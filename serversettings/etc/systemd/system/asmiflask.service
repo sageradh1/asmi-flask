@@ -1,0 +1,11 @@
+[Unit]
+Description=Asmi Flask App
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+Restart=always
+RestartSec=100
+WorkingDirectory=/home/ubuntu/workingDir/asmi-flask
+ExecStart=/home/ubuntu/workingDir/asmi-flask/webapp_env/bin/gunicorn --workers 3 --bind unix:asmiflask.sock -m 007 run:app

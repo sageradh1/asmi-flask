@@ -3,6 +3,6 @@ server{
 	server_name 18.221.137.201;
 	
 	location / {
-		proxy_pass http://unix:/home/ubuntu/workingDir/asmi-flask/asmiflask.sock;
+		proxy_pass http://unix:/home/ubuntu/workingDir/asmi-flask/run/asmiflask.sock;
 	}
 }

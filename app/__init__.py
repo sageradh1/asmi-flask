@@ -57,12 +57,6 @@ migrate = Migrate(app, db)
 #Loading databaase models
 from app.database import models
 
-#Loading views
-from app import public_views,admin_views,jinja_views,jsonHTTPDockerlearning_views
-
 # #Loading views
-# @app.route("/")
-# def home():
-# 	message =app.config["ENV"]
-# 	print(message)
-# 	return render_template("jsonHTTPDockersALL/upload.html",message=message)
+# from app import public_views,admin_views,jinja_views,jsonHTTPDockerlearning_views
+from app import public_views

@@ -5,7 +5,7 @@ After=network.target
 [Service]
 User=ubuntu
 Group=www-data
-Restart=always
-RestartSec=100
+Environment="PATH=/home/ubuntu/workingDir/asmi-flask/webapp_env/bin"
 WorkingDirectory=/home/ubuntu/workingDir/asmi-flask
-ExecStart=/home/ubuntu/workingDir/asmi-flask/webapp_env/bin/gunicorn --workers 3 --bind unix:asmiflask.sock -m 007 run:app
+ExecStart=/home/ubuntu/workingDir/asmi-flask/webapp_env/bin/gunicorn --access-logfile - --workers 3 --timeout 300 --bind unix:/home/ubuntu/workingDir/asmi-flask/run/asmiflask.sock -m 007 run:app
+

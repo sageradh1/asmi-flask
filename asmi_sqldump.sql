@@ -35,6 +35,85 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
+-- Name: ad_category; Type: TABLE; Schema: public; Owner: asmi_group
+--
+
+CREATE TABLE public.ad_category (
+    id integer NOT NULL,
+    category_name character varying(100) NOT NULL,
+    created_time timestamp without time zone,
+    last_modified_time timestamp without time zone
+);
+
+
+ALTER TABLE public.ad_category OWNER TO asmi_group;
+
+--
+-- Name: ad_category_id_seq; Type: SEQUENCE; Schema: public; Owner: asmi_group
+--
+
+CREATE SEQUENCE public.ad_category_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ad_category_id_seq OWNER TO asmi_group;
+
+--
+-- Name: ad_category_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: asmi_group
+--
+
+ALTER SEQUENCE public.ad_category_id_seq OWNED BY public.ad_category.id;
+
+
+--
+-- Name: ad_post; Type: TABLE; Schema: public; Owner: asmi_group
+--
+
+CREATE TABLE public.ad_post (
+    id integer NOT NULL,
+    title character varying(500) NOT NULL,
+    brand character varying(200),
+    seller character varying(200),
+    price numeric(5,2) NOT NULL,
+    image_url character varying(500) NOT NULL,
+    intial_quantity integer,
+    left_quantity integer,
+    created_time timestamp without time zone,
+    last_modified_time timestamp without time zone,
+    belonging_category character varying(100) NOT NULL
+);
+
+
+ALTER TABLE public.ad_post OWNER TO asmi_group;
+
+--
+-- Name: ad_post_id_seq; Type: SEQUENCE; Schema: public; Owner: asmi_group
+--
+
+CREATE SEQUENCE public.ad_post_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.ad_post_id_seq OWNER TO asmi_group;
+
+--
+-- Name: ad_post_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: asmi_group
+--
+
+ALTER SEQUENCE public.ad_post_id_seq OWNED BY public.ad_post.id;
+
+
+--
 -- Name: alembic_version; Type: TABLE; Schema: public; Owner: asmi_group
 --
 
@@ -92,7 +171,8 @@ CREATE TABLE public.uploaded_video (
     extension character varying(5),
     storagelocation character varying(500),
     "uploadStartedTime" timestamp without time zone,
-    "uploadCompletedTime" timestamp without time zone
+    "uploadCompletedTime" timestamp without time zone,
+    detected_objects_withconfidence character varying(1000)
 );
 
 
@@ -158,6 +238,20 @@ ALTER SEQUENCE public.video_analytics_file_analyticsfileid_seq OWNED BY public.v
 
 
 --
+-- Name: ad_category id; Type: DEFAULT; Schema: public; Owner: asmi_group
+--
+
+ALTER TABLE ONLY public.ad_category ALTER COLUMN id SET DEFAULT nextval('public.ad_category_id_seq'::regclass);
+
+
+--
+-- Name: ad_post id; Type: DEFAULT; Schema: public; Owner: asmi_group
+--
+
+ALTER TABLE ONLY public.ad_post ALTER COLUMN id SET DEFAULT nextval('public.ad_post_id_seq'::regclass);
+
+
+--
 -- Name: generated_video gvideoid; Type: DEFAULT; Schema: public; Owner: asmi_group
 --
 
@@ -179,11 +273,27 @@ ALTER TABLE ONLY public.video_analytics_file ALTER COLUMN analyticsfileid SET DE
 
 
 --
+-- Data for Name: ad_category; Type: TABLE DATA; Schema: public; Owner: asmi_group
+--
+
+COPY public.ad_category (id, category_name, created_time, last_modified_time) FROM stdin;
+\.
+
+
+--
+-- Data for Name: ad_post; Type: TABLE DATA; Schema: public; Owner: asmi_group
+--
+
+COPY public.ad_post (id, title, brand, seller, price, image_url, intial_quantity, left_quantity, created_time, last_modified_time, belonging_category) FROM stdin;
+\.
+
+
+--
 -- Data for Name: alembic_version; Type: TABLE DATA; Schema: public; Owner: asmi_group
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
-1e0228a5b060
+a1aaffe66480
 \.
 
 
@@ -206,6 +316,7 @@ COPY public.generated_video (gvideoid, filename, storagelocation, "createdTime",
 12	20200122130219_generated_dogvideo	/home/sagar/workingDir/projectversion1/app/static/video/generated	2020-01-22 13:02:19.996269	35
 13	20200122130735_generated_dogvideo	/home/sagar/workingDir/projectversion1/app/static/video/generated	2020-01-22 13:07:35.891923	36
 14	20200125061809_generated_dogvideo	/home/sagar/workingDir/projectversion1/app/static/video/generated	2020-01-25 06:18:09.249036	37
+15	20200126085730_generated_roadless	/home/sagar/workingDir/projectversion1/app/static/video/generated	2020-01-26 08:57:30.718183	38
 \.
 
 
@@ -213,31 +324,32 @@ COPY public.generated_video (gvideoid, filename, storagelocation, "createdTime",
 -- Data for Name: uploaded_video; Type: TABLE DATA; Schema: public; Owner: asmi_group
 --
 
-COPY public.uploaded_video (videoid, filename, extension, storagelocation, "uploadStartedTime", "uploadCompletedTime") FROM stdin;
-14	20200120075530dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 07:55:30.477773	2020-01-20 07:55:30.6188
-15	20200120105928dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 10:59:28.195426	2020-01-20 10:59:28.317939
-16	20200120110750dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 11:07:50.170734	2020-01-20 11:07:50.371467
-17	20200120110958dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 11:09:58.751286	2020-01-20 11:09:58.815751
-18	20200120111437dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 11:14:37.250779	2020-01-20 11:14:37.353388
-19	20200120130922dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 13:09:22.894343	2020-01-20 13:09:23.055656
-20	20200120133925dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 13:39:25.917618	2020-01-20 13:39:26.013424
-21	20200120134354dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 13:43:54.748201	2020-01-20 13:43:54.803478
-22	20200120134954dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 13:49:54.513296	2020-01-20 13:49:54.668642
-23	20200120140118road	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 14:01:18.537158	2020-01-20 14:01:20.174214
-24	20200120141151roadless	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 14:11:51.963554	2020-01-20 14:11:52.176776
-25	20200121121210tylervideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-21 12:12:10.90887	2020-01-21 12:12:12.316534
-26	20200121133445tylervideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-21 13:34:45.291762	2020-01-21 13:34:46.632739
-27	20200122035858tylervideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 03:58:58.27228	2020-01-22 03:59:01.579963
-28	20200122042705tylervideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 04:27:05.417818	2020-01-22 04:27:06.260373
-29	20200122043521the cookie guy	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 04:35:21.156866	2020-01-22 04:35:21.499916
-30	20200122120810dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 12:08:10.595722	2020-01-22 12:08:10.747847
-31	20200122121227dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 12:12:27.724568	2020-01-22 12:12:27.820772
-32	20200122123540dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 12:35:40.171274	2020-01-22 12:35:40.344278
-33	20200122125107dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 12:51:07.578444	2020-01-22 12:51:07.735386
-34	20200122125846dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 12:58:46.210139	2020-01-22 12:58:46.319143
-35	20200122130036dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 13:00:36.228407	2020-01-22 13:00:36.302928
-36	20200122130519dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 13:05:19.539352	2020-01-22 13:05:19.604284
-37	20200125061309dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-25 06:13:09.054823	2020-01-25 06:13:09.380031
+COPY public.uploaded_video (videoid, filename, extension, storagelocation, "uploadStartedTime", "uploadCompletedTime", detected_objects_withconfidence) FROM stdin;
+14	20200120075530dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 07:55:30.477773	2020-01-20 07:55:30.6188	\N
+15	20200120105928dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 10:59:28.195426	2020-01-20 10:59:28.317939	\N
+16	20200120110750dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 11:07:50.170734	2020-01-20 11:07:50.371467	\N
+17	20200120110958dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 11:09:58.751286	2020-01-20 11:09:58.815751	\N
+18	20200120111437dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 11:14:37.250779	2020-01-20 11:14:37.353388	\N
+19	20200120130922dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 13:09:22.894343	2020-01-20 13:09:23.055656	\N
+20	20200120133925dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 13:39:25.917618	2020-01-20 13:39:26.013424	\N
+21	20200120134354dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 13:43:54.748201	2020-01-20 13:43:54.803478	\N
+22	20200120134954dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 13:49:54.513296	2020-01-20 13:49:54.668642	\N
+23	20200120140118road	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 14:01:18.537158	2020-01-20 14:01:20.174214	\N
+24	20200120141151roadless	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-20 14:11:51.963554	2020-01-20 14:11:52.176776	\N
+25	20200121121210tylervideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-21 12:12:10.90887	2020-01-21 12:12:12.316534	\N
+26	20200121133445tylervideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-21 13:34:45.291762	2020-01-21 13:34:46.632739	\N
+27	20200122035858tylervideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 03:58:58.27228	2020-01-22 03:59:01.579963	\N
+28	20200122042705tylervideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 04:27:05.417818	2020-01-22 04:27:06.260373	\N
+29	20200122043521the cookie guy	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 04:35:21.156866	2020-01-22 04:35:21.499916	\N
+30	20200122120810dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 12:08:10.595722	2020-01-22 12:08:10.747847	\N
+31	20200122121227dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 12:12:27.724568	2020-01-22 12:12:27.820772	\N
+32	20200122123540dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 12:35:40.171274	2020-01-22 12:35:40.344278	\N
+33	20200122125107dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 12:51:07.578444	2020-01-22 12:51:07.735386	\N
+34	20200122125846dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 12:58:46.210139	2020-01-22 12:58:46.319143	\N
+35	20200122130036dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 13:00:36.228407	2020-01-22 13:00:36.302928	\N
+36	20200122130519dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-22 13:05:19.539352	2020-01-22 13:05:19.604284	\N
+37	20200125061309dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-25 06:13:09.054823	2020-01-25 06:13:09.380031	\N
+38	20200126083827roadless	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-01-26 08:38:27.297042	2020-01-26 08:38:28.350129	\N
 \.
 
 
@@ -261,28 +373,59 @@ COPY public.video_analytics_file (analyticsfileid, filename, storagelocation, "c
 16	20200122130219dogvideo.json	/home/sagar/workingDir/projectversion1/app/static/analyticsFolder/generated	2020-01-22 13:02:19.829488	35
 17	20200122130735dogvideo.json	/home/sagar/workingDir/projectversion1/app/static/analyticsFolder/generated	2020-01-22 13:07:35.711575	36
 18	20200125061808dogvideo.json	/home/sagar/workingDir/projectversion1/app/static/analyticsFolder/generated	2020-01-25 06:18:08.825092	37
+19	20200126085728roadless.json	/home/sagar/workingDir/projectversion1/app/static/analyticsFolder/generated	2020-01-26 08:57:28.513015	38
 \.
+
+
+--
+-- Name: ad_category_id_seq; Type: SEQUENCE SET; Schema: public; Owner: asmi_group
+--
+
+SELECT pg_catalog.setval('public.ad_category_id_seq', 1, false);
+
+
+--
+-- Name: ad_post_id_seq; Type: SEQUENCE SET; Schema: public; Owner: asmi_group
+--
+
+SELECT pg_catalog.setval('public.ad_post_id_seq', 1, false);
 
 
 --
 -- Name: generated_video_gvideoid_seq; Type: SEQUENCE SET; Schema: public; Owner: asmi_group
 --
 
-SELECT pg_catalog.setval('public.generated_video_gvideoid_seq', 14, true);
+SELECT pg_catalog.setval('public.generated_video_gvideoid_seq', 15, true);
 
 
 --
 -- Name: uploaded_video_videoid_seq; Type: SEQUENCE SET; Schema: public; Owner: asmi_group
 --
 
-SELECT pg_catalog.setval('public.uploaded_video_videoid_seq', 37, true);
+SELECT pg_catalog.setval('public.uploaded_video_videoid_seq', 38, true);
 
 
 --
 -- Name: video_analytics_file_analyticsfileid_seq; Type: SEQUENCE SET; Schema: public; Owner: asmi_group
 --
 
-SELECT pg_catalog.setval('public.video_analytics_file_analyticsfileid_seq', 18, true);
+SELECT pg_catalog.setval('public.video_analytics_file_analyticsfileid_seq', 19, true);
+
+
+--
+-- Name: ad_category ad_category_pkey; Type: CONSTRAINT; Schema: public; Owner: asmi_group
+--
+
+ALTER TABLE ONLY public.ad_category
+    ADD CONSTRAINT ad_category_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: ad_post ad_post_pkey; Type: CONSTRAINT; Schema: public; Owner: asmi_group
+--
+
+ALTER TABLE ONLY public.ad_post
+    ADD CONSTRAINT ad_post_pkey PRIMARY KEY (id);
 
 
 --
@@ -323,6 +466,34 @@ ALTER TABLE ONLY public.uploaded_video
 
 ALTER TABLE ONLY public.video_analytics_file
     ADD CONSTRAINT video_analytics_file_pkey PRIMARY KEY (analyticsfileid);
+
+
+--
+-- Name: ix_ad_category_created_time; Type: INDEX; Schema: public; Owner: asmi_group
+--
+
+CREATE INDEX ix_ad_category_created_time ON public.ad_category USING btree (created_time);
+
+
+--
+-- Name: ix_ad_category_last_modified_time; Type: INDEX; Schema: public; Owner: asmi_group
+--
+
+CREATE INDEX ix_ad_category_last_modified_time ON public.ad_category USING btree (last_modified_time);
+
+
+--
+-- Name: ix_ad_post_created_time; Type: INDEX; Schema: public; Owner: asmi_group
+--
+
+CREATE INDEX ix_ad_post_created_time ON public.ad_post USING btree (created_time);
+
+
+--
+-- Name: ix_ad_post_last_modified_time; Type: INDEX; Schema: public; Owner: asmi_group
+--
+
+CREATE INDEX ix_ad_post_last_modified_time ON public.ad_post USING btree (last_modified_time);
 
 
 --

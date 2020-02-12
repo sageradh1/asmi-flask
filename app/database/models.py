@@ -1,5 +1,4 @@
 from app import db
-
 from datetime import datetime
 
 
@@ -32,6 +31,8 @@ class UploadedVideo(db.Model):
     storagelocation = db.Column(db.String(500))
     uploadStartedTime = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     uploadCompletedTime = db.Column(db.DateTime, index=True, default=datetime.utcnow)    
+    detected_objects_withconfidence=db.Column(db.String(1000))
+
     analyticsFile = db.relationship('VideoAnalyticsFile', backref='videoFile', lazy='dynamic')
 
     # def __init__(self, name, extension,storagelocation,uploadStartedTime,uploadCompletedTime,analyticsFile):
@@ -79,25 +80,27 @@ class GeneratedVideo(db.Model):
     def __repr__(self):
         return '<GeneratedVideo gvideoid:{}  filename:{} createdTime:{} video_id >'.format(self.gvideoid,self.filename,self.createdTime.self.video_id)
 
+class AdCategory(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    category_name = db.Column(db.String(100),nullable=False)
+    created_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    last_modified_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    def __repr__(self):
+        return '<AdCategory adcategoryid:{}  category_name:{} createdTime:{} last_modified_time:{} >'.format(self.id,self.category_name,self.created_time.self.last_modified_time)
 
-#     from datetime import datetime
-# from app import db
+class AdPost(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String(500),nullable=False)
+    brand = db.Column(db.String(200))
+    seller = db.Column(db.String(200))
+    price = db.Column(db.Numeric(5,2),nullable=False)
+    image_url = db.Column(db.String(500),nullable=False)
+    intial_quantity = db.Column(db.Integer)
+    left_quantity = db.Column(db.Integer)
+    created_time=db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    last_modified_time=db.Column(db.DateTime, index=True, default=datetime.utcnow)
+    belonging_category = db.Column(db.String(100),nullable=False)
 
-# class User(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     username = db.Column(db.String(64), index=True, unique=True)
-#     email = db.Column(db.String(120), index=True, unique=True)
-#     password_hash = db.Column(db.String(128))
-#     posts = db.relationship('Post', backref='author', lazy='dynamic')
 
-#     def __repr__(self):
-#         return '<User {}>'.format(self.username)
-
-# class Post(db.Model):
-#     id = db.Column(db.Integer, primary_key=True)
-#     body = db.Column(db.String(140))
-#     timestamp = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-#     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
-
-#     def __repr__(self):
-#         return '<Post {}>'.format(self.body
+    def __repr__(self):
+        return '<AdPost adpostid:{}  title:{} brand:{} video_id >'.format(self.gvideoid,self.filename,self.createdTime.self.video_id)

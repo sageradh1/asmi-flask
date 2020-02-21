@@ -24,6 +24,23 @@ from datetime import datetime
 #         return '<Post {}>'.format(self.body)
 
 #################needed##############################
+
+class User(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(120), index=True, unique=True)
+    username = db.Column(db.String(120))
+    password_hash = db.Column(db.String(200))
+
+    def __repr__(self):
+        return '<User id:{} username:{} email:{}>'.format(self.id,self.username,self.email)
+
+class UserViewHistory(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer,nullable=False)
+    watched_video_id = db.Column(db.Integer,nullable=False)
+    watch_time_in_sec= db.Column(db.Integer,nullable=False)
+
+
 class UploadedVideo(db.Model):
     videoid = db.Column(db.Integer, primary_key=True)
     filename = db.Column(db.String(100), unique=True)
@@ -80,27 +97,52 @@ class GeneratedVideo(db.Model):
     def __repr__(self):
         return '<GeneratedVideo gvideoid:{}  filename:{} createdTime:{} video_id >'.format(self.gvideoid,self.filename,self.createdTime.self.video_id)
 
-class AdCategory(db.Model):
+
+########################### Unmerged AdCategory ###################################
+# class AdCategory(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     category_name = db.Column(db.String(100),nullable=False)
+#     created_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+#     last_modified_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
+#     def __repr__(self):
+#         return '<AdCategory adcategoryid:{}  category_name:{} createdTime:{} last_modified_time:{} >'.format(self.id,self.category_name,self.created_time,self.last_modified_time)
+########################### Unmerged AdCategory ###################################
+
+
+########################### Unmerged ADPOST ###################################
+# class AdPost(db.Model):
+#     id = db.Column(db.Integer, primary_key=True)
+#     title = db.Column(db.String(500),nullable=False)
+#     brand = db.Column(db.String(200))
+#     seller = db.Column(db.String(200))
+#     price = db.Column(db.Numeric(5,2),nullable=False)
+#     image_url = db.Column(db.String(500),nullable=False)
+#     initial_quantity = db.Column(db.Integer)
+#     left_quantity = db.Column(db.Integer)
+#     created_time=db.Column(db.DateTime, index=True, default=datetime.utcnow)
+#     last_modified_time=db.Column(db.DateTime, index=True, default=datetime.utcnow)
+#     belonging_category_id = db.Column(db.Integer,nullable=False)
+
+#     def __repr__(self):
+#         return '<AdPost adpostid:{}  title:{} brand:{} video_id:{} >'.format(self.gvideoid,self.filename,self.createdTime.self.video_id)
+########################### Unmerged ADPOST ###################################
+
+
+########################### Merged AdCategory ###################################
+class MergedAdCategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     category_name = db.Column(db.String(100),nullable=False)
     created_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     last_modified_time = db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    def __repr__(self):
-        return '<AdCategory adcategoryid:{}  category_name:{} createdTime:{} last_modified_time:{} >'.format(self.id,self.category_name,self.created_time.self.last_modified_time)
-
-class AdPost(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(500),nullable=False)
-    brand = db.Column(db.String(200))
-    seller = db.Column(db.String(200))
-    price = db.Column(db.Numeric(5,2),nullable=False)
-    image_url = db.Column(db.String(500),nullable=False)
-    intial_quantity = db.Column(db.Integer)
-    left_quantity = db.Column(db.Integer)
-    created_time=db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    last_modified_time=db.Column(db.DateTime, index=True, default=datetime.utcnow)
-    belonging_category = db.Column(db.String(100),nullable=False)
-
+    
+    adtitle = db.Column(db.String(500),nullable=False)
+    adbrand = db.Column(db.String(200))
+    adseller = db.Column(db.String(200))
+    adprice = db.Column(db.Numeric(5,2),nullable=False)
+    adimage_url = db.Column(db.String(500),nullable=False)
+    adinitial_quantity = db.Column(db.Integer)
+    adleft_quantity = db.Column(db.Integer)
 
     def __repr__(self):
-        return '<AdPost adpostid:{}  title:{} brand:{} video_id >'.format(self.gvideoid,self.filename,self.createdTime.self.video_id)
+        return '<MergedAdCategory adcategoryid:{}  category_name:{} adtitle:{} adprice:{} createdTime:{}  >'.format(self.id,self.category_name,self.adtitle,self.adprice,self.createdTime) 
+

@@ -10,14 +10,6 @@ from datetime import datetime
 from app.utils.dataUtilsCode import uniqueClassSetAndDict,uniqueDictonairies,arrangeNnumberOfDictionary,returnList,writeListAsAJsonFile
 from app.darkflowMerge.openCVTFNet import extractFrameInfosFromVideo,extractIndicesFromTuple,frameToVid
 
-
-
-@app.route('/database', methods=["GET", "POST"])
-def database():
-    # u = User(username='susan', email='susan@example.com')
-    # print(u)
-    return 'yes'
-
 def isVideoNameAllowed(filename):
     # We only want files with a . in the filename
     if not "." in filename:

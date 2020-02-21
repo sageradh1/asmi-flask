@@ -2,8 +2,6 @@ from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 
-
-
 app = Flask(__name__)
 
 #Loading environment from .startingenv
@@ -31,9 +29,11 @@ print(f"The current database being used is : ${app.config['DB_NAME']} ")
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+
 #Loading databaase models
 from app.database import models
 
 #Loading views
+#uncomment this jabir 
+# from app import public_views,admin_views,jinja_views,jsonHTTPDockerlearning_views
 from app import public_views,admin_views,jinja_views,jsonHTTPDockerlearning_views,ad_views
-

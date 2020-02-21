@@ -2,6 +2,10 @@ import secrets
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+#comment here also jabir
+from loadpandasdf import loadvideofeaturesdf_videoiddf
+
+classes = ["Shirt","Trousers","Footwear","Handbag","Watch","Guitar","Mobile_phone","Headphones","Hat","Sunglasses"]
 class Config(object):
 
     DEBUG = False
@@ -15,7 +19,20 @@ class Config(object):
     DB_NAME = "production-db"
     DB_USERNAME = "admin"
     DB_PASSWORD = "example"
+    
+    #comment here jabir
+    VIDEO_WITH_FEATURES_DF, MATRIX_WITH_VIDEOID,USERVIEWNORMALISEDDF = loadvideofeaturesdf_videoiddf()
+    
+    #asmidf
+    # print("asmidf")
+    # print(MATRIX_WITH_VIDEOID)
+    # #newdf
+    # print("newdf")
+    # print(VIDEO_WITH_FEATURES_DF)
+    # # normaliseddf
+    # print(USERVIEWNORMALISEDDF)
 
+    ADIMAGE_UPLOADS_FOLDER = basedir+ "/app/static/img/uploaded/adimages"
     IMAGE_UPLOADS_FOLDER = basedir+ "/app/static/img/uploaded"
     CSV_UPLOADS_FOLDER =  basedir+"/app/static/csv/uploaded"
     VIDEO_UPLOADS_FOLDER =  basedir+"/app/static/video/uploaded"
@@ -44,6 +61,7 @@ class DevelopmentConfig(Config):
     DB_USERNAME = "asmi_group"
     DB_PASSWORD = "asmipassword123"
 
+    ADIMAGE_UPLOADS_FOLDER = basedir+ "/app/static/img/uploaded/adimages"
     IMAGE_UPLOADS_FOLDER = basedir+ "/app/static/img/uploaded"
     CSV_UPLOADS_FOLDER =  basedir+"/app/static/csv/uploaded"
     VIDEO_UPLOADS_FOLDER =  basedir+"/app/static/video/uploaded"

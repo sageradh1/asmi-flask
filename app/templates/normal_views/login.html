@@ -1,0 +1,63 @@
+ <html>
+    <title>
+        Login
+    </title>
+    <head>
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/normal_views/bootstrap.css') }}">      
+        <script defer src="{{ url_for('static', filename='js/normal_views/solid.js') }}" ></script>
+        <script defer src="{{ url_for('static', filename='js/normal_views/fontawesome.js') }}"></script>
+
+        <style>
+            .title{text-align: center; font-weight: 100; color: #333;} 
+            .btn{background:#e02222;; color:#ddd; margin-left: 180px;}
+            .loginform{width:500px; margin:0 auto; border:1px solid #ccc;
+            padding:20px; border-radius:15px;margin-top:200px;border-top:5px solid #e02222;
+            border-bottom:5px solid #ccc;}
+            .form-control{display:inline-block;width:400px;}
+        </style>
+   </head>
+    <body>
+        <div class="loginform"> 
+           <img src="{{ url_for('static', filename='img/asmilogo.png') }}" width="106" height="53"  alt="Logo Geeks and the City" style="margin-left: 158px;" /> 
+
+
+            {% for message in get_flashed_messages() %}
+              <div class="alert alert-warning">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  {{ message }}
+              </div>
+            {% endfor %} 
+
+            
+            <form action="/login" method="post">
+                {{ form.hidden_tag() }}
+
+                <div class="form-group">    
+                    <i class="fas fa-envelope"></i>
+                    {{ form.email(class='form-control',placeholder='Email') }}<br>
+                    {% for error in form.email.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+
+
+
+                <div class="form-group">    
+                    <i class="fas fa-lock"></i>
+                    {{ form.password(class='form-control',placeholder='Password') }}<br>
+                    {% for error in form.password.errors %}
+                    <span style="color: red;">[{{ error }}]</span>
+                    {% endfor %}
+                </div>
+
+                <p>{{ form.submit() }}</p>
+            </form>
+        </div>        
+
+    </body>
+
+ </html>
+
+
+
+

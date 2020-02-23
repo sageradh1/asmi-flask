@@ -2,8 +2,9 @@ import secrets
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
+
 #comment here also jabir
-from loadpandasdf import loadvideofeaturesdf_videoiddf
+# from loadpandasdf import loadvideofeaturesdf_videoiddf
 
 classes = ["Shirt","Trousers","Footwear","Handbag","Watch","Guitar","Mobile_phone","Headphones","Hat","Sunglasses"]
 class Config(object):
@@ -16,12 +17,9 @@ class Config(object):
     #print("The generated new Secret key is "+generateSecretKey)
     #print("The base url is {}".format(basedir))
 
-    DB_NAME = "production-db"
-    DB_USERNAME = "admin"
-    DB_PASSWORD = "example"
     
     #comment here jabir
-    VIDEO_WITH_FEATURES_DF, MATRIX_WITH_VIDEOID,USERVIEWNORMALISEDDF = loadvideofeaturesdf_videoiddf()
+    # VIDEO_WITH_FEATURES_DF, MATRIX_WITH_VIDEOID,USERVIEWNORMALISEDDF = loadvideofeaturesdf_videoiddf()
     
     #asmidf
     # print("asmidf")
@@ -31,7 +29,7 @@ class Config(object):
     # print(VIDEO_WITH_FEATURES_DF)
     # # normaliseddf
     # print(USERVIEWNORMALISEDDF)
-
+    
     ADIMAGE_UPLOADS_FOLDER = basedir+ "/app/static/img/uploaded/adimages"
     IMAGE_UPLOADS_FOLDER = basedir+ "/app/static/img/uploaded"
     CSV_UPLOADS_FOLDER =  basedir+"/app/static/csv/uploaded"
@@ -45,46 +43,39 @@ class Config(object):
     ALLOWED_VIDEO_EXTENSIONS = set(['mp4', 'mkv'])
     ALLOWED_USERDATA_EXTENSIONS = set(['csv'])
 
-    STRIPE_SECRET_KEY="sadasdasdasdasdasd"
-    STRIPE_PUBLISHABLE_KEY="awdasdasdasdasd"
-
     SESSION_COOKIE_SECURE = True
+
+    WEBAPP_SECRET_KEY = os.getenv('WEBAPP_SECRET_KEY')
     
 class DevelopmentConfig(Config):
     DEBUG = True
     
     #SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
-    SQLALCHEMY_DATABASE_URI = "postgresql://asmi_group:asmipassword123@localhost/asmi_db"
+    SQLALCHEMY_DATABASE_URI = os.getenv('DEV_SQLALCHEMY_DATABASE_URI')
+    # SQLALCHEMY_DATABASE_URI = "postgresql://asmi_group:asmipassword123@localhost/asmi_db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 
-    DB_NAME = "asmi_db"
-    DB_USERNAME = "asmi_group"
-    DB_PASSWORD = "asmipassword123"
-
-    ADIMAGE_UPLOADS_FOLDER = basedir+ "/app/static/img/uploaded/adimages"
-    IMAGE_UPLOADS_FOLDER = basedir+ "/app/static/img/uploaded"
-    CSV_UPLOADS_FOLDER =  basedir+"/app/static/csv/uploaded"
-    VIDEO_UPLOADS_FOLDER =  basedir+"/app/static/video/uploaded"
-    VIDEO_GENERATED_FOLDER =  basedir+"/app/static/video/generated"
-    VIDEOANALYTICS_GENERATED_FOLDER =  basedir+"/app/static/analyticsFolder/generated"
+    DB_NAME = os.getenv('DEV_DB_NAME')
+    DB_USERNAME = os.getenv('DEV_DB_USERNAME')
+    DB_PASSWORD = os.getenv('DEV_DB_PASSWORD')
 
     SESSION_COOKIE_SECURE = False
 
-    STRIPE_SECRET_KEY ="sk_test_3rUXF8eICXBIyTb07dpVxEuj00VPXAr9gJ"
-    STRIPE_PUBLISHABLE_KEY ="pk_test_iOZGtdHjiFXbd91jpsQ7l8gZ00QyQTB69Y"
+    STRIPE_SECRET_KEY =os.getenv("DEV_STRIPE_SECRET_KEY")
+    STRIPE_PUBLISHABLE_KEY =os.getenv("DEV_STRIPE_PUBLISHABLE_KEY")
 
     
 class TestingConfig(Config):
     TESTING = True
-    DB_NAME = "testing-db"
-    DB_USERNAME = "admin"
-    DB_PASSWORD = "example"
 
-    IMAGE_UPLOADS_FOLDER = basedir+ "/app/static/img/uploaded"
-    CSV_UPLOADS_FOLDER =  basedir+"/app/static/csv/uploaded"
-    VIDEO_UPLOADS_FOLDER =  basedir+"/app/static/video/uploaded"
-    
+    DB_NAME = os.getenv('TEST_DB_NAME')
+    DB_USERNAME = os.getenv('TEST_DB_USERNAME')
+    DB_PASSWORD = os.getenv('TEST_DB_PASSWORD')
+
+
     SESSION_COOKIE_SECURE = False
+    STRIPE_SECRET_KEY =os.getenv("TEST_STRIPE_SECRET_KEY")
+    STRIPE_PUBLISHABLE_KEY =os.getenv("TEST_STRIPE_PUBLISHABLE_KEY")
 
 class ProductionConfig(Config):
     pass

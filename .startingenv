@@ -1,2 +1,22 @@
 FLASK_APP=run.py
 FLASK_ENV=development
+
+WEBAPP_SECRET_KEY=b'\xb4p\xecl7\xb8~\x08\xb5\xd9\x90\xb9\xf5\xd3\xa5\xc2'
+
+DEV_SQLALCHEMY_DATABASE_URI=postgresql://asmi_group:asmipassword123@localhost/asmi_db
+
+DEV_DB_NAME=asmi_db
+DEV_DB_USERNAME=asmi_group
+DEV_DB_PASSWORD=asmipassword123
+
+DEV_STRIPE_SECRET_KEY =sk_test_3rUXF8eICXBIyTb07dpVxEuj00VPXAr9gJ
+DEV_STRIPE_PUBLISHABLE_KEY =pk_test_iOZGtdHjiFXbd91jpsQ7l8gZ00QyQTB69Y
+
+
+
+TEST_DB_NAME =testing-db
+TEST_DB_USERNAME =admin
+TEST_DB_PASSWORD =example
+
+TEST_STRIPE_SECRET_KEY =sk_test_3rUXF8eICXBIyTb07dpVxEuj00VPXAr9gJ
+TEST_STRIPE_PUBLISHABLE_KEY =pk_test_iOZGtdHjiFXbd91jpsQ7l8gZ00QyQTB69Y

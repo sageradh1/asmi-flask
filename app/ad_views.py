@@ -4,14 +4,20 @@ from flask import request,jsonify,make_response,redirect, render_template
 from sklearn.neighbors import NearestNeighbors
 from loadpandasdf import findmostimportantvideo,findksimilarvideo
 
+
 @app.route('/viewvideos', methods=["GET", "POST"])
 def viewvideos():
 
 ############################################# Integrating #####################################################
 	current_user_id=1
 	current_beingwatched_video_id=48
+
+
+
+###############################################################################################################	
 	number_of_history_based_imp_videoid = 1
 
+	print("Calculating most significant videos for the user.....")
 	# find important videos according to who the user is and his views history 
 	requiredVideoIDList = findmostimportantvideo(current_user_id,app.config['USERVIEWNORMALISEDDF'],number_of_video=number_of_history_based_imp_videoid)
 	print("Most significance videoid according to userhistory : ",requiredVideoIDList)
@@ -102,7 +108,7 @@ def viewvideos():
 
 	# In[22]:
 
-
+	print("Calculating scores for the confidence in the current video ......")
 	## Make tuple as above:
 	features_withscores_from_videocontent =make_required_tuple_from_df(listoffeatures,df=filtered_df)
 	# print(features_withscores_from_videocontent)
@@ -150,20 +156,9 @@ def viewvideos():
 	        adnames.append(avg_tuple[i][0])
 	    return adnames
 	    
-
+	print("Calculating the most suitable ads ......")
 	numberofadstobeshown = 2
 	nameofads = getNamesofTopScoringAdsFromTupleOfAverage(numberofadstobeshown,avgout_feature_score)
 	print("Most approapriate ads are : ",nameofads)
 
 	return 'yes'
-
-
-    
-    #asmidf
-    # print("asmidf")
-    # print(MATRIX_WITH_VIDEOID)
-    # #newdf
-    # print("newdf")
-    # print(VIDEO_WITH_FEATURES_DF)
-    # # normaliseddf
-    # print(USERVIEWNORMALISEDDF)

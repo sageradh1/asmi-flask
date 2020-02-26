@@ -1,6 +1,7 @@
-from flask import Flask
+from flask import Flask,session
 from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
+from datetime import timedelta
 
 import os
 from dotenv import load_dotenv
@@ -17,6 +18,7 @@ load_dotenv(dotenv_path)
 
 app.config["APP"] = os.getenv('FLASK_APP')
 app.config["ENV"] = os.getenv('FLASK_ENV')
+app.config["REMEMBER_COOKIE_DURATION"] = timedelta(days=7)
 
 #Loading which configuration to use
 if app.config["ENV"]=="development":
@@ -33,32 +35,23 @@ print(f"The current database being used is : ${app.config['DB_NAME']} ")
 db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
+
 #Loading login manager 
 login = LoginManager(app)
 login.login_view = 'login'
 
 
+# Setting timeout for session cookie (It is not a setting for remember_token cookie set by flask_login)
+@app.before_request
+def make_session_permanent():
+    session.permanent = True
+    app.permanent_session_lifetime = app.config["REMEMBER_COOKIE_DURATION"]
+
 #Loading databaase models
 from app.database import models
-
-
-# @login.request_loader
-# def load_user(request):
-#     token = request.headers.get('Authorization')
-#     if token is None:
-#         token = request.args.get('token')
-
-#     if token is not None:
-#         username,password = token.split(":") # naive token
-#         user_entry = User.get(username)
-#         if (user_entry is not None):
-#             user = User(user_entry[0],user_entry[1])
-#             if (user.password == password):
-#                 return user
-#     return None
 
 #Loading views
 #uncomment this jabir 
 # from app import public_views,admin_views,jinja_views,jsonHTTPDockerlearning_views
-# from app import public_views,admin_views,jinja_views,jsonHTTPDockerlearning_views,ad_views
-from app import normal_views
+# from app import public_views,admin_views,jinja_views,jsonHTTPDockerlearning_views,normal_views
+from app import normal_views,jsonHTTPDockerlearning_views

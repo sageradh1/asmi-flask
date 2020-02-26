@@ -55,7 +55,7 @@ for eachclass in classes:
     newdf[eachclass]=asmidf.apply(class_score,axis=1)
 
 # print(newdf.shape)
-newdf.head()
+# newdf.head()
 
 # df.head()
 
@@ -214,6 +214,7 @@ normalisedf['video_importance']=normalisedf.apply(calculate_video_importance,axi
 ##Find most important video
 
 def findmostimportantvideo(user_id,dataframe,number_of_video=1):
+    print("Find most important video")
     dataframe=dataframe[dataframe['user_id']==user_id]
     dataframe=dataframe.sort_values(by=['video_importance'], ascending=False)
     return dataframe.head(number_of_video)['watched_video_id'].values

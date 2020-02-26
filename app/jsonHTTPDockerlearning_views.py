@@ -47,12 +47,6 @@ def isCSVFilesizeAllowed(csvsize):
         return False
 
 
-@app.route('/view_videos')
-def view_videos():
-
-    return render_template('jsonHTTPDockersALL/tylerindex.html')
-
-
 @app.route('/upload', methods=["GET", "POST"])
 def upload_files():
     
@@ -115,6 +109,8 @@ def upload_files():
         videofile.save(os.path.join(app.config["VIDEO_UPLOADS_FOLDER"], startingdt_string+videofile.filename))
         csvfile.save(os.path.join(app.config["CSV_UPLOADS_FOLDER"], csvfile.filename))
         print("Video Saving Completed ....")
+
+        ###################### Video is saved till now ###########################
         
         _videoUploadCompletedTime=datetime.utcnow()
         

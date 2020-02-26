@@ -4,31 +4,32 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 #comment here also jabir
-# from loadpandasdf import loadvideofeaturesdf_videoiddf
+from loadpandasdf import loadvideofeaturesdf_videoiddf
 
 classes = ["Shirt","Trousers","Footwear","Handbag","Watch","Guitar","Mobile_phone","Headphones","Hat","Sunglasses"]
 class Config(object):
 
     DEBUG = False
     TESTING = False
-    generateSecretKey= secrets.token_hex(16)
-    #SECRET_KEY = secrets.token_urlsafe(16)
-    SECRET_KEY = generateSecretKey
+    # generateSecretKey= secrets.token_hex(16)
+    # #SECRET_KEY = secrets.token_urlsafe(16)
+    # SECRET_KEY = generateSecretKey
     #print("The generated new Secret key is "+generateSecretKey)
     #print("The base url is {}".format(basedir))
 
     
     #comment here jabir
-    # VIDEO_WITH_FEATURES_DF, MATRIX_WITH_VIDEOID,USERVIEWNORMALISEDDF = loadvideofeaturesdf_videoiddf()
+    VIDEO_WITH_FEATURES_DF, MATRIX_WITH_VIDEOID,USERVIEWNORMALISEDDF = loadvideofeaturesdf_videoiddf()
     
     #asmidf
-    # print("asmidf")
-    # print(MATRIX_WITH_VIDEOID)
-    # #newdf
-    # print("newdf")
-    # print(VIDEO_WITH_FEATURES_DF)
-    # # normaliseddf
-    # print(USERVIEWNORMALISEDDF)
+    print("asmidf")
+    print(MATRIX_WITH_VIDEOID)
+    #newdf
+    print("newdf")
+    print(VIDEO_WITH_FEATURES_DF)
+    # normaliseddf
+    print("normaliseddf")
+    print(USERVIEWNORMALISEDDF)
     
     ADIMAGE_UPLOADS_FOLDER = basedir+ "/app/static/img/uploaded/adimages"
     IMAGE_UPLOADS_FOLDER = basedir+ "/app/static/img/uploaded"
@@ -45,13 +46,16 @@ class Config(object):
 
     SESSION_COOKIE_SECURE = True
 
-    WEBAPP_SECRET_KEY = os.getenv('WEBAPP_SECRET_KEY')
+    SECRET_KEY = os.getenv('WEBAPP_SECRET_KEY')
     
 class DevelopmentConfig(Config):
     DEBUG = True
     
     #SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
     SQLALCHEMY_DATABASE_URI = os.getenv('DEV_SQLALCHEMY_DATABASE_URI')
+    
+    # SQLALCHEMY_DATABASE_URI = "postgresql://asmi_group:asmipassword123@localhost/asmi_db"
+    
     # SQLALCHEMY_DATABASE_URI = "postgresql://asmi_group:asmipassword123@localhost/asmi_db"
     SQLALCHEMY_TRACK_MODIFICATIONS = False
 

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+<meta charset="UTF-8">
+<title>View Video</title>
+
+<!-- hader links -->
+<link rel="stylesheet"  href="{{ url_for('static', filename='css/normal_views/navbar.css') }}"/>
+<script  src="{{ url_for('static', filename='js/normal_views/navbarjs.js') }}"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+  <!-- end of header links -->
+
+  <!-- link for video style -->
+<link rel="stylesheet" href="{{ url_for('static', filename='css/normal_views/video.css') }}">
+  <!-- end of video style -->
+
+<!-- style for header and footer -->
+<style>
+/* css for dropdown */
+.dropbtn {
+  background-color: #ff343c;
+  color: white;
+  padding: 18px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ff343c; color: white;}
+.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropbtn {background-color: #ff343c;}
+</style>
+<!-- end of style of header and footer -->
+<header style="height: 65px;">
+  <!--  Remove dark nav  -->
+  <nav class="nav dark-nav">
+    <div class="container">
+      <div class="nav-heading">
+        <button class="toggle-nav" data-toggle="open-navbar1"><i class="fa fa-align-right"></i></button>
+            <a href="{{ url_for('home')}}" >
+        <img src="{{ url_for('static', filename='img/asmilogo.png') }}" width="106" height="53"  alt="Logo Geeks and the City" />    
+        </a>
+      </div>
+      <div class="menu" id="open-navbar1">
+        <ul class="list">
+          <li><a href="{{ url_for('home')}}">Home</a></li>
+          <!-- <li><a href="/product.html">Product Upload</a></li> -->
+          {% if current_user.is_authenticated %}
+
+          <!-- drop down -->
+          <li>
+           <div class="dropdown" style="float:right;">
+              <button class="dropbtn">Contents</button>
+              <div class="dropdown-content">
+                <a href="upload.html">Uploaded Video</a>
+                <a href="Generated.html">Generated Video</a>
+                <a href="Analytics.html">Analytics Files</a>
+              </div>
+          </li>
+
+          <li>
+            <div class="dropdown" style="float:right;">
+              <button class="dropbtn">TestAPI</button>
+              <div class="dropdown-content">
+                <a href="vu.html">Upload Video</a>
+                <a href="{{ view_video_url }}">View Video</a>
+              </div>
+            </div>
+          </li>
+
+           <li><a href="{{ url_for('logout')}}">Logout</a></li>
+          {% else %}
+            <li><a href="{{ url_for('login')}}">Login</a></li>
+            <li><a href="{{ url_for('register')}}">Signup</a></li>
+          {% endif %}
+         
+
+          </div>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+<!-- end -->
+
+  <body>
+  <section class="video-area">
+  <main class="site-content">
+   <div class="wrapper">
+
+
+      <header class="video-header">
+        <h2 class="video-title">HTML 5 Video Player</h2>
+      </header>
+
+
+       <div class="video-column">
+        <div class="video-player">
+          <button id="btnReplay" class="btn-replay"><span class="fontawesome-refresh"></span></button>
+
+            <!-- Default video on the first stack -->
+
+          <video id="video" class="video" src="videos/video.mp4" type="video/mp4" poster="https://webdevtrick.com/wp-content/uploads/horizontal-scroll-navigation.jpg" preload="none">
+                        </video>
+
+          <div class="video-controls">
+
+            <button id="btnState"><span class="fontawesome-play"></span></button>
+
+            <span id="timePlayed">00:00</span>
+
+            <div class="video-bars">
+              <input type="range" id="barSeeker" class="bar-seeker" value="0" min="0" max="100" step="0.1">
+              <progress value="0" max="100" step="0.1" id="barProgress" class="bar-progress"></progress>
+              <progress value="0" max="100" step="0.1" id="barBuffer" class="bar-buffer"></progress>
+            </div>
+
+            <div id="timeBubble" class="time-bubble">00:00</div>
+
+            <span id="timeDuration">00:00</span>
+
+            <button id="btnSound" class="btn-sound"><span class="fontawesome-volume-up"></span></button>
+            <input type="range" id="sliderVolume" class="slider-volume" value="10" min="0" max="10">
+          </div>
+        </div>
+        <div class="video-info">
+          <div class="description">
+          </div>
+        </div>
+      </div>
+      <div id="playlist" class="playlist">
+        <header class="next">Comming Next</header>
+
+
+        <a href="{{ url_for('static', filename="video/uploaded/20200117130839Can't Take My Eyes Off You - Joseph Vincent.mp4") }}" class="next-video">
+          <img src="https://webdevtrick.com/wp-content/uploads/css-clip-path-animation-card.jpg" alt="">
+          <h3 class="single-video-title">Video</h3>
+          <p class="single-video-info"></p>
+            <span class="single-video-des"></span></p>
+        </a>
+
+
+        <a href="userid=8&videoid=89" class="next-video">
+          <img src="https://webdevtrick.com/wp-content/uploads/css-clip-path-animation-card.jpg" alt="">
+          <h3 class="single-video-title">Video2</h3>
+          <p class="single-video-info"></p>
+            <span class="single-video-des"></span></p>
+        </a>
+
+        <a href="videos/video3.mp4" class="next-video">
+          <img src="https://webdevtrick.com/wp-content/uploads/javascript-animated-bar-graph.jpg" alt="">
+          <h3 class="single-video-title">Video3</h3>
+          <p class="single-video-info"></p>
+          <span class="single-video-des"></span></p>
+        </a>
+
+        <a href="videos/video4.mp4" class="next-video">
+          <img src="https://webdevtrick.com/wp-content/uploads/login-page-in-html-css.jpg" alt="">
+          <h3 class="single-video-title">Video4</h3>
+          <p class="single-video-info"></p>
+            <span class="single-video-des"></span></p>
+        </a>
+
+        <a href="videos/video5.mp4" class="next-video played-video">
+          <img src="https://webdevtrick.com/wp-content/uploads/horizontal-scroll-navigation.jpg" alt="">
+          <h3 class="single-video-title">Video5</h3>
+          <p class="single-video-info"></p>
+            <span class="single-video-des"></span></p>
+          </a>
+          
+      </div>
+    </div>
+  </section>
+</main>
+
+<script  src="{{ url_for('static', filename='js/normal_views/video.js') }}"></script>
+
+<!-- footer -->
+
+ <div class="fixed-footer">
+    <p>Copyright © ASMI</p>
+</div>
+</body>
+</html>

@@ -110,6 +110,7 @@ def extractFrameInfosFromVideo(_videoname):
             print("Frame number : {:d} TimeStamp: {:f}".format(framecounter,frame_msec))
             #print("Frame No \t Objects Count \t Object Label \t Confidence ")        
             results = tfnet.return_predict(frame)
+            print("Results : ",results)
             listOfResultsWithTuple.append((results,frame_msec))
             listOfResultsWithoutTuple.append(results)
             #print(results)

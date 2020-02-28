@@ -5,7 +5,7 @@ import random
 
 query=MergedAdCategory.query.order_by(MergedAdCategory.id.asc())
 
-f = open("mergedAdCategories.txt", "w")
+f = open("app/static/database-asmi/mergedAdCategories.txt", "w")
 f.write("cat_id,category_name,adtitle,adprice\n")
 
 for eachCategory in query:

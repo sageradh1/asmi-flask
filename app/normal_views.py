@@ -4,8 +4,9 @@ from flask import request,jsonify,make_response,redirect, render_template,flash,
 from app.forms import RegistrationForm,LoginForm
 
 from flask_login import current_user, login_user,logout_user,login_required
-from app.database.models import User,UploadedVideo,MergedAdCategory
+from app.database.models import User,UploadedVideo,MergedAdCategory,VideoAnalyticsFile
 from app.utils.ad_prediction import get_appropriate_adids
+from app.utils.dataUtilsCode import dynamicJsonFile
 # from sqlalchemy import exists,or_
 # from sqlalchemy import in_
 
@@ -26,6 +27,7 @@ def login():
 			# flash(err)
 			flash("Problem while logging in.")
 	return render_template('normal_views/login.html', form=form)
+
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -66,6 +68,7 @@ def register():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     logout_user()
     return redirect(url_for('home'))
@@ -99,30 +102,43 @@ def viewvideos():
 		userid=current_user.id
 
 	latestvideoList=[]
+	dynamicJson=[]
 	try:
 
 		# latestvideoList=db.session.query(UploadedVideo).order_by(UploadedVideo.videoid.desc()).limit(5)
 		latestvideoList=UploadedVideo.query.order_by(UploadedVideo.videoid.desc()).limit(5)
-		for video in latestvideoList:
-		    print(video.detected_objects_withconfidence)
+		# for video in latestvideoList:
+		#     print(video.detected_objects_withconfidence)
 		if videoid is None:
 			videoid = latestvideoList[0].videoid
 		# print(get_appropriate_adids(userid,videoid))
-		adnames = get_appropriate_adids(1,48)
+		adnames = get_appropriate_adids(8,10056)
 		mergedAdCategories=db.session.query(MergedAdCategory).filter(MergedAdCategory.category_name.in_(adnames))
 
 		# print(mergedAdCategories.count())
-
+		requiredObjectLabels=[]
 		for mergedAdCategory in mergedAdCategories:
-		    print(mergedAdCategory.category_name)
+		    requiredObjectLabels.append(mergedAdCategory.category_name)
 		# for i in range(len(mergedAdCategories)):
 		# 	print(mergedAdCategories[i])
+		print(requiredObjectLabels)
+
+		print("video id :",videoid)
+		analytics_file =  VideoAnalyticsFile.query.filter_by(video_id=videoid).first()
+		if analytics_file is None:
+			print("analytics_file is None")
+			return render_template('normal_views/viewvideo.html',latestvideoList=latestvideoList)
+
+		_filename=analytics_file.filename
+		# requiredObjectLabels = ['train','Shirt']
+
+		dynamicJson = dynamicJsonFile(_filename,requiredObjectLabels)
+		print(dynamicJson)
 	except Exception as err:
 		latestvideoid=-1
 		print("Error : ",err)
 
-
-	return render_template('normal_views/viewvideo.html',latestvideoList=latestvideoList)
+	return render_template('normal_views/viewvideo.html',latestvideoList=latestvideoList,dynamicJson=dynamicJson)
 
 
 # @app.route('/eachuser/<username>')

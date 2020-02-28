@@ -64,7 +64,7 @@ class UploadedVideo(db.Model):
     uploadStartedTime = db.Column(db.DateTime, index=True, default=datetime.utcnow)
     uploadCompletedTime = db.Column(db.DateTime, index=True, default=datetime.utcnow)    
     detected_objects_withconfidence=db.Column(db.String(1000))
-
+    uploader_id =  db.Column(db.Integer)
     analyticsFile = db.relationship('VideoAnalyticsFile', backref='videoFile', lazy='dynamic')
 
     # def __init__(self, name, extension,storagelocation,uploadStartedTime,uploadCompletedTime,analyticsFile):

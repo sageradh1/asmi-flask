@@ -4,7 +4,7 @@ import random
 
 query=UploadedVideo.query.order_by(UploadedVideo.videoid.asc())
 
-f = open("uploadedVideos.txt", "w")
+f = open("app/static/database-asmi/uploadedVideos.txt", "w")
 f.write("video_id,detected_objects_withconfidence\n")
 
 for eachCategory in query:

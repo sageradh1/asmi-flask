@@ -21,15 +21,15 @@ class Config(object):
     #comment here jabir
     VIDEO_WITH_FEATURES_DF, MATRIX_WITH_VIDEOID,USERVIEWNORMALISEDDF = loadvideofeaturesdf_videoiddf()
     
-    #asmidf
-    print("asmidf")
-    print(MATRIX_WITH_VIDEOID)
-    #newdf
-    print("newdf")
-    print(VIDEO_WITH_FEATURES_DF)
-    # normaliseddf
-    print("normaliseddf")
-    print(USERVIEWNORMALISEDDF)
+    # #asmidf
+    # print("asmidf")
+    # print(MATRIX_WITH_VIDEOID)
+    # #newdf
+    # print("newdf")
+    # print(VIDEO_WITH_FEATURES_DF)
+    # # normaliseddf
+    # print("normaliseddf")
+    # print(USERVIEWNORMALISEDDF)
     
     ADIMAGE_UPLOADS_FOLDER = basedir+ "/app/static/img/uploaded/adimages"
     IMAGE_UPLOADS_FOLDER = basedir+ "/app/static/img/uploaded"

@@ -1,5 +1,8 @@
 from app import app
-
+import pickle
+import json
+from app.database.models import MergedAdCategory
+    
 def get_intkey(_currentVal,_currentList): 
     for key, value in _currentList.items():
         if _currentVal == value:
@@ -44,7 +47,11 @@ def uniqueDictonairies(_classSet,_classDict,_allFrameResult):
             numberOfTimesEmergedDict[indexInDict]=numberOfTimesEmergedDict[indexInDict]+1
         
     for a in range(len(_classDict)):
-        averageConfidenceDict[a]=confidenceDict[a]/numberOfTimesEmergedDict[a]
+    #     averageConfidenceDict[a]=confidenceDict[a]/numberOfTimesEmergedDict[a]
+        if numberOfTimesEmergedDict[a] ==0:
+            averageConfidenceDict[a]=0
+        else:
+            averageConfidenceDict[a]=confidenceDict[a]/numberOfTimesEmergedDict[a]
     return confidenceDict,numberOfTimesEmergedDict,averageConfidenceDict
 
 def sortDictInAscendingOrder(_myDict):
@@ -54,16 +61,16 @@ def sortDictInDescendingOrder(_myDict):
     return {k: v for k, v in reversed(sorted(_myDict.items(), key=lambda item: item[1]))}
 
 def arrangeNnumberOfDictionary(_number,_myDict,_averageConfidenceDict):
-    print("Before Sorting....")
-    print("Class Dictionary : ")
-    print(_myDict)
-    print("Average Confidence Dictionary : ")
-    print(_averageConfidenceDict)
+    # print("Before Sorting....")
+    # print("Class Dictionary : ")
+    # print(_myDict)
+    # print("Average Confidence Dictionary : ")
+    # print(_averageConfidenceDict)
 
-    print("\nAfter Sorting In Descending Order....")
+    # print("\nAfter Sorting In Descending Order....")
     newSortedDictWithRequiredKey = sortDictInDescendingOrder(_averageConfidenceDict)
-    print("newSortedDictWithRequiredKey : ")
-    print(newSortedDictWithRequiredKey)
+    # print("newSortedDictWithRequiredKey : ")
+    # print(newSortedDictWithRequiredKey)
 
     counter=0
     newSortedAvgConfidenceDictWithRequiredNumber=dict()
@@ -86,7 +93,38 @@ def arrangeNnumberOfDictionary(_number,_myDict,_averageConfidenceDict):
     return newSortedClassDict,newSortedAvgConfidenceDictWithRequiredNumber
 
     #returnJson(newSortedClassDict,newSortedAvgConfidenceDictWithRequiredNumber,_allResultsWithTupleList)
+def getDetectedObjectsforDatabase(_myDict,_averageConfidenceDict):
+    # print("Before Sorting....")
+    # print("Class Dictionary : ")
+    # print(_myDict)
+    # print("Average Confidence Dictionary : ")
+    # print(_averageConfidenceDict)
 
+    # print("\nAfter Sorting In Descending Order....")
+    newSortedDictWithRequiredKey = sortDictInDescendingOrder(_averageConfidenceDict)
+    # print("newSortedDictWithRequiredKey : ")
+    # print(newSortedDictWithRequiredKey)
+
+    counter=0
+    newSortedAvgConfidenceDictWithRequiredNumber=dict()
+    newSortedClassDict=dict()
+
+    for a in newSortedDictWithRequiredKey.keys():
+        #print("counter = {:d} and counter = {:d}".format(counter,_number))
+        # if counter == _number:
+        #     break
+        newSortedAvgConfidenceDictWithRequiredNumber[counter]=newSortedDictWithRequiredKey[a]
+        newSortedClassDict[counter] = _myDict[a]
+        counter = counter + 1
+
+    outputstring=""
+    for a in range(len(newSortedClassDict)):
+        score = (len(newSortedClassDict)-a)/len(newSortedClassDict)
+        outputstring+=newSortedClassDict[a]+":"+str(score)
+        if a<(len(newSortedClassDict)-1):
+            outputstring+="|"
+
+    return outputstring
 
 def returnList(_sortedClassDict,_allResultsWithTupleList):
 
@@ -227,18 +265,72 @@ def returnTimeStampsList(_sortedClassDict,_allResultsWithTupleList):
 
     
 def writeListAsAJsonFile(_mylist,_filename):
-    import pickle
-    import json
-
+    print("Creating json file ")
     #print(finalList)
     data = _mylist
     # Writing a JSON file
     with open(app.config["VIDEOANALYTICS_GENERATED_FOLDER"]+"/"+_filename, 'w') as f:
-    #    print("Saving data : ")
+        print("Saving data as json : ")
         json.dump(data, f)
 
+    f.close()
     # Reading a JSON file
+    # with open(app.config["VIDEOANALYTICS_GENERATED_FOLDER"]+"/"+_filename, 'r') as f:
+    #     # print("Extracting data from file")
+    #     data = json.load(f)
+    # print(data)
+
+
+
+
+
+def dynamicJsonFile(_filename,requiredObjectLabels):
+    #Extract all the required informations such as image urls, prices, etc from MergedAdCategory
+    infoForAllLabelsList=[]
+    for j in range(len(requiredObjectLabels)):
+        try:
+            mergedAd =  MergedAdCategory.query.filter_by(category_name=requiredObjectLabels[j]).first()
+            allinfoForThisCategory={}
+            if mergedAd is None:
+                allinfoForThisCategory['category_name']=requiredObjectLabels[j]
+                allinfoForThisCategory['adimage_url']="No information"
+                allinfoForThisCategory['price']="No information"
+            else:
+                allinfoForThisCategory['category_name']=requiredObjectLabels[j]
+                allinfoForThisCategory['adimage_url']=str(mergedAd.adimage_url)
+                allinfoForThisCategory['price']=str(mergedAd.adprice)
+
+            infoForAllLabelsList.append(allinfoForThisCategory.copy())
+        except Exception as err:
+            print("Problem while extracting information from Merged Ad Category Table")
+            print(err)
+
+    # print(infoForAllLabelsList)
+
     with open(app.config["VIDEOANALYTICS_GENERATED_FOLDER"]+"/"+_filename, 'r') as f:
+        # print("Extracting data from file")
         data = json.load(f)
-    print("Extracting data from file")
-    print(data)
+    f.close()
+
+    olddataPerTimestamp = data['dataPerTimestamp']
+    newdataPerTimestamp = []
+
+    for i in range(len(olddataPerTimestamp)):
+
+        eachdict_For_newdataPerTimestamp = {}   
+        eachdict_For_newdataPerTimestamp['timeInMilliSec']=olddataPerTimestamp[i]['timeInMilliSec']
+        
+        allobjects = olddataPerTimestamp[i]['objectsWithCoordinates']
+        eachdict_For_newdataPerTimestamp['objectsWithCoordinates']=[]
+        for a in range(len(allobjects)):
+            currentobjectwithcoordinate = allobjects[a]
+            if currentobjectwithcoordinate["label"] in requiredObjectLabels:
+                currentobjectwithcoordinate['adimage_url']=infoForAllLabelsList[requiredObjectLabels.index(currentobjectwithcoordinate["label"])]['adimage_url']
+                currentobjectwithcoordinate['price']=infoForAllLabelsList[requiredObjectLabels.index(currentobjectwithcoordinate["label"])]['price']
+
+                eachdict_For_newdataPerTimestamp['objectsWithCoordinates'].append(currentobjectwithcoordinate.copy())
+
+        newdataPerTimestamp.append(eachdict_For_newdataPerTimestamp.copy())
+
+    # print(newdataPerTimestamp)
+    return newdataPerTimestamp

@@ -54,15 +54,16 @@ def frameToVid(indexOfRequiredFrame,originalFrameArray,newframeArray,vOutPath, f
         vOut.write(frame)
     vOut.release()
 
+
+
+options = {
+    "model": basedir+"/cfg/yolo.cfg", 
+    "load": basedir+"/bin/yolov2.weights", 
+    "threshold": 0.1
+    }
+
+tfnet = TFNet(options)
 def extractFrameInfosFromVideo(_videoname):
-
-    options = {
-        "model": basedir+"/cfg/yolo.cfg", 
-        "load": basedir+"/bin/yolov2.weights", 
-        "threshold": 0.1
-        }
-
-    tfnet = TFNet(options)
 
     capture = cv2.VideoCapture(app.config["VIDEO_UPLOADS_FOLDER"]+"/"+_videoname)
 
@@ -110,7 +111,7 @@ def extractFrameInfosFromVideo(_videoname):
             print("Frame number : {:d} TimeStamp: {:f}".format(framecounter,frame_msec))
             #print("Frame No \t Objects Count \t Object Label \t Confidence ")        
             results = tfnet.return_predict(frame)
-            print("Results : ",results)
+            # print("Results : ",results)
             listOfResultsWithTuple.append((results,frame_msec))
             listOfResultsWithoutTuple.append(results)
             #print(results)

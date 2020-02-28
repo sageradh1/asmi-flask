@@ -7,8 +7,10 @@ from werkzeug.utils import secure_filename
 from app.database.models import UploadedVideo,VideoAnalyticsFile,GeneratedVideo
 from datetime import datetime
 
-from app.utils.dataUtilsCode import uniqueClassSetAndDict,uniqueDictonairies,arrangeNnumberOfDictionary,returnList,writeListAsAJsonFile
+from app.utils.dataUtilsCode import getDetectedObjectsforDatabase,uniqueClassSetAndDict,uniqueDictonairies,arrangeNnumberOfDictionary,returnList,writeListAsAJsonFile
 from app.darkflowMerge.openCVTFNet import extractFrameInfosFromVideo,extractIndicesFromTuple,frameToVid
+from flask_login import current_user, login_required
+
 
 def isVideoNameAllowed(filename):
     # We only want files with a . in the filename
@@ -21,6 +23,7 @@ def isVideoNameAllowed(filename):
         return True
     else:
         return False
+
 
 def isCSVNameAllowed(filename):
     # We only want files with a . in the filename
@@ -48,7 +51,8 @@ def isCSVFilesizeAllowed(csvsize):
 
 
 @app.route('/upload', methods=["GET", "POST"])
-def upload_files():
+@login_required
+def upload():
     
     if request.method == 'GET':
 
@@ -60,7 +64,7 @@ def upload_files():
 
         _videoUploadStartingTime=datetime.utcnow()
         startingdt_string = _videoUploadStartingTime.strftime("%Y%m%d%H%M%S")
-        
+
         # check if the post request has the file part
         if not request.files:
             message ="No files received "
@@ -113,33 +117,41 @@ def upload_files():
         ###################### Video is saved till now ###########################
         
         _videoUploadCompletedTime=datetime.utcnow()
-        
-        _uploadedVideo=UploadedVideo(filename = _basename, extension = _extension,storagelocation = _videostorageLocation,uploadStartedTime = _videoUploadStartingTime,uploadCompletedTime = _videoUploadCompletedTime)
-
-        db.session.add(_uploadedVideo)
-        db.session.commit()
 
         listOfResultsWithTuple,listOfResultsWithoutTuple,originalFrameArray,newframeArray,fps=extractFrameInfosFromVideo(startingdt_string+videofile.filename)
 
         myUniqueClassSet,myClassDict = uniqueClassSetAndDict(listOfResultsWithoutTuple)
-        print("\nmyUniqueClassSet")
-        print(myUniqueClassSet)
-        print("\nmyClassDict")
-        print(myClassDict)
+        # print("\nmyUniqueClassSet")
+        # print(myUniqueClassSet)
+        # print("\nmyClassDict")
+        # print(myClassDict)
         confidenceDict,numberOfTimesEmergedDict,averageConfidenceDict = uniqueDictonairies(myUniqueClassSet,myClassDict,listOfResultsWithoutTuple)
 
-        print("\n confidenceDict")
-        print(confidenceDict)
-        print("\n numberOfTimesEmergedDict")
-        print(numberOfTimesEmergedDict)
-        print("\n averageConfidenceDict")
-        print(averageConfidenceDict)
+        # print("\n confidenceDict")
+        # print(confidenceDict)
+        # print("\n numberOfTimesEmergedDict")
+        # print(numberOfTimesEmergedDict)
+        # print("\n averageConfidenceDict")
+        # print(averageConfidenceDict)
+
+        outputstringfordb = getDetectedObjectsforDatabase(myClassDict,averageConfidenceDict)
+
+        if current_user.is_authenticated:
+            currentuserid=current_user.id
+        else:
+            currentuserid=-1
+
+        _uploadedVideo=UploadedVideo(filename = _basename, extension = _extension,storagelocation = _videostorageLocation,uploadStartedTime = _videoUploadStartingTime,uploadCompletedTime = _videoUploadCompletedTime,detected_objects_withconfidence=outputstringfordb,uploader_id=currentuserid)
+
+        db.session.add(_uploadedVideo)
+        db.session.commit()
+
 
         #x=int(input("Enter the number of classes with highest confidence : "))
-        x=3
+        x=len(myClassDict)
         newSortedClassDict,newSortedAvgConfidenceDictWithRequiredNumber = arrangeNnumberOfDictionary(x,myClassDict,averageConfidenceDict)
 
-        print("See here if the dict is only length 3: ")
+        print("See here if the dict is only length {}: ".format(x))
         print(newSortedClassDict)
         finalJsonArray = returnList(newSortedClassDict,listOfResultsWithTuple)
 
@@ -198,13 +210,6 @@ def json():
         return finalHttpResponse
     else:
         return make_response("No JSON has been Received",400)
-
-
-
-
-
-
-
 
 
 @app.route("/flaskappconfiguration")

@@ -5,6 +5,5 @@ project1_env
 \_\_pycache\_\_
 darkflowDirectory
 migrations
-*.mp4
 *.webm
 *.json

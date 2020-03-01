@@ -54,4 +54,5 @@ from app.database import models
 #uncomment this jabir 
 # from app import public_views,admin_views,jinja_views,jsonHTTPDockerlearning_views
 # from app import public_views,admin_views,jinja_views,jsonHTTPDockerlearning_views,normal_views
-from app import normal_views,jsonHTTPDockerlearning_views
+# from app import normal_views,jsonHTTPDockerlearning_views
+from app import demo_views

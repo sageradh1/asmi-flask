@@ -75,6 +75,7 @@ def logout():
 
 @app.route('/')
 @app.route('/home')
+@login_required
 def home():
 
 	if current_user.is_authenticated:
@@ -111,7 +112,8 @@ def viewvideos():
 		#     print(video.detected_objects_withconfidence)
 		if videoid is None:
 			videoid = latestvideoList[0].videoid
-		# print(get_appropriate_adids(userid,videoid))
+			
+		# adnames =get_appropriate_adids(userid,videoid)
 		adnames = get_appropriate_adids(8,10056)
 		mergedAdCategories=db.session.query(MergedAdCategory).filter(MergedAdCategory.category_name.in_(adnames))
 
@@ -139,6 +141,8 @@ def viewvideos():
 		print("Error : ",err)
 
 	return render_template('normal_views/viewvideo.html',latestvideoList=latestvideoList,dynamicJson=dynamicJson)
+
+
 
 
 # @app.route('/eachuser/<username>')

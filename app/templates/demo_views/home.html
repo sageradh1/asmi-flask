@@ -1,0 +1,574 @@
+ <html>
+    <title>
+        ASMI Home
+    </title>
+    <head>
+
+      <link rel="stylesheet"  href="{{ url_for('static', filename='css/normal_views/navbar.css') }}"/>
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/normal_views/cdn.css') }}">
+      <script src="{{ url_for('static', filename='js/normal_views/navbarjs.js') }}"></script>
+      <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+      <meta charset="utf-8" />
+      <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+      <!-- css -->
+      <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,300,700,800" rel="stylesheet" media="screen">
+
+      <link href="{{ url_for('static', filename='css/normal_views/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+      <link href="{{ url_for('static', filename='css/normal_views/indexstyle.css') }}" rel="stylesheet" media="screen">
+      <link href="{{ url_for('static', filename='css/normal_views/default.css') }}" rel="stylesheet" media="screen">
+
+    </head>
+
+
+
+<!------ Include the above in your HEAD tag ---------->
+<style>
+/* css for dropdown */
+.dropbtn {
+  background-color: #ff343c;
+  color: white;
+  padding: 21px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  margin-top: -10px;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ff343c; color: white;}
+.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropbtn {background-color: #ff343c;}
+
+
+.carousel-inner{
+  height: 500px;
+}
+
+.carousel{
+  height: 331px;
+}
+
+.carousel-indicators{
+  top: 447px;
+}
+
+</style>
+
+<!--end-->
+
+<header style="height: 65px;">
+  <!--  Remove dark nav  -->
+  <nav class="nav dark-nav">
+    <div class="container">
+      <div class="nav-heading">
+        <button class="toggle-nav" data-toggle="open-navbar1"><i class="fa fa-align-right"></i></button>
+            <a href="{{ url_for('home')}}" >
+        <img src="{{ url_for('static', filename='img/asmilogo.png') }}" width="106" height="53"  alt="Logo Geeks and the City" />    
+        </a>
+      </div>
+      <div class="menu" id="open-navbar1">
+        <ul class="list">
+          <li><a href="{{ url_for('home')}}">Home</a></li>
+          <!-- <li><a href="/product.html">Product Upload</a></li> -->
+          {% if current_user.is_authenticated %}
+
+          <!-- drop down -->
+          <li>
+           <div class="dropdown" style="float:right;">
+              <button class="dropbtn">Contents</button>
+              <div class="dropdown-content">
+                <a href="{{ url_for('uploaded')}}">Uploaded Video</a>
+                <!-- <a href="Generated.html">Generated Video</a> -->
+                <a href="{{ url_for('analytics')}}">Analytics Files</a>
+              </div>
+          </li>
+
+          <li>
+            <div class="dropdown" style="float:right;">
+              <button class="dropbtn">TestAPI</button>
+              <div class="dropdown-content">
+                <a href="#">Upload Video</a>
+                <a href="{{ url_for('demoviewvideos')}}">View Video</a>
+              </div>
+            </div>
+          </li>
+
+           <li><a href="{{ url_for('logout')}}">Logout</a></li>
+          {% else %}
+            <li><a href="{{ url_for('login')}}">Login</a></li>
+            <li><a href="{{ url_for('register')}}">Signup</a></li>
+          {% endif %}
+
+          </div>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+<!-- end -->
+
+
+  <!-- caresoul -->
+<div id="carouselExampleIndicators" class="carousel slide" data-ride="carousel">
+  <ol class="carousel-indicators">
+    <li data-target="#carouselExampleIndicators" data-slide-to="0" class="active"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="1"></li>
+    <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img class="d-block w-100" src="https://homepages.cae.wisc.edu/~ece533/images/fruits.png" alt="First slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/30256/1200_bodie-11.jpg" alt="Second slide">
+    </div>
+    <div class="carousel-item">
+      <img class="d-block w-100" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/30256/1200_bodie-11.jpg" alt="Third slide">
+    </div>
+  </div>
+  <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="sr-only">Previous</span>
+  </a>
+  <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="sr-only">Next</span>
+  </a>
+</div>
+  <!-----------end--------------->
+
+
+  <!-- About -->
+  <section id="about" class="home-section bg-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+          <div class="section-heading">
+            <h2>About us</h2>
+            <div class="heading-line"></div>
+            <p>We’ve been building unique digital products, platforms, and experiences for the past 6 years.</p>
+          </div>
+        </div>
+      </div>
+      <div class="row wow fadeInUp">
+        <div class="col-md-6 about-img">
+
+          <img src="{{ url_for('static', filename='img/normal_views/about-img.jpg') }}" alt="">
+        </div>
+
+        <div class="col-md-6 content">
+          <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elite storium paralate</h2>
+          <h3>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+            laborum.</h3>
+          <p>
+            Ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in
+            voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+            proident, sunt in culpa qui officia deserunt mollit anim id est laborum Libero justo laoreet sit amet
+            cursus sit amet dictum sit. Commodo sed egestas egestas fringilla phasellus faucibus scelerisque eleifend
+            donec Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+            laborum
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Parallax 1 -->
+  <section id="parallax1" class="home-section parallax" data-stellar-background-ratio="0.5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="color-light">
+            <h2 class="wow bounceInDown" data-wow-delay="0.5s">Details are the key for perfection</h2>
+            <p class="lead wow bounceInUp" data-wow-delay="1s">We mix all detailed things together</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- end -->
+
+  <!-- Services -->
+  <section id="services" class="home-section bg-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+          <div class="section-heading">
+            <h2>Services</h2>
+            <div class="heading-line"></div>
+            <p>We’ve been building unique digital products, platforms, and experiences for the past 6 years.</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div id="carousel-service" class="service carousel slide">
+
+  
+
+            <!-- slides -->
+            <div class="carousel-inner">
+              <div class="item active">
+                <div class="row">
+                  <div class="col-sm-12 col-md-offset-1 col-md-6">
+                    <div class="wow bounceInLeft">
+                      <h4>Website Design</h4>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna.</p>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-5">
+                    <div class="screenshot wow bounceInRight">
+
+                      <img src="{{ url_for('static', filename='img/normal_views/screenshots/1.png') }}" class="img-responsive" alt="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="item">
+                <div class="row">
+                  <div class="col-sm-12 col-md-offset-1 col-md-6">
+                    <div class="wow bounceInLeft">
+                      <h4>Brand Identity</h4>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna.</p>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-5">
+                    <div class="screenshot wow bounceInRight">
+                      <img src="{{ url_for('static', filename='img/normal_views/screenshots/2.png') }}" class="img-responsive" alt="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="item">
+                <div class="row">
+                  <div class="col-sm-12 col-md-offset-1 col-md-6">
+                    <div class="wow bounceInLeft">
+                      <h4>Web & Mobile Apps</h4>
+                      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut
+                        labore et dolore magna.</p>
+                    </div>
+                  </div>
+                  <div class="col-sm-12 col-md-5">
+                    <div class="screenshot wow bounceInRight">                     
+                      <img src="{{ url_for('static', filename='img/normal_views/screenshots/3.png') }}" class="img-responsive" alt="" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+              <li data-target="#carousel-service" data-slide-to="0" class="active"></li>
+              <li data-target="#carousel-service" data-slide-to="1"></li>
+              <li data-target="#carousel-service" data-slide-to="2"></li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Works -->
+  <section id="portfolio" class="home-section bg-gray">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+          <div class="section-heading">
+            <h2>Works</h2>
+            <div class="heading-line"></div>
+            <p>We’ve been building unique digital products, platforms, and experiences for the past 6 years.</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+
+          <ul id="og-grid" class="og-grid">
+            <li>
+              <a href="https://bootstrapmade.com" data-largesrc="{{ url_for('static', filename='img/normal_views/thumbs/1.jpg') }}" data-title="Portfolio title" data-description="Duo te dico volutpat, unum elit oblique per id. Ne duo mollis sapientem intellegebat. Per at augue vidisse percipit, pri vocibus assueverit interesset ut, no dolore luptatum incorrupte nec. In mentitum forensibus nec, nibh eripuit ut pri, tale illud voluptatum ut sea. Sed oratio repudiare ei, cum an magna labitur, eu atqui augue mei. Pri consul detracto eu, solet nusquam accusam ex vim, an movet interesset necessitatibus mea.">              
+                <img src="{{ url_for('static', filename='img/normal_views/thumbs/1.jpg') }}" alt="" />
+              </a>
+            </li>
+            <li>
+              <a href="https://bootstrapmade.com" data-largesrc="{{ url_for('static', filename='img/normal_views/thumbs/2.jpg') }}" data-title="Portfolio title" data-description="Mea an eros periculis dignissim, quo mollis nostrum elaboraret et. Id quem perfecto mel, no etiam perfecto qui. No nisl legere recusabo nam, ius an tale pericula evertitur, dicat phaedrum qui in. Usu numquam legendos in, voluptaria sadipscing ut vel. Eu eum mandamus volutpat gubergren, eos ad detracto nominati, ne eum idque elitr aliquam.">
+                <img src="{{ url_for('static', filename='img/normal_views/thumbs/2.jpg') }}" alt="" />
+              </a>
+            </li>
+            <li>
+              <a href="https://bootstrapmade.com" data-largesrc="{{ url_for('static', filename='img/normal_views/thumbs/3.jpg') }}" data-title="Portfolio title" data-description="Vim ad persecuti appellantur. Eam ignota deterruisset eu, in omnis fierent convenire sed. Ne nulla veritus vel, liber euripidis in eos. Postea comprehensam vis in, detracto deseruisse mei ea. Ex sadipscing deterruisset concludaturque quo.">
+                <img src="{{ url_for('static', filename='img/normal_views/thumbs/3.jpg') }}
+" alt="img01" />
+              </a>
+            </li>
+            <li>
+              <a href="https://bootstrapmade.com" data-largesrc="{{ url_for('static', filename='img/normal_views/thumbs/4.jpg') }}" data-title="Portfolio title" data-description="In mentitum forensibus nec, nibh eripuit ut pri, tale illud voluptatum ut sea. Sed oratio repudiare ei, cum an magna labitur, eu atqui augue mei. Pri consul detracto eu, solet nusquam accusam ex vim, an movet interesset necessitatibus mea.">
+
+
+                <img src="{{ url_for('static', filename='img/normal_views/thumbs/4.jpg') }}" alt="img01" />
+              </a>
+            </li>
+            <li>
+              <a href="https://bootstrapmade.com" data-largesrc="{{ url_for('static', filename='img/normal_views/thumbs/5.jpg') }}" data-title="Portfolio title" data-description="Duo te dico volutpat, unum elit oblique per id. Ne duo mollis sapientem intellegebat. Per at augue vidisse percipit, pri vocibus assueverit interesset ut, no dolore luptatum incorrupte nec. In mentitum forensibus nec, nibh eripuit ut pri, tale illud voluptatum ut sea">
+                <img src="{{ url_for('static', filename='img/normal_views/thumbs/5.jpg') }}" alt="img01" />
+              </a>
+            </li>
+            <li>
+              <a href="https://bootstrapmade.com" data-largesrc="{{ url_for('static', filename='img/normal_views/thumbs/6.jpg') }}" data-title="Portfolio title" data-description="Id elit saepe pro. In atomorum constituam definitionem quo, at torquatos sadipscing eum, ut eum wisi meis mentitum. Probo feugiat ea duo. An usu platonem instructior, qui dolores inciderint ad. Te elit essent mea, vim ne atqui legimus invenire, ad dolor vitae sea.">
+                <img src="{{ url_for('static', filename='img/normal_views/thumbs/6.jpg') }}" alt="img01" />
+              </a>
+            </li>
+            <li>
+              <a href="https://bootstrapmade.com" data-largesrc="{{ url_for('static', filename='img/normal_views/thumbs/7.jpg') }}" data-title="Portfolio title" data-description="Duo te dico volutpat, unum elit oblique per id. Ne duo mollis sapientem intellegebat. Per at augue vidisse percipit, pri vocibus assueverit interesset ut, no dolore luptatum incorrupte nec. In mentitum forensibus nec, nibh eripuit ut pri, tale illud voluptatum ut sea. Sed oratio repudiare ei, cum an magna labitur, eu atqui augue mei.">
+                <img src="{{ url_for('static', filename='img/normal_views/thumbs/7.jpg') }}" alt="img01" />
+              </a>
+            </li>
+            <li>
+              <a href="https://bootstrapmade.com" data-largesrc="{{ url_for('static', filename='img/normal_views/thumbs/8.jpg') }}" data-title="Portfolio title" data-description="No nisl legere recusabo nam, ius an tale pericula evertitur, dicat phaedrum qui in. Usu numquam legendos in, voluptaria sadipscing ut vel. Eu eum mandamus volutpat gubergren, eos ad detracto nominati, ne eum idque elitr aliquam.">
+                <img src="{{ url_for('static', filename='img/normal_views/thumbs/8.jpg') }}" alt="img01" />
+              </a>
+            </li>
+            <li>
+              <a href="https://bootstrapmade.com" data-largesrc="{{ url_for('static', filename='img/normal_views/thumbs/9.jpg') }}" data-title="Portfolio title" data-description="Lorem ipsum dolor sit amet, ex pri quod ferri fastidii. Mazim philosophia eum ad, facilisis laboramus te est. Eam magna fabellas ut. Ne vis diceret accumsan salutandi, pro in impedit accusamus dissentias, ut nonumy eloquentiam ius.">
+                <img src="{{ url_for('static', filename='img/normal_views/thumbs/9.jpg') }}" alt="img01" />
+              </a>
+            </li>
+            <li>
+              <a href="https://bootstrapmade.com" data-largesrc="{{ url_for('static', filename='img/normal_views/thumbs/10.jpg') }}" data-title="Portfolio title" data-description="Duo te dico volutpat, unum elit oblique per id. Ne duo mollis sapientem intellegebat. Per at augue vidisse percipit, pri vocibus assueverit interesset ut, no dolore luptatum incorrupte nec. In mentitum forensibus nec, nibh eripuit ut pri, tale illud voluptatum ut sea. Sed oratio repudiare ei, cum an magna labitur, eu atqui augue mei. Pri consul detracto eu, solet nusquam accusam ex vim.">
+                <img src="{{ url_for('static', filename='img/normal_views/thumbs/10.jpg') }}" alt="img01" />
+              </a>
+            </li>
+            <li>
+              <a href="https://bootstrapmade.com" data-largesrc="{{ url_for('static', filename='img/normal_views/thumbs/11.jpg') }}" data-title="Portfolio title" data-description="Vim ad persecuti appellantur. Eam ignota deterruisset eu, in omnis fierent convenire sed. Ne nulla veritus vel, liber euripidis in eos. Postea comprehensam vis in, detracto deseruisse mei ea. Ex sadipscing deterruisset concludaturque quo.">
+                <img src="{{ url_for('static', filename='img/normal_views/thumbs/11.jpg') }}" alt="img01" />
+              </a>
+            </li>
+            <li>
+              <a href="https://bootstrapmade.com" data-largesrc="{{ url_for('static', filename='img/normal_views/thumbs/12.jpg') }}" data-title="Portfolio title" data-description="Mea an eros periculis dignissim, quo mollis nostrum elaboraret et. Id quem perfecto mel, no etiam perfecto qui. No nisl legere recusabo nam, ius an tale pericula evertitur, dicat phaedrum qui in. Usu numquam legendos in, voluptaria sadipscing ut vel. Eu eum mandamus volutpat gubergren, eos ad detracto nominati, ne eum idque elitr aliquam.">
+                <img src="{{ url_for('static', filename='img/normal_views/thumbs/12.jpg') }}" alt="img01" />
+              </a>
+            </li>
+          </ul>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Team -->
+  <section id="team" class="home-section bg-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+          <div class="section-heading">
+            <h2>Our Team</h2>
+            <div class="heading-line"></div>
+            <p>Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est
+              laborum</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3">
+          <div class="box-team wow bounceInUp" data-wow-delay="0.1s">
+
+            <img src="{{ url_for('static', filename='img/normal_views/team/1.jpg') }}" alt="" class="img-circle img-responsive" />
+            <h4>Dominique Vroslav</h4>
+            <p>Art Director</p>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" data-wow-delay="0.3s">
+          <div class="box-team wow bounceInUp">
+            <img src="{{ url_for('static', filename='img/normal_views/team/2.jpg') }}" alt="" class="img-circle img-responsive" />
+            <h4>Thomas Jeffersonn</h4>
+            <p>Web Designer</p>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" data-wow-delay="0.5s">
+          <div class="box-team wow bounceInUp">
+            <img src="{{ url_for('static', filename='img/normal_views/team/3.jpg') }}" alt="" class="img-circle img-responsive" />
+            <h4>Nola Maurin</h4>
+            <p>Illustrator</p>
+          </div>
+        </div>
+        <div class="col-xs-12 col-sm-3 col-md-3 col-lg-3" data-wow-delay="0.7s">
+          <div class="box-team wow bounceInUp">
+            <img src="{{ url_for('static', filename='img/normal_views/team/4.jpg') }}" alt="" class="img-circle img-responsive" />
+            <h4>Mira Ladovic</h4>
+            <p>Typographer</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section id="contact" class="home-section bg-gray">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+          <div class="section-heading">
+            <h2>Contact us</h2>
+            <div class="heading-line"></div>
+            <p>If you have any question or just want to say 'hello' to Alstar web studio please fill out form below and
+              we will be get in touch with you within 24 hours. </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-offset-2 col-md-8">
+          <div id="sendmessage">Your message has been sent. Thank you!</div>
+          <div id="errormessage"></div>
+
+          <form action="" method="post" class="form-horizontal contactForm" role="form">
+            <div class="col-md-offset-2 col-md-8">
+              <div class="form-group">
+                <input type="text" name="name" class="form-control" id="name" placeholder="Your Name" data-rule="minlen:4"
+                  data-msg="Please enter at least 4 chars" />
+                <div class="validation"></div>
+              </div>
+            </div>
+
+            <div class="col-md-offset-2 col-md-8">
+              <div class="form-group">
+                <input type="email" class="form-control" name="email" id="email" placeholder="Your Email" data-rule="email"
+                  data-msg="Please enter a valid email" />
+                <div class="validation"></div>
+              </div>
+            </div>
+
+            <div class="col-md-offset-2 col-md-8">
+              <div class="form-group">
+                <input type="text" class="form-control" name="subject" id="subject" placeholder="Subject" data-rule="minlen:4"
+                  data-msg="Please enter at least 8 chars of subject" />
+                <div class="validation"></div>
+              </div>
+            </div>
+
+            <div class="col-md-offset-2 col-md-8">
+              <div class="form-group">
+                <textarea class="form-control" name="message" rows="5" data-rule="required" data-msg="Please write something for us"
+                  placeholder="Message"></textarea>
+                <div class="validation"></div>
+              </div>
+            </div>
+            <div class="form-group">
+              <div class="col-md-offset-2 col-md-8">
+                <button type="submit" class="btn btn-theme btn-lg btn-block">Send message</button>
+              </div>
+            </div>
+          </form>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Bottom widget -->
+  <section id="bottom-widget" class="home-section bg-white">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <div class="contact-widget wow bounceInLeft">
+            <i class="fa fa-map-marker fa-4x"></i>
+            <h5>Main Office</h5>
+            <p>
+              109 Borough High Street,<br />London SE1 1NL
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="contact-widget wow bounceInUp">
+            <i class="fa fa-phone fa-4x"></i>
+            <h5>Call</h5>
+            <p>
+              +1 111 9998 7774<br> +1 245 4544 6855
+
+            </p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="contact-widget wow bounceInRight">
+            <i class="fa fa-envelope fa-4x"></i>
+            <h5>Email us</h5>
+            <p>
+              hello@alstarstudio.com<br />sales@alstarstudio.com
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="row mar-top30">
+        <div class="col-md-12">
+          <h5>We're on social networks</h5>
+          <ul class="social-network">
+            <li><a href="#">
+                <span class="fa-stack fa-2x">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-facebook fa-stack-1x fa-inverse"></i>
+                </span></a>
+            </li>
+            <li><a href="#">
+                <span class="fa-stack fa-2x">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-dribbble fa-stack-1x fa-inverse"></i>
+                </span></a>
+            </li>
+            <li><a href="#">
+                <span class="fa-stack fa-2x">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-twitter fa-stack-1x fa-inverse"></i>
+                </span></a>
+            </li>
+            <li><a href="#">
+                <span class="fa-stack fa-2x">
+                  <i class="fa fa-circle fa-stack-2x"></i>
+                  <i class="fa fa-pinterest fa-stack-1x fa-inverse"></i>
+                </span></a>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script
+  src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+<!-- footer -->
+ <div class="fixed-footer">
+                    <p>Copyright © ASMI</p>
+                </div>
+</html>
+
+
+ </html>
+
+
+
+

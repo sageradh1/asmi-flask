@@ -2,13 +2,12 @@ import secrets
 import os
 basedir = os.path.abspath(os.path.dirname(__file__))
 
-
 #comment here also jabir
-from loadpandasdf import loadvideofeaturesdf_videoiddf
+# from loadpandasdf import loadvideofeaturesdf_videoiddf
 
-classes = ["Shirt","Trousers","Footwear","Handbag","Watch","Guitar","Mobile_phone","Headphones","Hat","Sunglasses"]
+# classes = ["Shirt","Trousers","Footwear","Handbag","Watch","Guitar","Mobile_phone","Headphones","Hat","Sunglasses"]
+
 class Config(object):
-
     DEBUG = False
     TESTING = False
     # generateSecretKey= secrets.token_hex(16)
@@ -19,7 +18,7 @@ class Config(object):
 
     
     #comment here jabir
-    VIDEO_WITH_FEATURES_DF, MATRIX_WITH_VIDEOID,USERVIEWNORMALISEDDF = loadvideofeaturesdf_videoiddf()
+    # VIDEO_WITH_FEATURES_DF, MATRIX_WITH_VIDEOID,USERVIEWNORMALISEDDF = loadvideofeaturesdf_videoiddf()
     
     # #asmidf
     # print("asmidf")
@@ -38,7 +37,7 @@ class Config(object):
     VIDEO_GENERATED_FOLDER =  basedir+"/app/static/video/generated"
     VIDEOANALYTICS_GENERATED_FOLDER =  basedir+"/app/static/analyticsFolder/generated"
     
-    MAX_VIDEO_FILESIZE = 16 * 1024 * 1024 #max allowed video filesize is 16MB
+    MAX_VIDEO_FILESIZE = 50 * 1024 * 1024 #max allowed video filesize is 16MB
     MAX_CSV_FILESIZE = 10 * 1024 * 1024 #max allowed csv filesize is 10MB
 
     ALLOWED_VIDEO_EXTENSIONS = set(['mp4', 'mkv'])
@@ -68,7 +67,6 @@ class DevelopmentConfig(Config):
     STRIPE_SECRET_KEY =os.getenv("DEV_STRIPE_SECRET_KEY")
     STRIPE_PUBLISHABLE_KEY =os.getenv("DEV_STRIPE_PUBLISHABLE_KEY")
 
-    
 class TestingConfig(Config):
     TESTING = True
 

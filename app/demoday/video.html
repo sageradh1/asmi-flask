@@ -1,4 +1,3 @@
-<!---------------------------------- STARTING -------------------------------------------->
 <!DOCTYPE html>
 <html lang="en" >
 
@@ -6,15 +5,17 @@
 
 
 <!-- Link for header -->
-<link rel="stylesheet"  href="{{ url_for('static', filename='css/normal_views/navbar.css') }}"/>
-  <script  src="{{ url_for('static', filename='js/normal_views/navbarjs.js') }}"></script>
+<link rel="stylesheet"  href="css/navbar.css"/>
+<script src="js/navbarjs.js"></script>
 <!-- end -->
+
 
   <link href='https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,400,600,700' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/video.css">
 
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/normal_views/style.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='css/normal_views/video.css') }}">
+
 
 <style>
 /* css for dropdown */
@@ -61,67 +62,59 @@
    color: white;
    text-align: center;
 }
-
-
-.mybody{
-  min-height: 100%;
-}
 </style>
 
-<header style="height: 65px;">
+
+<header>
   <!--  Remove dark nav  -->
   <nav class="nav dark-nav">
     <div class="container">
       <div class="nav-heading">
         <button class="toggle-nav" data-toggle="open-navbar1"><i class="fa fa-align-right"></i></button>
-            <a href="{{ url_for('home')}}" >
-        <img src="{{ url_for('static', filename='img/asmilogo.png') }}" width="106" height="53"  alt="Logo Geeks and the City" />    
+        <a href="index.html" >
+        <img src="img/asmi.png" width="106" height="53"  alt="Logo Geeks and the City" />    
         </a>
       </div>
       <div class="menu" id="open-navbar1">
         <ul class="list">
-          <li><a href="{{ url_for('home')}}">Home</a></li>
-          <!-- <li><a href="/product.html">Product Upload</a></li> -->
-          {% if current_user.is_authenticated %}
+          <li><a href="index.html">Home</a></li>
+          <li><a href="product.html">Product Upload</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="signup.html">Signup</a></li>
+          <li><a href="index.html">Logout</a></li>
+         
+  <div class="dropdown" style="float:right;">
+    <button class="dropbtn">Test API</button>
+      <div class="dropdown-content">
+        <a href="vu.html">Upload Video</a>
+          <a href="video.html">View Video</a>
+            </div>
+               </div>
 
           <!-- drop down -->
-          <li>
-           <div class="dropdown" style="float:right;">
-              <button class="dropbtn">Contents</button>
-              <div class="dropdown-content">
-                <a href="{{ url_for('uploaded')}}">Uploaded Video</a>
-                <!-- <a href="Generated.html">Generated Video</a> -->
-                <a href="{{ url_for('analytics')}}">Analytics Files</a>
-              </div>
-          </li>
 
-          <li>
-            <div class="dropdown" style="float:right;">
-              <button class="dropbtn">TestAPI</button>
-              <div class="dropdown-content">
-                <a href="#">Upload Video</a>
-                <a href="{{ url_for('demoviewvideos')}}">View Video</a>
-              </div>
-            </div>
-          </li>
-
-           <li><a href="{{ url_for('logout')}}">Logout</a></li>
-          {% else %}
-            <li><a href="{{ url_for('login')}}">Login</a></li>
-            <li><a href="{{ url_for('register')}}">Signup</a></li>
-          {% endif %}
-         
-
-          </div>
-        </ul>
-      </div>
-    </div>
-  </nav>
-</header>
+  <div class="dropdown" style="float:right;">
+    <button class="dropbtn">Contents</button>
+      <div class="dropdown-content">
+        <a href="upload.html">Uploaded Video</a>
+          <a href="Generated.html">Generated Video</a>
+             <a href="Analytics.html">Analytics Files</a>
+                </div>
+                 </div>
+                   </ul>
+                </div>
+             </div>
+           </nav>
+           </header>
 
 
+
+  
 <body>
-<div class="mybody">
+
+
+
+
 
 
 <main class="site-content">
@@ -137,7 +130,7 @@
         <div class="video-player">
           <button id="btnReplay" class="btn-replay"><span class="fontawesome-refresh"></span></button>
 
-          <video width="100%" height="auto" id="video" class="video" src="{{main_video_url}}" type="video/mp4" poster="{{ url_for('static', filename='img/thumbnails/angrezi_thumbnail.png') }}" preload="none">
+          <video width="100%" height="auto" id="video" class="video" src="videos/video.mp4" type="video/mp4" poster="https://homepages.cae.wisc.edu/~ece533/images/airplane.png" preload="none">
                         </video>
 
           <div class="video-controls">
@@ -173,7 +166,7 @@
       <div id="playlist" class="playlist">
         <header class="next">Comming Next</header>
 
-        <a href="#" onclick="myFunction()" id=sagar  class="next-video">
+        <a href="videos/video.mp4" onclick="myFunction()" id=sagar  class="next-video">
           <img src="https://homepages.cae.wisc.edu/~ece533/images/boat.png" alt="">
           <!-- <h3 class="single-video-title">CSS Clip-Path</h3>
           <p class="single-video-info">Built in Pure CSS</p> -->
@@ -181,7 +174,7 @@
             </span></p>
         </a>
 
-        <a href="#" onclick="myFunction()" id=sagar class="next-video">
+        <a href="videos/video2.mp4" onclick="myFunction()" id=sagar class="next-video">
           <img src="https://homepages.cae.wisc.edu/~ece533/images/girl.png" alt="">
           <!-- <h3 class="single-video-title">Bar Graphs</h3>
           <p class="single-video-info">Built in JavaScript </p> -->
@@ -189,7 +182,7 @@
             </span></p>
         </a>
 
-        <a href="#" onclick="myFunction()" id=sagar  class="next-video">
+        <a href="videos/video3.mp4" onclick="myFunction()" id=sagar  class="next-video">
           <img src="https://homepages.cae.wisc.edu/~ece533/images/pool.png" alt="">
           <!-- <h3 class="single-video-title">Login Page</h3>
           <p class="single-video-info">Pure HTML & CSS </p> -->
@@ -197,37 +190,46 @@
             </span></p>
         </a>
 
-<!--         <a href="#" onclick="myFunction()" id=sagar  class="next-video played-video">
+        <a href="videos/video4.mp4" onclick="myFunction()" id=sagar  class="next-video played-video">
           <img src="https://homepages.cae.wisc.edu/~ece533/images/pool.png" alt="">
-          <h3 class="single-video-title">Horizontal Scroll Menu </h3>
+          <!-- <h3 class="single-video-title">Horizontal Scroll Menu </h3>
           <p class="single-video-info">Built in HTML CSS </p>
+   -->          <span class="single-video-des"></span></p>
+        </a>
+        
+
+        <a href="videos/video4.mp4" onclick="myFunction()" id=sagar  class="next-video played-video">
+          <img src="https://homepages.cae.wisc.edu/~ece533/images/pool.png" alt="">
+          <!-- <h3 class="single-video-title">Horizontal Scroll Menu </h3>
+          <p class="single-video-info">Built in HTML CSS </p> -->
             <span class="single-video-des"></span></p>
-        </a> -->
+        </a>
+        
+        <a href="videos/video4.mp4" onclick="myFunction()" id=sagar  class="next-video played-video">
+          <img src="https://homepages.cae.wisc.edu/~ece533/images/pool.png" alt="">
+          <!-- <h3 class="single-video-title">Horizontal Scroll Menu </h3>
+          <p class="single-video-info">Built in HTML CSS </p> -->
+            <span class="single-video-des"></span></p>
+        </a>
+        
+
+
 
       </div>
     </div>
   </section>
 </main>
-
-
-</div>
-
-
-<div class="footer">
-  <p>&copy; Copyright 2020, ASMI</p>
-</div>
-
-
 <script>
-  function myFunction() {
-  // var x = document.getElementById("sagar").href;
-  // location.replace(x);
+	function myFunction() {
+  var x = document.getElementById("sagar").href;
+  location.replace(x);
 }
 </script>
 
-
-<script src="{{ url_for('static', filename='js/normal_views/video.js') }}"></script>
-
+<script src="js/video.js"></script>
+<div class="footer">
+  <p>&copy; Copyright 2020, ASMI</p>
+</div>
 </body>
 
 </html>

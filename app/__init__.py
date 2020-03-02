@@ -56,3 +56,4 @@ from app.database import models
 # from app import public_views,admin_views,jinja_views,jsonHTTPDockerlearning_views,normal_views
 # from app import normal_views,jsonHTTPDockerlearning_views
 from app import demo_views
+# from app import demo_normal_views

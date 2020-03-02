@@ -34,11 +34,10 @@
 <script src="https://cdn.datatables.net/1.10.16/js/dataTables.bootstrap4.min.js"></script>
 
 <!-- end links for table -->
-
 <style>
 /* css for dropdown */
 .dropbtn {
-  background-color: #ff343c;
+ background-color: rgba(0,0,0,0.9);
   color: white;
   padding: 21px;
   font-size: 16px;
@@ -71,9 +70,26 @@
 .dropdown-content a:hover {background-color: #ff343c; color: white;}
 .dropdown:hover .dropdown-content {display: block;}
 .dropdown:hover .dropbtn {background-color: #ff343c;}
+
+.footer {
+   /*position: fixed;*/
+   left: 0;
+   bottom: 0;
+   width: 100%;
+   background-color: black;
+   color: white;
+   text-align: center;
+}
+
+.mybody{
+  min-height: 100%;
+}
+
 </style>
 </head>
 
+
+<div class="mybody">
 <header style="height: 65px;">
   <!--  Remove dark nav  -->
   <nav class="nav dark-nav">
@@ -158,10 +174,16 @@
     </div>
 </div>
 
+
+
+</div>
+
 <!-- footer -->
-<div class="fixed-footer">
-                    <p>Copyright © ASMI</p>
-                </div>
+
+<!-- footer -->
+<div class="footer">
+  <p>&copy; Copyright 2020, ASMI</p>
+</div>
                 <!-- end -->
 
 </html>

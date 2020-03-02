@@ -86,7 +86,10 @@ def home():
 	# print(view_video_url)
 	return render_template('demo_views/home.html', view_video_url=view_video_url)
 
-
+# @app.route('/viewRaghivvide')
+# # @login_required
+# def viewRaghivvide():
+# 	return render_template('demo_views/viewvideo.html',main_video_url=main_video_url)
 
 @app.route('/demoviewvideos')
 # @login_required
@@ -97,7 +100,7 @@ def demoviewvideos():
 	else:
 		userid=current_user.id
 	
-	filename="20200229134607Angrezi MediumLowerQuality.mp4"
+	filename="20200229134607AngreziMediumLowerQuality.mp4"
 	# main_video_url=request.url_root+str("static/video/uploaded/")+str(filename)
 	main_video_url="http://18.221.137.201/"+str("static/video/uploaded/")+str(filename)
 	print(main_video_url)

@@ -13,7 +13,9 @@ from app.database.models import User,UploadedVideo,MergedAdCategory,VideoAnalyti
 @app.route('/login', methods=["GET", "POST"])
 def login():
 	if current_user.is_authenticated:
-		return redirect(url_for('home'))
+		# return redirect(url_for('home'))
+		return redirect("http://18.221.137.201/home")
+
 	form = LoginForm()
 	if form.validate_on_submit():
 		try:
@@ -22,7 +24,8 @@ def login():
 				flash('Invalid username or password')
 				return redirect(url_for('login'))
 			login_user(user, remember=True,duration=app.config["REMEMBER_COOKIE_DURATION"])
-			return redirect(url_for('home'))
+			# return redirect(url_for('home'))
+			return redirect("http://18.221.137.201/home")
 		except Exception as err:
 			# flash(err)
 			flash("Problem while logging in.")
@@ -32,7 +35,8 @@ def login():
 @app.route('/register', methods=['GET', 'POST'])
 def register():
 	if current_user.is_authenticated:
-		return redirect(url_for('home'))
+		# return redirect(url_for('home'))
+		return redirect("http://18.221.137.201/home")
 	form = RegistrationForm()
 
 	if request.method=="GET":
@@ -56,47 +60,70 @@ def register():
 
 
 @app.route('/logout')
-@login_required
+# @login_required
 def logout():
-    logout_user()
-    return redirect(url_for('home'))
+	if current_user.is_authenticated:
+	    logout_user()
+	# return redirect(url_for('home'))
+	return redirect("http://18.221.137.201/login")
 
 @app.route('/')
 @app.route('/home')
-@login_required
+# @login_required
 def home():
-
 	if current_user.is_authenticated:
 		userid=current_user.id
 	else:
-		userid=-1
+		# return redirect(url_for('login'))
+		return redirect("http://18.221.137.201/login")
+
 	try:
 		c=db.session.query(UploadedVideo).order_by(UploadedVideo.videoid.desc()).limit(1)
 		latestvideoid = c[0].videoid
 	except:
 		latestvideoid=-1
-	view_video_url=request.url_root+str(url_for('demoviewvideos'))[1:]+"?userid="+str(userid)+"&videoid="+str(latestvideoid)
+	view_video_url=str('http://18.221.137.201/demoviewvideos')
+	# print(view_video_url)
 	return render_template('demo_views/home.html', view_video_url=view_video_url)
 
 
 
 @app.route('/demoviewvideos')
-@login_required
+# @login_required
 def demoviewvideos():
-	# latestvideoList=UploadedVideo.query.order_by(UploadedVideo.videoid.desc()).limit(1)
-	# filename = latestvideoList[0].filename+'.'+latestvideoList[0].extension
-	# print(filename)
+	if not current_user.is_authenticated:
+		# return redirect(url_for('login'))
+		return redirect("http://18.221.137.201/login")
+	else:
+		userid=current_user.id
 	
 	filename="20200229134607Angrezi MediumLowerQuality.mp4"
-	main_video_url=request.url_root+str("static/video/uploaded/")+str(filename)
+	# main_video_url=request.url_root+str("static/video/uploaded/")+str(filename)
+	main_video_url="http://18.221.137.201/"+str("static/video/uploaded/")+str(filename)
 	print(main_video_url)
 	return render_template('demo_views/viewvideo.html',main_video_url=main_video_url)
 
 
 
+@app.route('/2d')
+def view_2d():
+
+	filename="20200229134607AngreziLowerQuality.mp4"
+	# main_video_url=request.url_root+str("static/video/uploaded/")+str(filename)
+	main_video_url="http://18.221.137.201/"+str("static/video/uploaded/")+str(filename)
+	print(main_video_url)
+	return render_template('demo_views/2dview.html',main_video_url=main_video_url)
+
+@app.route('/3d')
+def view_3d():
+	return render_template('demo_views/3dview.html')
+
 @app.route('/uploaded')
-@login_required
+# @login_required
 def uploaded():
+	if not current_user.is_authenticated:
+		# return redirect(url_for('login'))
+		return redirect("http://18.221.137.201/login")
 	latestvideoList=UploadedVideo.query.order_by(UploadedVideo.videoid.desc()).limit(15)
 	if latestvideoList is None:
 		latestvideoList=[]
@@ -105,10 +132,14 @@ def uploaded():
 
 
 @app.route('/analytics')
-@login_required
+# @login_required
 def analytics():
+	if not current_user.is_authenticated:
+		# return redirect(url_for('login'))
+		return redirect("http://18.221.137.201/login")
 	analyticsFileList=VideoAnalyticsFile.query.order_by(VideoAnalyticsFile.analyticsfileid.desc()).limit(15)
 	if analyticsFileList is None:
 		analyticsFileList=[]
 
 	return render_template('demo_views/analytics.html',analyticsFileList=analyticsFileList)
+

@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  {%block css %}
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" 
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css"> 
+  <link rel="stylesheet" href="{{url_for('static',filename='css/normal_views/3d_style.css')}}"/> 
+  <link rel="stylesheet" href="{{url_for('static',filename='css/normal_views/style1.css')}}"/>  
+  <script src="{{ url_for('static', filename='js/normal_views/jquery.min.js')}}"></script>
+  
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/styles/metro/notify-metro.css"/>  
+
+
+  <link rel='stylesheet' href='https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css'>
+  {% endblock %}
+  <title>{% block title %}{% endblock %}</title> 
+</head>
+
+<body>
+  <style>
+    
+  body {
+	background: #161616 url("{{ url_for('static', filename='img/pattern.gif') }}") top left repeat;
+	margin: 0;
+	padding: 0;
+	}
+  </style>
+  <nav class="navbar navbar-default bg-default">
+    <a class="navbar-brand" href="https://asmi.co">
+     <img src="{{ url_for('static', filename='img/asmilogo.png') }}" width="50" height="30" alt="ASMI"/>
+    </a>
+  </nav>
+
+  <main>
+    {% block main %}{% endblock %}
+  </main>
+
+  {% block script%} 
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+  <script src="{{ url_for('static', filename='js/normal_views/fontawesome.js')}}"></script>  
+ 
+  {% endblock %}
+  
+</body>
+
+</html>

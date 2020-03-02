@@ -1,0 +1,66 @@
+{% extends "jsonHTTPDockersALL/master.html" %}
+
+{% block title %}3D{% endblock %}
+
+
+{% block main %}
+<div class="container" id="outer_div">
+
+  <!-- The Modal -->
+  <div class="modal" id="myModal">
+      <div class="modal-dialog bounceIn animated">
+          <div class="modal-content">
+              <!-- Modal Header -->
+              <div class="modal-header">
+                  <p class="modal-title"> <i class="fa fa-shopping-cart"></i> Cart Item</p>
+                  <button type="button" id="closeModal" class="btn btn-danger">X</button>
+              </div>
+              <!-- Modal body -->
+              <div class="modal-body">
+                  <div class="card">
+                      <div class="w-25">
+                          <img class="card-img-top " src="{{ url_for('static', filename='img/modal_img/glasscoke.jpg')}}" alt="Card image">
+                      </div>
+                      <div class="card-body">
+                          <p class="card-title">Coca-cola</p>
+                          <div class="price">$1.00 <span class="old-price">$2.00</span></div>
+                          <span class="section-header">Payment Method</span>
+                          <div class="payment-details">
+                              <div class="visa-icon"></div>
+                          </div>
+                          <div class="modal-footer">
+                              <button class="btn btn-warning" id="pay" style="float: right;">Buy Now</button>
+                          </div>
+                      </div>
+                  </div>
+
+              </div>
+
+          </div>
+      </div>
+  </div>
+
+  <div class="container-fluid" id="video_container" style="border:2px solid #ccc;">
+      <video class="video" id="video" controls autoplay>
+          <source src="{{ url_for('static', filename='video/video.mp4')}}" type="video/mp4" /> Your browser does not support playing HTML5 videos.
+      </video>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/87/three.min.js"></script>
+  <!-- <script src="{{ url_for('static', filename='js/three.js')}}"></script>   -->
+  <script src="{{ url_for('static', filename='js/OrbitControls.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/OBJLoader.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/MTLLoader.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/GLTFLoader.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/3d_scripts.js')}}"></script>
+  <script src="{{ url_for('static', filename='js/threex.domevents.js')}}"></script>
+
+  <!-- <script src="js/OBJLoader.js"></script>
+  <script src="js/MTLLoader.js"></script>
+  <script src="js/GLTFLoader.js"></script>
+  <script src="js/3d_scripts.js"></script>
+  <script src='js/threex.domevents.js'></script> -->
+
+</div>
+
+{% endblock%}

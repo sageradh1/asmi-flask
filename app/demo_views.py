@@ -10,6 +10,7 @@ from app.database.models import User,UploadedVideo,MergedAdCategory,VideoAnalyti
 # from sqlalchemy import exists,or_
 # from sqlalchemy import in_
 
+
 @app.route('/login', methods=["GET", "POST"])
 def login():
 	if current_user.is_authenticated:

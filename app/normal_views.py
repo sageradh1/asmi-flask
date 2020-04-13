@@ -5,10 +5,20 @@ from app.forms import RegistrationForm,LoginForm
 
 from flask_login import current_user, login_user,logout_user,login_required
 from app.database.models import User,UploadedVideo,MergedAdCategory,VideoAnalyticsFile
-# from app.utils.ad_prediction import get_appropriate_adids
-# from app.utils.dataUtilsCode import dynamicJsonFile
+from app.utils.ad_prediction import get_appropriate_adids
+from app.utils.dataUtilsCode import dynamicJsonFile
 # from sqlalchemy import exists,or_
 # from sqlalchemy import in_
+
+@app.errorhandler(404)
+def not_found_error(error):
+    return render_template('error_views/404.html'), 404
+
+@app.errorhandler(500)
+def internal_error(error):
+    db.session.rollback()
+    return render_template('error_views/500.html'), 500
+
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -112,12 +122,13 @@ def viewvideos():
 		#     print(video.detected_objects_withconfidence)
 		if videoid is None:
 			videoid = latestvideoList[0].videoid
-			
-		# adnames =get_appropriate_adids(userid,videoid)
-		adnames = get_appropriate_adids(8,10056)
+		
+		userid=8
+		videoid=10056
+		adnames =get_appropriate_adids(userid,videoid)
 		mergedAdCategories=db.session.query(MergedAdCategory).filter(MergedAdCategory.category_name.in_(adnames))
-
 		# print(mergedAdCategories.count())
+
 		requiredObjectLabels=[]
 		for mergedAdCategory in mergedAdCategories:
 		    requiredObjectLabels.append(mergedAdCategory.category_name)
@@ -128,7 +139,7 @@ def viewvideos():
 		print("video id :",videoid)
 		analytics_file =  VideoAnalyticsFile.query.filter_by(video_id=videoid).first()
 		if analytics_file is None:
-			print("analytics_file is None")
+			print("No analytics_file found.")
 			return render_template('normal_views/viewvideo.html',latestvideoList=latestvideoList)
 
 		_filename=analytics_file.filename

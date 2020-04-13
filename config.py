@@ -10,6 +10,16 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config(object):
     DEBUG = False
     TESTING = False
+
+
+    MAIL_SERVER = 'localhost'
+    MAIL_PORT = 25
+    MAIL_USERNAME = None
+    MAIL_PASSWORD = None
+
+    # administrator list
+    ADMINS = ['sageradh@gmail.com']
+    
     # generateSecretKey= secrets.token_hex(16)
     # #SECRET_KEY = secrets.token_urlsafe(16)
     # SECRET_KEY = generateSecretKey

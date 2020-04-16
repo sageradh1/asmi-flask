@@ -25,6 +25,7 @@ def login():
 				return redirect(url_for('login'))
 			login_user(user, remember=True,duration=app.config["REMEMBER_COOKIE_DURATION"])
 			# return redirect(url_for('home'))
+			# return redirect("127.0.0.1:5000/home")
 			return redirect("http://18.221.137.201/home")
 		except Exception as err:
 			# flash(err)
@@ -64,6 +65,7 @@ def register():
 def logout():
 	if current_user.is_authenticated:
 	    logout_user()
+	# return redirect("127.0.0.1:5000/login")
 	# return redirect(url_for('home'))
 	return redirect("http://18.221.137.201/login")
 
@@ -74,7 +76,7 @@ def home():
 	if current_user.is_authenticated:
 		userid=current_user.id
 	else:
-		# return redirect(url_for('login'))
+		# return redirect("127.0.0.1:5000/login")
 		return redirect("http://18.221.137.201/login")
 
 	try:

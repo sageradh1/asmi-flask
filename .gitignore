@@ -1,7 +1,7 @@
-.startingenv
 migration
 migrations
 project1_env
+autoenv
 webapp_env
 .vscode
 \_\_pycache\_\_

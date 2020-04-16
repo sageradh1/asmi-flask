@@ -67,7 +67,6 @@
   min-height: 100%;
 }
 </style>
-
 <header style="height: 65px;">
   <!--  Remove dark nav  -->
   <nav class="nav dark-nav">
@@ -99,8 +98,8 @@
             <div class="dropdown" style="float:right;">
               <button class="dropbtn">TestAPI</button>
               <div class="dropdown-content">
-                <a href="#">Upload Video</a>
-                <a href="{{ url_for('demoviewvideos')}}">View Video</a>
+                <!-- <a href="#">Upload Video</a> -->
+                <a href="{{ url_for('view_2d')}}">View Video</a>
               </div>
             </div>
           </li>
@@ -110,7 +109,6 @@
             <li><a href="{{ url_for('login')}}">Login</a></li>
             <li><a href="{{ url_for('register')}}">Signup</a></li>
           {% endif %}
-         
 
           </div>
         </ul>
@@ -118,7 +116,6 @@
     </div>
   </nav>
 </header>
-
 
 <body>
 <div class="mybody">

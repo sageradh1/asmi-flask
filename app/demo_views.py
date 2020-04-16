@@ -22,7 +22,7 @@ def login():
 			user = User.query.filter_by(email=form.email.data).first()
 			if user is None or not user.check_password(form.password.data):
 				flash('Invalid username or password')
-				return redirect(url_for('login'))
+				return redirect("http://18.221.137.201/login")
 			login_user(user, remember=True,duration=app.config["REMEMBER_COOKIE_DURATION"])
 			# return redirect(url_for('home'))
 			# return redirect("127.0.0.1:5000/home")

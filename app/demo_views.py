@@ -85,8 +85,9 @@ def home():
 	except:
 		latestvideoid=-1
 	view_video_url=str('http://18.221.137.201/demoviewvideos')
+
 	# print(view_video_url)
-	return render_template('demo_views/home.html', view_video_url=view_video_url)
+	return render_template('demo_views/home.html', view_video_url=view_video_url,current_username=current_user.username)
 
 # @app.route('/viewRaghivvide')
 # # @login_required
@@ -112,12 +113,17 @@ def demoviewvideos():
 
 @app.route('/2d')
 def view_2d():
+	if current_user.is_authenticated:
+		userid=current_user.id
+	else:
+		# return redirect("127.0.0.1:5000/login")
+		return redirect("http://18.221.137.201/login")
 
 	filename="20200229134607AngreziLowerQuality.mp4"
 	# main_video_url=request.url_root+str("static/video/uploaded/")+str(filename)
 	main_video_url="http://18.221.137.201/"+str("static/video/uploaded/")+str(filename)
 	print(main_video_url)
-	return render_template('demo_views/2dview.html',main_video_url=main_video_url)
+	return render_template('demo_views/2dview.html',main_video_url=main_video_url,current_username=current_user.username)
 
 @app.route('/3d')
 def view_3d():
@@ -148,7 +154,7 @@ def uploaded():
 	if latestvideoList is None:
 		latestvideoList=[]
 
-	return render_template('demo_views/uploaded.html',latestvideoList=latestvideoList)
+	return render_template('demo_views/uploaded.html',latestvideoList=latestvideoList,current_username=current_user.username)
 
 
 @app.route('/analytics')
@@ -161,5 +167,5 @@ def analytics():
 	if analyticsFileList is None:
 		analyticsFileList=[]
 
-	return render_template('demo_views/analytics.html',analyticsFileList=analyticsFileList)
+	return render_template('demo_views/analytics.html',analyticsFileList=analyticsFileList,current_username=current_user.username)
 

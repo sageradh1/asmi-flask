@@ -26,7 +26,7 @@ def login():
 		except Exception as err:
 			# flash(err)
 			flash("Problem while logging in.")
-	return render_template('normal_views/login.html', form=form)
+	return render_template('demo_views/login.html', form=form)
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -36,7 +36,7 @@ def register():
 	form = RegistrationForm()
 
 	if request.method=="GET":
-		return render_template('normal_views/register.html', form=form)
+		return render_template('demo_views/register.html', form=form)
 
 	if request.method=="POST":
 		if form.validate_on_submit():
@@ -58,13 +58,13 @@ def register():
 				db.session.add(user)
 				db.session.commit()
 				flash('Congratulations, you are now a registered user!')
-				return render_template('normal_views/register.html', form=form)
+				return render_template('demo_views/register.html', form=form)
 			except Exception as exp:
 				flash('Problem while registering user!')
-				return render_template('normal_views/register.html', form=form)
+				return render_template('demo_views/register.html', form=form)
 		else:
 			flash('Problem while validating data!')
-			return render_template('normal_views/register.html', form=form)
+			return render_template('demo_views/register.html', form=form)
 
 
 @app.route('/logout')
@@ -88,7 +88,7 @@ def home():
 	except:
 		latestvideoid=-1
 	view_video_url=request.url_root+str(url_for('viewvideos'))[1:]+"?userid="+str(userid)+"&videoid="+str(latestvideoid)
-	return render_template('normal_views/home.html', view_video_url=view_video_url)
+	return render_template('demo_views/home.html', view_video_url=view_video_url)
 
 
 @app.route('/viewvideos')
@@ -129,7 +129,7 @@ def viewvideos():
 		analytics_file =  VideoAnalyticsFile.query.filter_by(video_id=videoid).first()
 		if analytics_file is None:
 			print("analytics_file is None")
-			return render_template('normal_views/viewvideo.html',latestvideoList=latestvideoList)
+			return render_template('demo_views/viewvideo.html',latestvideoList=latestvideoList)
 
 		_filename=analytics_file.filename
 		# requiredObjectLabels = ['train','Shirt']
@@ -140,7 +140,7 @@ def viewvideos():
 		latestvideoid=-1
 		print("Error : ",err)
 
-	return render_template('normal_views/viewvideo.html',latestvideoList=latestvideoList,dynamicJson=dynamicJson)
+	return render_template('demo_views/viewvideo.html',latestvideoList=latestvideoList,dynamicJson=dynamicJson)
 
 
 

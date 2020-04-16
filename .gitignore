@@ -1,8 +1,9 @@
 .startingenv
 migration
+migrations
 project1_env
+webapp_env
 .vscode
 \_\_pycache\_\_
 darkflowDirectory
-migrations
 *.webm

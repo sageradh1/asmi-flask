@@ -10,7 +10,6 @@ from app.database.models import User,UploadedVideo,MergedAdCategory,VideoAnalyti
 # from sqlalchemy import exists,or_
 # from sqlalchemy import in_
 
-
 @app.route('/login', methods=["GET", "POST"])
 def login():
 	if current_user.is_authenticated:
@@ -121,6 +120,21 @@ def view_2d():
 @app.route('/3d')
 def view_3d():
 	return render_template('demo_views/3dview.html')
+
+import json
+@app.route('/api/GetStaticJson',methods=['POST'])
+def getstaticjson():
+
+	# main_video_url=request.url_root+str("static/video/uploaded/")+str(filename)
+	static_json="/home/ubuntu/workingDir/asmi-flask/app/static/analyticsFolder/generated/demo-raw1.json"
+	data=dict()
+	try:
+		with open(static_json) as blog_file:
+			data = json.load(blog_file)
+	except Exception as err:
+		return jsonify({"message":"Error","data":str(err)})
+
+	return jsonify({"message":"Success","data":data})
 
 @app.route('/uploaded')
 # @login_required

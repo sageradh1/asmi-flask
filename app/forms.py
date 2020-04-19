@@ -1,4 +1,7 @@
-from wtforms import StringField, PasswordField, validators, SubmitField
+from wtforms import StringField, PasswordField, validators, SubmitField,DateField,IntegerField
+
+from wtforms.widgets.html5 import NumberInput
+
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length, Optional
 from flask_wtf import FlaskForm
 from app.database.models import User
@@ -36,3 +39,35 @@ class LoginForm(FlaskForm):
       user = User.query.filter_by(email=email.data).first()
       if user is None:
           raise ValidationError('The email doesnot exists.')
+
+
+
+
+class EditProfileForm(FlaskForm):
+  name = StringField('name')
+  dob= DateField('DOB',format='%Y-%m-%d')
+  contact_email1 = StringField('contactemail1', validators=[Email(message=('Please enter a valid email address.'))])
+  contact_phone1 = StringField('contactphone1',validators=[Length(max=17, message=('Phone number too long')) ])
+  link_instagram = StringField('linkinstagram',validators=[Length(max=500, message=('Link too long')) ])
+  link_tiktok = StringField('linktiktok',validators=[Length(max=500, message=('Link too long')) ])
+  ideal_advertisers = StringField('idealadvertisers',validators=[Length(max=2000, message=('Too many advertisers')) ])
+  reach= IntegerField(widget=NumberInput())
+  submit = SubmitField('Save Changes')
+
+
+  def is_valid_phone(self, contactphone1):
+      try:
+          p = phonenumbers.parse(contactphone1.data)
+          if not phonenumbers.is_valid_number(p):
+              return False
+          return True
+      except (phonenumbers.phonenumberutil.NumberParseException, ValueError):
+          raise False
+
+  def validate_phone(self, contactphone1):
+      try:
+          p = phonenumbers.parse(contactphone1.data)
+          if not phonenumbers.is_valid_number(p):
+              raise ValueError()
+      except (phonenumbers.phonenumberutil.NumberParseException, ValueError):
+          raise ValidationError('Invalid phone number')

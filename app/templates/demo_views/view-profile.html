@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Profile</title>
+
+    <!-- Font Icon -->
+    <link rel="stylesheet"  href="{{ url_for('static', filename='font/material-icon/css/material-design-iconic-font.min.css') }}"/>
+    <link rel="stylesheet"  href="{{ url_for('static', filename='css/normal_views/font-awesome.min.css') }}"/>
+    
+    <!-- Main css -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normal_views/registration_form.css') }}">
+
+    <!-- Link for header -->
+    <link rel="stylesheet"  href="{{ url_for('static', filename='css/normal_views/navbar.css') }}"/>
+      <link rel="stylesheet"  href="{{ url_for('static', filename='css/normal_views/indexstyle.css') }}" media="screen"/>
+
+<script src="{{ url_for('static', filename='js/normal_views/navbarjs.js') }}"></script>
+<!-- Font Icon -->
+
+<!-- Links for main product upload page-->
+
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+<!-- end -->
+</head>
+<!-- style for main product uploader form -->
+
+<style>
+/* css for dropdown */
+.dropbtn {
+  background-color: rgba(0,0,0,0.9);
+  color: white;
+  padding: 21px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+  margin-top: -10px;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ff343c; color: white;}
+.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropbtn {background-color: #ff343c;}
+
+
+.carousel-inner{
+  height: 720px;
+}
+
+.carousel{
+  height: 780px;
+}
+
+.carousel-indicators{
+  top: 620px;
+}
+
+#sam{
+
+  margin-left: 164px;
+  margin-right: -116px;
+}
+
+  #carouselExampleControls{
+  width: 86%;
+  margin: -17% auto;
+}
+
+#hht{
+
+  margin-top: -442px;
+}
+
+.letter,footer {
+  background: black;
+  color: #fff;
+  padding: 1px;
+  font-size: 14;
+  text-align: center;
+}
+
+.row{
+
+  margin-right: 0px;
+}
+
+#btnedt{
+
+/*      margin-bottom: -19%;
+      margin-left:-25%;*/
+      border: 1px #2e3052;
+      color: white;
+      background-color: #2e3052;
+      border-radius: 10px;
+}
+
+</style>
+
+<!--end-->
+
+
+
+<header style="height: 65px;">
+  <!--  Remove dark nav  -->
+  <nav class="nav dark-nav">
+   <div class="container" style="background-color: black;">
+      <div class="nav-heading">
+        <button class="toggle-nav" data-toggle="open-navbar1"><i class="fa fa-align-right"></i></button>
+            <a href="{{ url_for('home')}}" >
+        <img src="{{ url_for('static', filename='img/asmilogo.png') }}" width="106" height="53"  alt="Logo Geeks and the City" />    
+        </a>
+      </div>
+      <div class="menu" id="open-navbar1">
+        <ul class="list">
+          <li><a href="{{ url_for('home')}}">Welcome  {{current_username}}</a></li>
+
+          <li><a href="{{ url_for('home')}}">Home</a></li>
+          <!-- <li><a href="/product.html">Product Upload</a></li> -->
+          {% if current_user.is_authenticated %}
+
+          <!-- drop down -->
+          <li>
+           <div class="dropdown" style="float:right;">
+              <button class="dropbtn">Contents</button>
+              <div class="dropdown-content">
+                <a href="{{ url_for('uploaded')}}">Uploaded Video</a>
+                <!-- <a href="Generated.html">Generated Video</a> -->
+                <a href="{{ url_for('analytics')}}">Analytics Files</a>
+              </div>
+          </li>
+
+          <li>
+            <div class="dropdown" style="float:right;">
+              <button class="dropbtn">TestAPI</button>
+              <div class="dropdown-content">
+                <!-- <a href="#">Upload Video</a> -->
+                <a href="{{ url_for('view_2d')}}">View Video</a>
+              </div>
+            </div>
+          </li>
+
+         <li>
+            <div class="dropdown" style="float:right;">
+              <button class="dropbtn">Setting</button>
+              <div class="dropdown-content">
+                <a href="{{ url_for('view_profile')}}">Profile</a>
+                <a href="{{ url_for('logout')}}">Logout</a>
+                
+                </div>
+            </div>
+          </li>
+          {% else %}
+            <li><a href="{{ url_for('login')}}">Login</a></li>
+            <li><a href="{{ url_for('register')}}">Signup</a></li>
+          {% endif %}
+
+          </div>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+<!-- end -->
+
+
+<body>
+
+    <div class="main">
+
+
+        <!-- Sing in  Form -->
+        <section class="sign-in">
+            <div class="container">
+                <div class="signin-content">
+                    <div class="signin-image">
+                        <figure>
+                          <img src="{{ url_for('static', filename='img/normal_views/signin-image.jpg') }}" alt="Logo image">
+                          
+                        </figure>
+                       <!--  <a href="#" class="signup-image-link">Your Profile</a> -->
+                    </div>
+
+
+
+                  <!--   <div class="signin-form">
+                        <h2 class="form-title">Sign up</h2>
+                        <form method="POST" class="register-form" id="login-form">
+                            <div class="form-group">
+                                <label for="your_name"><i class="zmdi zmdi-account material-icons-name"></i></label>
+                                <input type="text" name="your_name" id="your_name" placeholder="Your Name"/>
+                            </div>
+                            <div class="form-group">
+                                <label for="your_pass"><i class="zmdi zmdi-lock"></i></label>
+                                <input type="password" name="your_pass" id="your_pass" placeholder="Password"/>
+                            </div>
+                            <div class="form-group">
+                                <input type="checkbox" name="remember-me" id="remember-me" class="agree-term" />
+                                <label for="remember-me" class="label-agree-term"><span><span></span></span>Remember me</label>
+                            </div>
+                            <div class="form-group form-button">
+                                <input type="submit" name="signin" id="signin" class="form-submit" value="Log in"/>
+                            </div>
+                        </form> -->
+                        <!-- <div class="social-login">
+                            <span class="social-label">Or login with</span>
+                            <ul class="socials">
+                                <li><a href="#"><i class="display-flex-center zmdi zmdi-facebook"></i></a></li>
+                                <li><a href="#"><i class="display-flex-center zmdi zmdi-twitter"></i></a></li>
+                                <li><a href="#"><i class="display-flex-center zmdi zmdi-google"></i></a></li>
+                            </ul>
+                        </div> -->
+                   <!--  </div> -->
+                                        
+                    
+                    <div class="col-xs-12 col-sm-9">
+                            <!-- <h4 class="blue">
+                                <span class="middle">John Doe</span>
+
+                                <span class="label label-purple arrowed-in-right">
+                                    <i class="ace-icon fa fa-circle smaller-80 align-middle"></i>
+                                    online
+                                </span>
+                            </h4> -->
+
+                            <img src="{{ url_for('static', filename='img/normal_views/asmi.png') }}" style="width: 136px; margin-right: 102px; margin-top: -73px;">
+
+
+
+
+                            <div class="profile-user-info">
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name"> Name </div>
+
+                                    <div class="profile-info-value">
+                                        <span>{{name}}</span>
+                                    </div>
+                                </div>
+
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">Date of Birth</div>
+
+                                    <div class="profile-info-value">
+                                        <span>{{dob}}</span>
+                                    </div>
+                                </div>
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">ASMI email</div>
+
+                                    <div class="profile-info-value">
+                                        <span>{{login_email}}</span>
+                                    </div>
+                                </div>
+
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">Contact Phone Number</div>
+
+                                    <div class="profile-info-value">
+                                        <span>{{contact_phone1}}</span>
+                                    </div>
+                                </div>
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">Contact E-mail Address</div>
+
+                                    <div class="profile-info-value">
+                                        <span>{{login_email}}</span>
+                                    </div>
+                                </div>
+                    
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">Ideal Advertises</div>
+
+                                    <div class="profile-info-value">
+                                        <!-- <i class="fa fa-map-marker light-orange bigger-110"></i> -->
+                                        {{ideal_advertisers}}
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+                            <div class="hr hr-8 dotted"></div>
+
+                            <div class="profile-user-info">
+   
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">
+
+
+                                         <img src="{{ url_for('static', filename='img/normal_views/instagram.png') }}" style="width: 29px;">
+                                    </div>
+
+                                    <div class="profile-info-value">
+                                        <a href="{{link_instagram}}">{{link_instagram}}</a>
+                                    </div>
+                                </div>
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">
+
+                                        <img src="{{ url_for('static', filename='img/normal_views/tiktok.png') }}" style="width: 29px;">
+                                    </div>
+
+                                    <div class="profile-info-value">
+                                        <a href="{{link_instagram}}">{{link_instagram}}</a>
+                                    </div>
+                                </div>
+
+                                <div class="profile-info-row">
+                                    <div class="profile-info-name">Reach</div>
+
+                                    <div class="profile-info-value">
+                                        <span>{{reach}}</span>
+                                    </div>
+                                </div>
+
+                                <div class="row" style="padding-top: 20px;">
+                                    <div class="col-md-6 col-lg-6">
+                                      <button onclick="window.location.href = 'edit-profile';" id="btnedt"> Edit</button>
+                                    </div>
+                                    <div class="col-md-6 col-lg-6">
+                                      <button onclick="window.location.href = 'home';" id="btnedt">Go Back</button>
+                                    </div>
+                                </div>
+          
+                                
+                            </div>
+                        </div><!-- /.col -->
+                    </div><!-- /.row -->
+
+          </ul>
+    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </div>
+
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='js/normal_views/registrationprofile.js') }}"></script>
+
+
+    <script src="{{ url_for('static', filename='js/normal_views/registration_profile.js') }}"></script>
+
+</body><!-- This templates was made by Colorlib (https://colorlib.com) -->
+<!-- footer -->
+<footer>
+<h5 class="letter">&copy; Copyright 2020, ASMI</h5>
+</footer>
+                <!-- end -->
+</html>

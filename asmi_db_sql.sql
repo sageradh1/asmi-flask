@@ -126,6 +126,49 @@ ALTER SEQUENCE public.merged_ad_category_id_seq OWNED BY public.merged_ad_catego
 
 
 --
+-- Name: profile; Type: TABLE; Schema: public; Owner: asmi_group
+--
+
+CREATE TABLE public.profile (
+    profile_id integer NOT NULL,
+    name character varying(120),
+    dob timestamp without time zone,
+    login_email character varying(120),
+    contact_phone1 character varying(20),
+    contact_email1 character varying(120),
+    link_instagram character varying(500),
+    link_tiktok character varying(500),
+    ideal_advertisers character varying(1000),
+    reach integer,
+    user_id integer
+);
+
+
+ALTER TABLE public.profile OWNER TO asmi_group;
+
+--
+-- Name: profile_profile_id_seq; Type: SEQUENCE; Schema: public; Owner: asmi_group
+--
+
+CREATE SEQUENCE public.profile_profile_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.profile_profile_id_seq OWNER TO asmi_group;
+
+--
+-- Name: profile_profile_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: asmi_group
+--
+
+ALTER SEQUENCE public.profile_profile_id_seq OWNED BY public.profile.profile_id;
+
+
+--
 -- Name: uploaded_video; Type: TABLE; Schema: public; Owner: asmi_group
 --
 
@@ -136,7 +179,7 @@ CREATE TABLE public.uploaded_video (
     storagelocation character varying(500),
     "uploadStartedTime" timestamp without time zone,
     "uploadCompletedTime" timestamp without time zone,
-    detected_objects_withconfidence character varying(1000),
+    detected_objects_withconfidence character varying(2000),
     uploader_id integer
 );
 
@@ -289,6 +332,13 @@ ALTER TABLE ONLY public.merged_ad_category ALTER COLUMN id SET DEFAULT nextval('
 
 
 --
+-- Name: profile profile_id; Type: DEFAULT; Schema: public; Owner: asmi_group
+--
+
+ALTER TABLE ONLY public.profile ALTER COLUMN profile_id SET DEFAULT nextval('public.profile_profile_id_seq'::regclass);
+
+
+--
 -- Name: uploaded_video videoid; Type: DEFAULT; Schema: public; Owner: asmi_group
 --
 
@@ -321,7 +371,7 @@ ALTER TABLE ONLY public.video_analytics_file ALTER COLUMN analyticsfileid SET DE
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
-5916976851d9
+db71bfebc243
 \.
 
 
@@ -352,6 +402,10 @@ COPY public.generated_video (gvideoid, filename, storagelocation, "createdTime",
 20	20200227075906_generated_dogvideo	/home/sagar/workingDir/projectversion1/app/static/video/generated	2020-02-27 07:59:06.386132	10054
 21	20200227085603_generated_dogvideo	/home/sagar/workingDir/projectversion1/app/static/video/generated	2020-02-27 08:56:03.442207	10055
 22	20200227090938_generated_roadless	/home/sagar/workingDir/projectversion1/app/static/video/generated	2020-02-27 09:09:38.092137	10056
+23	20200415075923_generated_Intex Inflatable One Person Chair Sofa Bed in Action - Outdoorleisuredirect	/home/sagar/workingDir/asmi-automatic-version/app/static/video/generated	2020-04-15 07:59:23.068385	3
+24	20200415092941_generated_Intex Inflatable One Person Chair Sofa Bed in Action - Outdoorleisuredirect	/home/sagar/workingDir/asmi-automatic-version/app/static/video/generated	2020-04-15 09:29:41.961491	4
+25	20200415111104_generated_Intex Inflatable One Person Chair Sofa Bed in Action - Outdoorleisuredirect	/home/sagar/workingDir/asmi-automatic-version/app/static/video/generated	2020-04-15 11:11:04.063857	5
+26	20200415111959_generated_Intex Inflatable One Person Chair Sofa Bed in Action - Outdoorleisuredirect	/home/sagar/workingDir/asmi-automatic-version/app/static/video/generated	2020-04-15 11:19:59.955776	6
 \.
 
 
@@ -375,66 +429,27 @@ COPY public.merged_ad_category (id, category_name, created_time, last_modified_t
 
 
 --
+-- Data for Name: profile; Type: TABLE DATA; Schema: public; Owner: asmi_group
+--
+
+COPY public.profile (profile_id, name, dob, login_email, contact_phone1, contact_email1, link_instagram, link_tiktok, ideal_advertisers, reach, user_id) FROM stdin;
+1	1name	2020-01-07 00:00:00	user17@domain.com	19845086446	1asdas@asd.com	1www.instagra,	1www.tiktok.com	1,1,2,3	12222	17
+2	Sagar	1996-02-06 00:00:00	user1@domain.com	9802088142	sagar@domain.com	www.instagram.com/sageradh1	www.tiktok.com/sageradh1	Facebook,Ig	1000000	18
+\.
+
+
+--
 -- Data for Name: uploaded_video; Type: TABLE DATA; Schema: public; Owner: asmi_group
 --
 
 COPY public.uploaded_video (videoid, filename, extension, storagelocation, "uploadStartedTime", "uploadCompletedTime", detected_objects_withconfidence, uploader_id) FROM stdin;
-10057	testvideo0	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.464772	2020-02-27 11:04:06.464791	Shirt:0.9|Trousers:1.0|Footwear:0.3|Handbag:0.6|Watch:0.8|Guitar:0.5|Mobile_phone:0.1|Headphones:0.2|Hat:0.4|Sunglasses:0.7	8
-10058	testvideo1	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.475325	2020-02-27 11:04:06.475343	Shirt:0.4|Trousers:0.5|Footwear:0.9|Handbag:0.3|Watch:0.8|Guitar:0.7|Mobile_phone:0.2|Headphones:0.1|Hat:0.6|Sunglasses:1.0	7
-10059	testvideo2	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.478311	2020-02-27 11:04:06.47832	Shirt:0.2|Trousers:0.9|Footwear:0.4|Handbag:0.6|Watch:0.7|Guitar:0.8|Mobile_phone:0.1|Headphones:0.3|Hat:0.5|Sunglasses:1.0	8
-10060	testvideo3	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.482225	2020-02-27 11:04:06.482234	Shirt:0.9|Trousers:0.1|Footwear:0.6|Handbag:0.5|Watch:0.2|Guitar:0.7|Mobile_phone:0.4|Headphones:1.0|Hat:0.8|Sunglasses:0.3	7
-10061	testvideo4	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.483385	2020-02-27 11:04:06.483394	Shirt:1.0|Trousers:0.9|Footwear:0.8|Handbag:0.1|Watch:0.7|Guitar:0.4|Mobile_phone:0.2|Headphones:0.3|Hat:0.5|Sunglasses:0.6	7
-10062	testvideo5	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.484436	2020-02-27 11:04:06.484443	Shirt:0.3|Trousers:0.2|Footwear:0.9|Handbag:0.8|Watch:0.1|Guitar:0.4|Mobile_phone:0.7|Headphones:1.0|Hat:0.5|Sunglasses:0.6	8
-10063	testvideo6	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.490327	2020-02-27 11:04:06.490337	Shirt:0.1|Trousers:1.0|Footwear:0.8|Handbag:0.6|Watch:0.2|Guitar:0.4|Mobile_phone:0.7|Headphones:0.5|Hat:0.9|Sunglasses:0.3	7
-10064	testvideo7	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.49496	2020-02-27 11:04:06.49497	Shirt:0.9|Trousers:0.6|Footwear:0.7|Handbag:0.4|Watch:0.8|Guitar:1.0|Mobile_phone:0.3|Headphones:0.5|Hat:0.2|Sunglasses:0.1	7
-10065	testvideo8	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.497962	2020-02-27 11:04:06.497976	Shirt:1.0|Trousers:0.4|Footwear:0.7|Handbag:0.9|Watch:0.6|Guitar:0.2|Mobile_phone:0.5|Headphones:0.1|Hat:0.8|Sunglasses:0.3	8
-10066	testvideo9	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.499354	2020-02-27 11:04:06.499363	Shirt:0.5|Trousers:0.1|Footwear:0.9|Handbag:0.6|Watch:0.2|Guitar:0.8|Mobile_phone:0.3|Headphones:0.4|Hat:0.7|Sunglasses:1.0	7
-10067	testvideo10	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.504698	2020-02-27 11:04:06.504709	Shirt:0.2|Trousers:0.6|Footwear:1.0|Handbag:0.1|Watch:0.8|Guitar:0.4|Mobile_phone:0.9|Headphones:0.3|Hat:0.5|Sunglasses:0.7	7
-10068	testvideo11	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.509287	2020-02-27 11:04:06.5093	Shirt:0.9|Trousers:0.6|Footwear:1.0|Handbag:0.8|Watch:0.1|Guitar:0.2|Mobile_phone:0.7|Headphones:0.3|Hat:0.5|Sunglasses:0.4	8
-10069	testvideo12	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.51047	2020-02-27 11:04:06.510477	Shirt:0.4|Trousers:0.9|Footwear:0.5|Handbag:0.3|Watch:1.0|Guitar:0.1|Mobile_phone:0.7|Headphones:0.6|Hat:0.2|Sunglasses:0.8	7
-10070	testvideo13	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.511259	2020-02-27 11:04:06.511266	Shirt:0.4|Trousers:0.9|Footwear:1.0|Handbag:0.1|Watch:0.8|Guitar:0.5|Mobile_phone:0.6|Headphones:0.7|Hat:0.3|Sunglasses:0.2	8
-10071	testvideo14	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.512785	2020-02-27 11:04:06.512792	Shirt:0.7|Trousers:0.6|Footwear:0.3|Handbag:0.8|Watch:0.9|Guitar:0.5|Mobile_phone:0.2|Headphones:1.0|Hat:0.1|Sunglasses:0.4	7
-10072	testvideo15	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.51428	2020-02-27 11:04:06.514289	Shirt:0.6|Trousers:0.1|Footwear:0.9|Handbag:1.0|Watch:0.5|Guitar:0.2|Mobile_phone:0.7|Headphones:0.3|Hat:0.4|Sunglasses:0.8	7
-10073	testvideo16	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.523126	2020-02-27 11:04:06.523137	Shirt:1.0|Trousers:0.2|Footwear:0.5|Handbag:0.1|Watch:0.9|Guitar:0.6|Mobile_phone:0.4|Headphones:0.8|Hat:0.3|Sunglasses:0.7	7
-10074	testvideo17	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.527652	2020-02-27 11:04:06.527667	Shirt:0.4|Trousers:0.7|Footwear:0.9|Handbag:0.5|Watch:0.1|Guitar:0.2|Mobile_phone:0.6|Headphones:0.3|Hat:1.0|Sunglasses:0.8	7
-10075	testvideo18	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.529342	2020-02-27 11:04:06.529353	Shirt:0.3|Trousers:0.8|Footwear:0.9|Handbag:0.1|Watch:0.7|Guitar:0.2|Mobile_phone:0.4|Headphones:0.5|Hat:1.0|Sunglasses:0.6	8
-10076	testvideo19	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.533601	2020-02-27 11:04:06.533613	Shirt:0.1|Trousers:0.6|Footwear:0.4|Handbag:0.5|Watch:1.0|Guitar:0.9|Mobile_phone:0.7|Headphones:0.2|Hat:0.3|Sunglasses:0.8	7
-10077	testvideo20	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.539227	2020-02-27 11:04:06.539271	Shirt:0.6|Trousers:0.5|Footwear:0.8|Handbag:0.3|Watch:0.2|Guitar:0.9|Mobile_phone:0.7|Headphones:0.1|Hat:1.0|Sunglasses:0.4	8
-10078	testvideo21	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.540596	2020-02-27 11:04:06.540611	Shirt:0.1|Trousers:0.4|Footwear:0.7|Handbag:0.5|Watch:1.0|Guitar:0.2|Mobile_phone:0.3|Headphones:0.8|Hat:0.6|Sunglasses:0.9	7
-10079	testvideo22	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.544749	2020-02-27 11:04:06.544765	Shirt:0.7|Trousers:0.1|Footwear:0.8|Handbag:0.3|Watch:0.6|Guitar:0.4|Mobile_phone:0.9|Headphones:0.5|Hat:0.2|Sunglasses:1.0	8
-10080	testvideo23	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.548455	2020-02-27 11:04:06.548467	Shirt:0.9|Trousers:0.4|Footwear:1.0|Handbag:0.7|Watch:0.1|Guitar:0.2|Mobile_phone:0.5|Headphones:0.8|Hat:0.6|Sunglasses:0.3	8
-10081	testvideo24	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.549958	2020-02-27 11:04:06.54998	Shirt:1.0|Trousers:0.9|Footwear:0.3|Handbag:0.1|Watch:0.8|Guitar:0.2|Mobile_phone:0.5|Headphones:0.6|Hat:0.4|Sunglasses:0.7	8
-10082	testvideo25	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.562221	2020-02-27 11:04:06.562231	Shirt:0.9|Trousers:0.1|Footwear:0.2|Handbag:0.5|Watch:0.4|Guitar:1.0|Mobile_phone:0.6|Headphones:0.7|Hat:0.8|Sunglasses:0.3	7
-10083	testvideo26	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.563529	2020-02-27 11:04:06.563538	Shirt:1.0|Trousers:0.5|Footwear:0.6|Handbag:0.9|Watch:0.7|Guitar:0.2|Mobile_phone:0.8|Headphones:0.3|Hat:0.1|Sunglasses:0.4	8
-10084	testvideo27	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.564565	2020-02-27 11:04:06.564576	Shirt:0.9|Trousers:0.5|Footwear:0.8|Handbag:0.2|Watch:1.0|Guitar:0.1|Mobile_phone:0.4|Headphones:0.6|Hat:0.3|Sunglasses:0.7	8
-10085	testvideo28	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.566086	2020-02-27 11:04:06.566095	Shirt:0.9|Trousers:0.1|Footwear:1.0|Handbag:0.5|Watch:0.8|Guitar:0.2|Mobile_phone:0.6|Headphones:0.7|Hat:0.3|Sunglasses:0.4	8
-10086	testvideo29	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.567229	2020-02-27 11:04:06.567237	Shirt:0.4|Trousers:0.2|Footwear:1.0|Handbag:0.6|Watch:0.8|Guitar:0.5|Mobile_phone:0.9|Headphones:0.1|Hat:0.7|Sunglasses:0.3	7
-10087	testvideo30	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.568279	2020-02-27 11:04:06.568287	Shirt:0.5|Trousers:1.0|Footwear:0.2|Handbag:0.6|Watch:0.8|Guitar:0.3|Mobile_phone:0.4|Headphones:0.1|Hat:0.7|Sunglasses:0.9	8
-10088	testvideo31	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.575648	2020-02-27 11:04:06.575663	Shirt:0.5|Trousers:0.3|Footwear:1.0|Handbag:0.8|Watch:0.7|Guitar:0.4|Mobile_phone:0.9|Headphones:0.6|Hat:0.2|Sunglasses:0.1	7
-10089	testvideo32	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.582661	2020-02-27 11:04:06.582675	Shirt:0.5|Trousers:0.6|Footwear:0.1|Handbag:0.8|Watch:0.3|Guitar:1.0|Mobile_phone:0.4|Headphones:0.2|Hat:0.9|Sunglasses:0.7	7
-10090	testvideo33	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.584116	2020-02-27 11:04:06.584127	Shirt:0.9|Trousers:0.8|Footwear:0.1|Handbag:1.0|Watch:0.4|Guitar:0.7|Mobile_phone:0.2|Headphones:0.6|Hat:0.5|Sunglasses:0.3	7
-10091	testvideo34	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.591396	2020-02-27 11:04:06.59141	Shirt:0.5|Trousers:0.1|Footwear:0.4|Handbag:0.9|Watch:0.3|Guitar:0.7|Mobile_phone:0.6|Headphones:0.2|Hat:1.0|Sunglasses:0.8	7
-10092	testvideo35	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.597318	2020-02-27 11:04:06.597329	Shirt:0.5|Trousers:0.4|Footwear:0.8|Handbag:0.7|Watch:0.9|Guitar:0.6|Mobile_phone:0.2|Headphones:0.3|Hat:1.0|Sunglasses:0.1	7
-10093	testvideo36	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.59943	2020-02-27 11:04:06.599439	Shirt:0.3|Trousers:0.9|Footwear:0.6|Handbag:0.8|Watch:1.0|Guitar:0.4|Mobile_phone:0.2|Headphones:0.1|Hat:0.7|Sunglasses:0.5	8
-10094	testvideo37	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.600576	2020-02-27 11:04:06.600584	Shirt:0.3|Trousers:0.4|Footwear:0.5|Handbag:0.9|Watch:0.2|Guitar:0.7|Mobile_phone:1.0|Headphones:0.1|Hat:0.6|Sunglasses:0.8	8
-10095	testvideo38	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.607074	2020-02-27 11:04:06.607084	Shirt:0.5|Trousers:0.9|Footwear:0.3|Handbag:0.1|Watch:0.2|Guitar:0.6|Mobile_phone:0.7|Headphones:0.8|Hat:0.4|Sunglasses:1.0	8
-10096	testvideo39	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.609481	2020-02-27 11:04:06.609509	Shirt:0.5|Trousers:1.0|Footwear:0.8|Handbag:0.7|Watch:0.9|Guitar:0.2|Mobile_phone:0.6|Headphones:0.1|Hat:0.3|Sunglasses:0.4	8
-10097	testvideo40	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.613923	2020-02-27 11:04:06.613936	Shirt:0.8|Trousers:0.5|Footwear:0.2|Handbag:0.1|Watch:0.9|Guitar:1.0|Mobile_phone:0.4|Headphones:0.3|Hat:0.6|Sunglasses:0.7	7
-10098	testvideo41	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.615175	2020-02-27 11:04:06.615186	Shirt:1.0|Trousers:0.3|Footwear:0.9|Handbag:0.7|Watch:0.6|Guitar:0.1|Mobile_phone:0.2|Headphones:0.5|Hat:0.8|Sunglasses:0.4	7
-10099	testvideo42	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.617867	2020-02-27 11:04:06.617879	Shirt:0.4|Trousers:0.9|Footwear:0.8|Handbag:0.2|Watch:0.6|Guitar:0.7|Mobile_phone:1.0|Headphones:0.3|Hat:0.1|Sunglasses:0.5	7
-10100	testvideo43	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.618991	2020-02-27 11:04:06.618999	Shirt:0.2|Trousers:0.1|Footwear:0.5|Handbag:0.3|Watch:0.9|Guitar:0.6|Mobile_phone:1.0|Headphones:0.4|Hat:0.7|Sunglasses:0.8	8
-10101	testvideo44	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.626038	2020-02-27 11:04:06.626061	Shirt:0.9|Trousers:0.6|Footwear:0.3|Handbag:0.4|Watch:0.1|Guitar:0.5|Mobile_phone:0.2|Headphones:0.8|Hat:1.0|Sunglasses:0.7	7
-10102	testvideo45	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.633125	2020-02-27 11:04:06.633138	Shirt:0.8|Trousers:1.0|Footwear:0.4|Handbag:0.2|Watch:0.6|Guitar:0.1|Mobile_phone:0.9|Headphones:0.7|Hat:0.5|Sunglasses:0.3	7
-10103	testvideo46	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.634368	2020-02-27 11:04:06.634376	Shirt:0.1|Trousers:0.3|Footwear:0.2|Handbag:0.4|Watch:0.8|Guitar:0.6|Mobile_phone:0.5|Headphones:1.0|Hat:0.7|Sunglasses:0.9	7
-10104	testvideo47	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.635645	2020-02-27 11:04:06.635657	Shirt:0.8|Trousers:1.0|Footwear:0.3|Handbag:0.7|Watch:0.9|Guitar:0.4|Mobile_phone:0.6|Headphones:0.2|Hat:0.1|Sunglasses:0.5	8
-10105	testvideo48	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.642497	2020-02-27 11:04:06.642529	Shirt:1.0|Trousers:0.7|Footwear:0.8|Handbag:0.1|Watch:0.6|Guitar:0.5|Mobile_phone:0.3|Headphones:0.4|Hat:0.9|Sunglasses:0.2	8
-10106	testvideo49	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 11:04:06.64742	2020-02-27 11:04:06.647434	Shirt:1.0|Trousers:0.2|Footwear:0.6|Handbag:0.1|Watch:0.4|Guitar:0.5|Mobile_phone:0.7|Headphones:0.3|Hat:0.9|Sunglasses:0.8	7
-10051	20200227063337dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 06:33:37.959808	2020-02-27 06:33:38.008703	cat:1.0|tvmonitor:0.875|microwave:0.75|diningtable:0.625|bird:0.5|person:0.375|chair:0.25|laptop:0.125	\N
-10052	20200227071046dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 07:10:46.40737	2020-02-27 07:10:46.594132	cat:1.0|tvmonitor:0.875|microwave:0.75|diningtable:0.625|bird:0.5|person:0.375|chair:0.25|laptop:0.125	8
-10053	20200227074925dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 07:49:25.952821	2020-02-27 07:49:26.077011	cat:1.0|tvmonitor:0.875|microwave:0.75|diningtable:0.625|bird:0.5|person:0.375|chair:0.25|laptop:0.125	8
-10054	20200227075734dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 07:57:34.9944	2020-02-27 07:57:35.268283	cat:1.0|tvmonitor:0.875|microwave:0.75|diningtable:0.625|bird:0.5|person:0.375|chair:0.25|laptop:0.125	8
-10055	20200227085401dogvideo	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 08:54:01.503442	2020-02-27 08:54:01.624402	cat:1.0|tvmonitor:0.875|microwave:0.75|diningtable:0.625|bird:0.5|person:0.375|chair:0.25|laptop:0.125	8
-10056	20200227085837roadless	mp4	/home/sagar/workingDir/projectversion1/app/static/video/uploaded	2020-02-27 08:58:37.814245	2020-02-27 08:58:38.392695	bus:1.0|car:0.9285714285714286|cell phone:0.8571428571428571|truck:0.7857142857142857|train:0.7142857142857143|chair:0.6428571428571429|clock:0.5714285714285714|person:0.5|cat:0.42857142857142855|bird:0.35714285714285715|laptop:0.2857142857142857|microwave:0.21428571428571427|tvmonitor:0.14285714285714285|diningtable:0.07142857142857142	8
+1	20200415071948Intex Inflatable One Person Chair Sofa Bed in Action - Outdoorleisuredirect	co	/home/sagar/workingDir/asmi-automatic-version/app/static/video/uploaded	2020-04-15 07:19:48.079744	2020-04-15 07:19:48.125414	person:1.0|cup:0.9807692307692307|pottedplant:0.9615384615384616|bottle:0.9423076923076923|clock:0.9230769230769231|umbrella:0.9038461538461539|chair:0.8846153846153846|baseball glove:0.8653846153846154|backpack:0.8461538461538461|knife:0.8269230769230769|bird:0.8076923076923077|sports ball:0.7884615384615384|keyboard:0.7692307692307693|tennis racket:0.75|donut:0.7307692307692307|surfboard:0.7115384615384616|cell phone:0.6923076923076923|handbag:0.6730769230769231|aeroplane:0.6538461538461539|baseball bat:0.6346153846153846|tie:0.6153846153846154|bench:0.5961538461538461|diningtable:0.5769230769230769|snowboard:0.5576923076923077|bed:0.5384615384615384|book:0.5192307692307693|suitcase:0.5|skateboard:0.4807692307692308|sofa:0.46153846153846156|vase:0.4423076923076923|scissors:0.4230769230769231|bowl:0.40384615384615385|motorbike:0.38461538461538464|cat:0.36538461538461536|dog:0.34615384615384615|cake:0.3269230769230769|train:0.3076923076923077|parking meter:0.28846153846153844|bicycle:0.2692307692307692|banana:0.25|elephant:0.23076923076923078|sink:0.21153846153846154|hot dog:0.19230769230769232|tvmonitor:0.17307692307692307|frisbee:0.15384615384615385|remote:0.1346153846153846|toothbrush:0.11538461538461539|spoon:0.09615384615384616|laptop:0.07692307692307693|wine glass:0.057692307692307696|oven:0.038461538461538464|teddy bear:0.019230769230769232	8
+2	20200415075436Intex Inflatable One Person Chair Sofa Bed in Action - Outdoorleisuredirect	co	/home/sagar/workingDir/asmi-automatic-version/app/static/video/uploaded	2020-04-15 07:54:36.548083	2020-04-15 07:54:36.592729	person:1.0|cup:0.9807692307692307|pottedplant:0.9615384615384616|bottle:0.9423076923076923|clock:0.9230769230769231|umbrella:0.9038461538461539|chair:0.8846153846153846|baseball glove:0.8653846153846154|backpack:0.8461538461538461|knife:0.8269230769230769|bird:0.8076923076923077|sports ball:0.7884615384615384|keyboard:0.7692307692307693|tennis racket:0.75|donut:0.7307692307692307|surfboard:0.7115384615384616|cell phone:0.6923076923076923|handbag:0.6730769230769231|aeroplane:0.6538461538461539|baseball bat:0.6346153846153846|tie:0.6153846153846154|bench:0.5961538461538461|diningtable:0.5769230769230769|snowboard:0.5576923076923077|bed:0.5384615384615384|book:0.5192307692307693|suitcase:0.5|skateboard:0.4807692307692308|sofa:0.46153846153846156|vase:0.4423076923076923|scissors:0.4230769230769231|bowl:0.40384615384615385|motorbike:0.38461538461538464|cat:0.36538461538461536|dog:0.34615384615384615|cake:0.3269230769230769|train:0.3076923076923077|parking meter:0.28846153846153844|bicycle:0.2692307692307692|banana:0.25|elephant:0.23076923076923078|sink:0.21153846153846154|hot dog:0.19230769230769232|tvmonitor:0.17307692307692307|frisbee:0.15384615384615385|remote:0.1346153846153846|toothbrush:0.11538461538461539|spoon:0.09615384615384616|laptop:0.07692307692307693|wine glass:0.057692307692307696|oven:0.038461538461538464|teddy bear:0.019230769230769232	8
+3	20200415075549Intex Inflatable One Person Chair Sofa Bed in Action - Outdoorleisuredirect	co	/home/sagar/workingDir/asmi-automatic-version/app/static/video/uploaded	2020-04-15 07:55:49.814344	2020-04-15 07:55:49.858947	person:1.0|cup:0.9807692307692307|pottedplant:0.9615384615384616|bottle:0.9423076923076923|clock:0.9230769230769231|umbrella:0.9038461538461539|chair:0.8846153846153846|baseball glove:0.8653846153846154|backpack:0.8461538461538461|knife:0.8269230769230769|bird:0.8076923076923077|sports ball:0.7884615384615384|keyboard:0.7692307692307693|tennis racket:0.75|donut:0.7307692307692307|surfboard:0.7115384615384616|cell phone:0.6923076923076923|handbag:0.6730769230769231|aeroplane:0.6538461538461539|baseball bat:0.6346153846153846|tie:0.6153846153846154|bench:0.5961538461538461|diningtable:0.5769230769230769|snowboard:0.5576923076923077|bed:0.5384615384615384|book:0.5192307692307693|suitcase:0.5|skateboard:0.4807692307692308|sofa:0.46153846153846156|vase:0.4423076923076923|scissors:0.4230769230769231|bowl:0.40384615384615385|motorbike:0.38461538461538464|cat:0.36538461538461536|dog:0.34615384615384615|cake:0.3269230769230769|train:0.3076923076923077|parking meter:0.28846153846153844|bicycle:0.2692307692307692|banana:0.25|elephant:0.23076923076923078|sink:0.21153846153846154|hot dog:0.19230769230769232|tvmonitor:0.17307692307692307|frisbee:0.15384615384615385|remote:0.1346153846153846|toothbrush:0.11538461538461539|spoon:0.09615384615384616|laptop:0.07692307692307693|wine glass:0.057692307692307696|oven:0.038461538461538464|teddy bear:0.019230769230769232	8
+4	20200415092609Intex Inflatable One Person Chair Sofa Bed in Action - Outdoorleisuredirect	co	/home/sagar/workingDir/asmi-automatic-version/app/static/video/uploaded	2020-04-15 09:26:09.618856	2020-04-15 09:26:09.666256	person:1.0|cup:0.9807692307692307|pottedplant:0.9615384615384616|bottle:0.9423076923076923|clock:0.9230769230769231|umbrella:0.9038461538461539|chair:0.8846153846153846|baseball glove:0.8653846153846154|backpack:0.8461538461538461|knife:0.8269230769230769|bird:0.8076923076923077|sports ball:0.7884615384615384|keyboard:0.7692307692307693|tennis racket:0.75|donut:0.7307692307692307|surfboard:0.7115384615384616|cell phone:0.6923076923076923|handbag:0.6730769230769231|aeroplane:0.6538461538461539|baseball bat:0.6346153846153846|tie:0.6153846153846154|bench:0.5961538461538461|diningtable:0.5769230769230769|snowboard:0.5576923076923077|bed:0.5384615384615384|book:0.5192307692307693|suitcase:0.5|skateboard:0.4807692307692308|sofa:0.46153846153846156|vase:0.4423076923076923|scissors:0.4230769230769231|bowl:0.40384615384615385|motorbike:0.38461538461538464|cat:0.36538461538461536|dog:0.34615384615384615|cake:0.3269230769230769|train:0.3076923076923077|parking meter:0.28846153846153844|bicycle:0.2692307692307692|banana:0.25|elephant:0.23076923076923078|sink:0.21153846153846154|hot dog:0.19230769230769232|tvmonitor:0.17307692307692307|frisbee:0.15384615384615385|remote:0.1346153846153846|toothbrush:0.11538461538461539|spoon:0.09615384615384616|laptop:0.07692307692307693|wine glass:0.057692307692307696|oven:0.038461538461538464|teddy bear:0.019230769230769232	8
+5	20200415110725Intex Inflatable One Person Chair Sofa Bed in Action - Outdoorleisuredirect	mp4	/home/sagar/workingDir/asmi-automatic-version/app/static/video/uploaded	2020-04-15 11:07:25.021625	2020-04-15 11:07:25.055919	person:1.0|cup:0.9807692307692307|pottedplant:0.9615384615384616|bottle:0.9423076923076923|clock:0.9230769230769231|umbrella:0.9038461538461539|chair:0.8846153846153846|baseball glove:0.8653846153846154|backpack:0.8461538461538461|knife:0.8269230769230769|bird:0.8076923076923077|sports ball:0.7884615384615384|keyboard:0.7692307692307693|tennis racket:0.75|donut:0.7307692307692307|surfboard:0.7115384615384616|cell phone:0.6923076923076923|handbag:0.6730769230769231|aeroplane:0.6538461538461539|baseball bat:0.6346153846153846|tie:0.6153846153846154|bench:0.5961538461538461|diningtable:0.5769230769230769|snowboard:0.5576923076923077|bed:0.5384615384615384|book:0.5192307692307693|suitcase:0.5|skateboard:0.4807692307692308|sofa:0.46153846153846156|vase:0.4423076923076923|scissors:0.4230769230769231|bowl:0.40384615384615385|motorbike:0.38461538461538464|cat:0.36538461538461536|dog:0.34615384615384615|cake:0.3269230769230769|train:0.3076923076923077|parking meter:0.28846153846153844|bicycle:0.2692307692307692|banana:0.25|elephant:0.23076923076923078|sink:0.21153846153846154|hot dog:0.19230769230769232|tvmonitor:0.17307692307692307|frisbee:0.15384615384615385|remote:0.1346153846153846|toothbrush:0.11538461538461539|spoon:0.09615384615384616|laptop:0.07692307692307693|wine glass:0.057692307692307696|oven:0.038461538461538464|teddy bear:0.019230769230769232	8
+6	20200415111619Intex Inflatable One Person Chair Sofa Bed in Action - Outdoorleisuredirect	mp4	/home/sagar/workingDir/asmi-automatic-version/app/static/video/uploaded	2020-04-15 11:16:19.139639	2020-04-15 11:16:19.176996	bottle:1.0|cup:0.9666666666666667|person:0.9333333333333333|pottedplant:0.9|umbrella:0.8666666666666667|cell phone:0.8333333333333334|chair:0.8|bird:0.7666666666666667|clock:0.7333333333333333|tie:0.7|diningtable:0.6666666666666666|donut:0.6333333333333333|bowl:0.6|sports ball:0.5666666666666667|knife:0.5333333333333333|surfboard:0.5|handbag:0.4666666666666667|backpack:0.43333333333333335|snowboard:0.4|bed:0.36666666666666664|baseball glove:0.3333333333333333|book:0.3|vase:0.26666666666666666|sofa:0.23333333333333334|suitcase:0.2|bench:0.16666666666666666|skateboard:0.13333333333333333|keyboard:0.1|cat:0.06666666666666667|scissors:0.03333333333333333	8
+7	20200415121643Intex Inflatable One Person Chair Sofa Bed in Action - Outdoorleisuredirect	mp4	/home/sagar/workingDir/asmi-automatic-version/app/static/video/uploaded	2020-04-15 12:16:43.541276	2020-04-15 12:16:43.586892	bottle:1.0|cup:0.9666666666666667|person:0.9333333333333333|pottedplant:0.9|umbrella:0.8666666666666667|cell phone:0.8333333333333334|chair:0.8|bird:0.7666666666666667|clock:0.7333333333333333|tie:0.7|diningtable:0.6666666666666666|donut:0.6333333333333333|bowl:0.6|sports ball:0.5666666666666667|knife:0.5333333333333333|surfboard:0.5|handbag:0.4666666666666667|backpack:0.43333333333333335|snowboard:0.4|bed:0.36666666666666664|baseball glove:0.3333333333333333|book:0.3|vase:0.26666666666666666|sofa:0.23333333333333334|suitcase:0.2|bench:0.16666666666666666|skateboard:0.13333333333333333|keyboard:0.1|cat:0.06666666666666667|scissors:0.03333333333333333	8
 \.
 
 
@@ -443,8 +458,7 @@ COPY public.uploaded_video (videoid, filename, extension, storagelocation, "uplo
 --
 
 COPY public."user" (id, email, username, password_hash) FROM stdin;
-7	test6@domain.com	user6	sha256$ztkZ4YCF$ce502e644e8d610767ba32094a3c4dbd7804108eac9001a6be5b1c21636ea1bd
-8	test7@domain.com	user7	sha256$02uereGh$5b53453396a614bf7720249a8ed4c570a7cf15d5664997343035dfa687b84f72
+18	user1@domain.com	user1	sha256$SNbvgGda$ece465924ef6167b8f356482b0ea3be5462eac32f1265720578d0c025901d1b3
 \.
 
 
@@ -10461,11 +10475,11 @@ COPY public.user_view_history (id, user_id, watched_video_id, watch_time_in_sec)
 --
 
 COPY public.video_analytics_file (analyticsfileid, filename, storagelocation, "createdTime", video_id) FROM stdin;
-22	20200227071316dogvideo.json	/home/sagar/workingDir/projectversion1/app/static/analyticsFolder/generated	2020-02-27 07:13:16.492732	10052
-23	20200227075110dogvideo.json	/home/sagar/workingDir/projectversion1/app/static/analyticsFolder/generated	2020-02-27 07:51:10.779184	10053
-24	20200227075906dogvideo.json	/home/sagar/workingDir/projectversion1/app/static/analyticsFolder/generated	2020-02-27 07:59:06.257909	10054
-25	20200227085603dogvideo.json	/home/sagar/workingDir/projectversion1/app/static/analyticsFolder/generated	2020-02-27 08:56:03.272587	10055
-26	20200227090937roadless.json	/home/sagar/workingDir/projectversion1/app/static/analyticsFolder/generated	2020-02-27 09:09:37.192346	10056
+1	20200415075441Intex Inflatable One Person Chair Sofa Bed in Action - Outdoorleisuredirect.json	/home/sagar/workingDir/asmi-automatic-version/app/static/analyticsFolder/generated	2020-04-15 07:54:41.133791	2
+2	20200415075922Intex Inflatable One Person Chair Sofa Bed in Action - Outdoorleisuredirect.json	/home/sagar/workingDir/asmi-automatic-version/app/static/analyticsFolder/generated	2020-04-15 07:59:22.97867	3
+3	20200415092941Intex Inflatable One Person Chair Sofa Bed in Action - Outdoorleisuredirect.json	/home/sagar/workingDir/asmi-automatic-version/app/static/analyticsFolder/generated	2020-04-15 09:29:41.875663	4
+4	20200415111103Intex Inflatable One Person Chair Sofa Bed in Action - Outdoorleisuredirect.json	/home/sagar/workingDir/asmi-automatic-version/app/static/analyticsFolder/generated	2020-04-15 11:11:03.967126	5
+5	20200415111959Intex Inflatable One Person Chair Sofa Bed in Action - Outdoorleisuredirect.json	/home/sagar/workingDir/asmi-automatic-version/app/static/analyticsFolder/generated	2020-04-15 11:19:59.891822	6
 \.
 
 
@@ -10473,7 +10487,7 @@ COPY public.video_analytics_file (analyticsfileid, filename, storagelocation, "c
 -- Name: generated_video_gvideoid_seq; Type: SEQUENCE SET; Schema: public; Owner: asmi_group
 --
 
-SELECT pg_catalog.setval('public.generated_video_gvideoid_seq', 22, true);
+SELECT pg_catalog.setval('public.generated_video_gvideoid_seq', 26, true);
 
 
 --
@@ -10484,17 +10498,24 @@ SELECT pg_catalog.setval('public.merged_ad_category_id_seq', 16, true);
 
 
 --
+-- Name: profile_profile_id_seq; Type: SEQUENCE SET; Schema: public; Owner: asmi_group
+--
+
+SELECT pg_catalog.setval('public.profile_profile_id_seq', 2, true);
+
+
+--
 -- Name: uploaded_video_videoid_seq; Type: SEQUENCE SET; Schema: public; Owner: asmi_group
 --
 
-SELECT pg_catalog.setval('public.uploaded_video_videoid_seq', 10106, true);
+SELECT pg_catalog.setval('public.uploaded_video_videoid_seq', 7, true);
 
 
 --
 -- Name: user_id_seq; Type: SEQUENCE SET; Schema: public; Owner: asmi_group
 --
 
-SELECT pg_catalog.setval('public.user_id_seq', 8, true);
+SELECT pg_catalog.setval('public.user_id_seq', 18, true);
 
 
 --
@@ -10508,7 +10529,7 @@ SELECT pg_catalog.setval('public.user_view_history_id_seq', 10000, true);
 -- Name: video_analytics_file_analyticsfileid_seq; Type: SEQUENCE SET; Schema: public; Owner: asmi_group
 --
 
-SELECT pg_catalog.setval('public.video_analytics_file_analyticsfileid_seq', 26, true);
+SELECT pg_catalog.setval('public.video_analytics_file_analyticsfileid_seq', 5, true);
 
 
 --
@@ -10533,6 +10554,14 @@ ALTER TABLE ONLY public.generated_video
 
 ALTER TABLE ONLY public.merged_ad_category
     ADD CONSTRAINT merged_ad_category_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: profile profile_pkey; Type: CONSTRAINT; Schema: public; Owner: asmi_group
+--
+
+ALTER TABLE ONLY public.profile
+    ADD CONSTRAINT profile_pkey PRIMARY KEY (profile_id);
 
 
 --
@@ -10594,6 +10623,20 @@ CREATE INDEX ix_merged_ad_category_created_time ON public.merged_ad_category USI
 --
 
 CREATE INDEX ix_merged_ad_category_last_modified_time ON public.merged_ad_category USING btree (last_modified_time);
+
+
+--
+-- Name: ix_profile_dob; Type: INDEX; Schema: public; Owner: asmi_group
+--
+
+CREATE INDEX ix_profile_dob ON public.profile USING btree (dob);
+
+
+--
+-- Name: ix_profile_user_id; Type: INDEX; Schema: public; Owner: asmi_group
+--
+
+CREATE UNIQUE INDEX ix_profile_user_id ON public.profile USING btree (user_id);
 
 
 --

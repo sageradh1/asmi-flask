@@ -1,0 +1,15 @@
+
+@media only screen and (max-width: 1920px) {
+  .well{
+  margin-top: 171px;
+}
+
+}
+
+@media only screen and (max-width: 1366px) {
+  .well {
+  height: 474px;
+  margin-top: 50px;
+}
+
+}

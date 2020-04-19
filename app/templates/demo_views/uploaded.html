@@ -86,7 +86,8 @@
 </head>
 
 <div class="mybody">
- <header style="height: 65px;">
+ 
+<header style="height: 65px;">
   <!--  Remove dark nav  -->
   <nav class="nav dark-nav">
     <div class="container">
@@ -98,7 +99,8 @@
       </div>
       <div class="menu" id="open-navbar1">
         <ul class="list">
-           <li><a href="{{ url_for('home')}}">Welcome  {{current_username}}</a></li>
+          <li><a href="{{ url_for('home')}}">Welcome  {{current_username}}</a></li>
+
           <li><a href="{{ url_for('home')}}">Home</a></li>
           <!-- <li><a href="/product.html">Product Upload</a></li> -->
           {% if current_user.is_authenticated %}
@@ -124,7 +126,16 @@
             </div>
           </li>
 
-           <li><a href="{{ url_for('logout')}}">Logout</a></li>
+         <li>
+            <div class="dropdown" style="float:right;">
+              <button class="dropbtn">Setting</button>
+              <div class="dropdown-content">
+                <a href="{{ url_for('view_profile')}}">Profile</a>
+                <a href="{{ url_for('logout')}}">Logout</a>
+                
+                </div>
+            </div>
+          </li>
           {% else %}
             <li><a href="{{ url_for('login')}}">Login</a></li>
             <li><a href="{{ url_for('register')}}">Signup</a></li>

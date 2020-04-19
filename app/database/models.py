@@ -23,7 +23,6 @@ from app import login
 
 #     def __repr__(self):
 #         return '<Post {}>'.format(self.body)
-
 #################needed##############################
 
 class User(UserMixin,db.Model):
@@ -47,6 +46,24 @@ class User(UserMixin,db.Model):
 @login.user_loader
 def load_user(id):
     return User.query.get(int(id))
+
+
+
+class Profile(db.Model):
+    profile_id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(120))
+    dob=db.Column(db.DateTime, index=True)
+    login_email = db.Column(db.String(120))
+    contact_phone1 = db.Column(db.String(20))
+    contact_email1 = db.Column(db.String(120))
+    link_instagram = db.Column(db.String(500))
+    link_tiktok = db.Column(db.String(500))
+    ideal_advertisers =  db.Column(db.String(1000))
+    reach = db.Column(db.Integer)
+    user_id = db.Column(db.Integer,index=True,  unique=True)
+ 
+    def __repr__(self):
+        return '<User id:{} user_id:{} login_email:{}>'.format(self.id,self.user_index_id,self.login_email)
 
 
 class UserViewHistory(db.Model):

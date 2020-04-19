@@ -149,7 +149,16 @@
             </div>
           </li>
 
-           <li><a href="{{ url_for('logout')}}">Logout</a></li>
+         <li>
+            <div class="dropdown" style="float:right;">
+              <button class="dropbtn">Setting</button>
+              <div class="dropdown-content">
+                <a href="{{ url_for('view_profile')}}">Profile</a>
+                <a href="{{ url_for('logout')}}">Logout</a>
+                
+                </div>
+            </div>
+          </li>
           {% else %}
             <li><a href="{{ url_for('login')}}">Login</a></li>
             <li><a href="{{ url_for('register')}}">Signup</a></li>

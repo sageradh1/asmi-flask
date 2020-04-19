@@ -6,6 +6,7 @@ certifi==2019.11.28
 chardet==3.0.4
 Click==7.0
 Cython==0.29.14
+-e git+https://github.com/sageradh1/asmi-automatic-version.git@654275f82629c7542f991346bbce968db1f10f29#egg=darkflow
 Flask==1.1.1
 Flask-Login==0.5.0
 Flask-Migrate==2.5.2
@@ -32,7 +33,7 @@ oauthlib==3.1.0
 opencv-python==4.1.2.30
 opt-einsum==3.1.0
 pandas==1.0.0
-pkg-resources==0.0.0
+phonenumbers==8.12.1
 protobuf==3.11.2
 psycopg2==2.8.4
 pyasn1==0.4.8

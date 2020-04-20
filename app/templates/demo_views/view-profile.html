@@ -301,10 +301,15 @@
                                 <div class="profile-info-row">
                                     <div class="profile-info-name">Ideal Advertises</div>
 
-                                    <div class="profile-info-value">
-                                        <!-- <i class="fa fa-map-marker light-orange bigger-110"></i> -->
+ 
+
+<!--                                     <div class="profile-info-value" id="advertisersvalue">
                                         {{ideal_advertisers}}
                                     </div>
+ -->
+                                    <div class="profile-info-value" id="result">
+
+
                                 </div>
 
 
@@ -375,6 +380,23 @@
 
 
     <script src="{{ url_for('static', filename='js/normal_views/registration_profile.js') }}"></script>
+
+  <script type="text/javascript">
+
+  
+       var advertisers =' {{ideal_advertisers}}';
+
+       var final = advertisers.split(',');
+       var hello = final
+
+       var str = ''
+
+       hello.forEach(function(hello) {
+           str += '<ul style="width:1px; padding-left:47%"><li>' + hello + '</li></ul>';
+       });
+
+       document.getElementById("result").innerHTML = str;
+  </script>
 
 </body><!-- This templates was made by Colorlib (https://colorlib.com) -->
 <!-- footer -->

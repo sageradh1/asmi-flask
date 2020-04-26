@@ -10,6 +10,16 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 class Config(object):
     DEBUG = False
     TESTING = False
+
+
+    MAIL_SERVER = 'localhost'
+    MAIL_PORT = 25
+    MAIL_USERNAME = None
+    MAIL_PASSWORD = None
+
+    # administrator list
+    ADMINS = ['sageradh@gmail.com']
+    
     # generateSecretKey= secrets.token_hex(16)
     # #SECRET_KEY = secrets.token_urlsafe(16)
     # SECRET_KEY = generateSecretKey
@@ -30,15 +40,18 @@ class Config(object):
     # print("normaliseddf")
     # print(USERVIEWNORMALISEDDF)
     
-    ADIMAGE_UPLOADS_FOLDER = basedir+ "/app/static/img/uploaded/adimages"
+    ADIMAGE_UPLOADS_FOLDER = basedir+ "/app/static/img/ad-images"
     IMAGE_UPLOADS_FOLDER = basedir+ "/app/static/img/uploaded"
     CSV_UPLOADS_FOLDER =  basedir+"/app/static/csv/uploaded"
     VIDEO_UPLOADS_FOLDER =  basedir+"/app/static/video/uploaded"
     VIDEO_GENERATED_FOLDER =  basedir+"/app/static/video/generated"
     VIDEOANALYTICS_GENERATED_FOLDER =  basedir+"/app/static/analyticsFolder/generated"
+    THUMBNAIL_FOR_UPLOADED_VIDEO_FOLDER = basedir+"app/static/img/generated/thumbnails"
     
     MAX_VIDEO_FILESIZE = 50 * 1024 * 1024 #max allowed video filesize is 16MB
     MAX_CSV_FILESIZE = 10 * 1024 * 1024 #max allowed csv filesize is 10MB
+
+    BASE_URL_WITH_PORT = "http://127.0.0.1:5000"
 
     ALLOWED_VIDEO_EXTENSIONS = set(['mp4', 'mkv'])
     ALLOWED_USERDATA_EXTENSIONS = set(['csv'])

@@ -75,7 +75,20 @@
         </div>        
 
     </body>
+<script type="text/javascript">
+    setTimeout(
+        function()
+        {
+            var data = {{redirectionDict|tojson }}
+            if (data['do_redirect']) 
+            {
+                window.location = data.redirection_url
+            }
+        }, 
+        3500);
 
+
+</script>
  </html>
 
 

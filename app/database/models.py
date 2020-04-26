@@ -52,15 +52,36 @@ def load_user(id):
 class Profile(db.Model):
     profile_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120))
-    dob=db.Column(db.DateTime, index=True)
+    # dob=db.Column(db.DateTime, index=True)
+    age=db.Column(db.Integer)
+    
+    gender = db.Column(db.String(1),nullable=True)
     login_email = db.Column(db.String(120))
+
     contact_phone1 = db.Column(db.String(20))
     contact_email1 = db.Column(db.String(120))
+
     link_instagram = db.Column(db.String(500))
     link_tiktok = db.Column(db.String(500))
+    link_firework = db.Column(db.String(500))
+    link_kwai = db.Column(db.String(500))
+ 
+    familarity_with_instagram = db.Column(db.String(500))
+    familarity_with_tiktok = db.Column(db.String(500))
+    familarity_with_triller = db.Column(db.String(500))
+    familarity_with_kwai = db.Column(db.String(500))
+
+
+    number_of_followers_instagram = db.Column(db.Integer)
+    number_of_followers_tiktok = db.Column(db.Integer)
+    number_of_followers_triller = db.Column(db.Integer)
+    number_of_followers_kwai = db.Column(db.Integer)
+
     ideal_advertisers =  db.Column(db.String(1000))
-    reach = db.Column(db.Integer)
+    
     user_id = db.Column(db.Integer,index=True,  unique=True)
+    is_user_content_creator = db.Column(db.Boolean, unique=False, default=False)
+
  
     def __repr__(self):
         return '<User id:{} user_id:{} login_email:{}>'.format(self.id,self.user_index_id,self.login_email)
@@ -172,8 +193,10 @@ class MergedAdCategory(db.Model):
     adseller = db.Column(db.String(200))
     adprice = db.Column(db.Numeric(5,2),nullable=False)
     adimage_url = db.Column(db.String(500),nullable=False)
+    image_filename= db.Column(db.String(500))
     adinitial_quantity = db.Column(db.Integer)
     adleft_quantity = db.Column(db.Integer)
+    is_active = db.Column(db.Boolean, unique=False, default=True)
 
     def __repr__(self):
         return '<MergedAdCategory adcategoryid:{}  category_name:{} adtitle:{} adprice:{} createdTime:{}  >'.format(self.id,self.category_name,self.adtitle,self.adprice,self.createdTime) 

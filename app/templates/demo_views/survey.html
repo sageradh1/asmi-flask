@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet">
+    <title>Welcome!</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/normal_views/survey.css') }}">            
+</head>
+
+<body>
+    <div class="signup-form">
+
+        <form action="/survey" method="POST">
+             {{ form.hidden_tag() }}
+
+            <div>
+                <img id="logo" src="{{ url_for('static', filename='img/asmilogo.png') }}">
+            </div>
+            <p class="hint-text">Patnership Basic Info. It only takes a minute.</p>
+
+            {% for message in get_flashed_messages() %}
+              <div class="alert alert-warning">
+                  <button type="button" class="close" data-dismiss="alert">&times;</button>
+                  {{ message }}
+              </div>
+            {% endfor %} 
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-md-6">
+                        <label>1.Full Name:</label>
+                        <br>
+
+                        {{ form.name(size=32,class='form-control',placeholder='Name') }}<br>
+                        {% for error in form.name.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+                        
+                        <br>
+                    </div>
+                    <div class="col-md-6">
+                        <label>2.Contact Email:</label>
+
+                        {{ form.contact_email1(size=32,class='form-control',placeholder='Email') }}<br>
+                        {% for error in form.contact_email1.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+
+                    </div>
+                </div>
+            </div>
+
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>3. Phone:</label>
+                            <br>
+
+                            {{ form.contact_phone1(size=32,class='form-control',placeholder='Phone') }}<br>
+                            {% for error in form.contact_phone1.errors %}
+                            <span style="color: red;">[{{ error }}]</span>
+                            {% endfor %}
+
+                            <br>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="slidecontainer">
+                                <label>4. Age:
+                                    <label id="demo"></label>
+                                </label>
+
+
+                                {{ form.age(type="range",min="1",max="100",value="50",class="slider",id="myRange",placeholder='Age') }}<br>
+                                {% for error in form.age.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+
+                                <label>5. Gender:</label>
+<!--                                 <br>
+                                <input type="radio" name="gender" id="option1" value="1">
+                                <label for="male">Male</label>
+                                <br>
+                                <input type="radio" name="gender" id="option2" value="2">
+                                <label for="female">Female</label>
+                                <br>
+                                <input type="radio" name="gender" id="option3" value="3">
+                                <label for="other">Other</label>
+ -->                            
+                                {{form.gender}}
+                            </div>
+
+                            <div class="col-md-6">
+                                <label>6. Are you currently creating/posting endorsed content?</label>
+                                <!-- <br>
+                                <input type="radio" id="age1" name="age">
+                                <label for="Yes">Yes</label>
+                                <br>
+                                <input type="radio" id="age2" name="age">
+                                <label for="No">No</label>
+                                <br> -->
+                                <br>
+                                {{ form.is_user_content_creator }}
+
+                                <br>
+                                {% for error in form.is_user_content_creator.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>7. How familiar are you with Tiktok?</label>
+                                <br>
+                                {{ form.familarity_with_tiktok(class='form-control') }}
+                                <br>
+                                {% for error in form.familarity_with_tiktok.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+
+                            </div>
+                            <div class="col-md-6">
+                                <label>8. How familiar are you with Instagram?</label>
+                                <br>
+                                {{ form.familarity_with_instagram(class='form-control') }}
+                                <br>
+                                {% for error in form.familarity_with_instagram.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>9. How familiar are you with Triller?</label>
+                                <br>
+                                {{ form.familarity_with_triller(class='form-control') }}
+                                <br>
+                                {% for error in form.familarity_with_triller.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+                            </div>
+                            <div class="col-md-6">
+                                <label>10. How familiar are you with Kwai?</label>
+                                <br>
+                                {{ form.familarity_with_kwai(class='form-control') }}
+                                <br>
+                                {% for error in form.familarity_with_kwai.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>11. number_of_followers_instagram</label>
+                                <br>
+                                {{ form.number_of_followers_instagram(class='form-control',placeholder="In number") }}
+                                <br>
+                                {% for error in form.number_of_followers_instagram.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+                            </div>
+
+
+                            <div class="col-md-12">
+                                <label>11. number_of_followers_tiktok</label>
+                                <br>
+                                {{ form.number_of_followers_tiktok(class='form-control',placeholder="In number") }}
+                                <br>
+                                {% for error in form.number_of_followers_tiktok.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+                            </div>
+
+
+                            <div class="col-md-12">
+                                <label>11. number_of_followers_triller</label>
+                                <br>
+                                {{ form.number_of_followers_triller(class='form-control',placeholder="In number") }}
+                                <br>
+                                {% for error in form.number_of_followers_triller.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+                            </div>
+
+
+                            <div class="col-md-12">
+                                <label>11. number_of_followers_kwai</label>
+                                <br>
+                                {{ form.number_of_followers_kwai(class='form-control',placeholder="In number") }}
+                                <br>
+                                {% for error in form.number_of_followers_kwai.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>12 .Who are your ideal advertisers?</label>
+                                <br>
+                                {{ form.ideal_advertisers(class='form-control',placeholder='Ideal Advertisers(separated by commas)') }}
+                                {% for error in form.ideal_advertisers.errors %}
+                                <br>
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}      
+                            </div>
+                        </div>
+                    </div>
+
+                                              
+
+                    <label></label>
+                    <p>
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>13. Please enter your social media url.</label>
+                            </div>
+                            <div class="col-md-6">
+                                
+                                <label>Tiktok</label>
+                                <br>
+                                {{ form.link_tiktok(class='form-control',placeholder="link...") }}
+                                <br>
+                                {% for error in form.link_tiktok.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+
+                            </div>
+                            <div class="col-md-6">
+                                <label>Instagram</label>
+                                <br>
+                                {{ form.link_instagram(class='form-control',placeholder="link...") }}
+                                <br>
+                                {% for error in form.link_instagram.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <label>Firework</label>
+                                <br>
+                                {{ form.link_firework(class='form-control',placeholder="link...") }}
+                                <br>
+                                {% for error in form.link_firework.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+
+                            </div>
+                            <div class="col-md-6">
+                                <label>Kwai</label>
+
+                                <br>
+                                {{ form.link_kwai(class='form-control',placeholder="link...") }}
+                                <br>
+                                {% for error in form.link_kwai.errors %}
+                                <span style="color: red;">[{{ error }}]</span>
+                                {% endfor %}
+
+
+                            </div>
+                        </div>
+                    </div>
+
+                    </p>
+
+                    <div class="form-group">
+
+                        {{ form.submit(class='btn btn-success btn-lg btn-block') }}
+                        {% for error in form.submit.errors %}
+                        <span style="color: red;">[{{ error }}]</span>
+                        {% endfor %}
+
+
+                        <!-- <button type="submit" class="btn btn-success btn-lg btn-block">All done , thank you!</button> -->
+                    </div>
+        </form>
+    </div>
+</body>
+
+    <script>
+        var slider = document.getElementById("myRange");
+        var output = document.getElementById("demo");
+        output.innerHTML = slider.value;
+
+        slider.oninput = function() {
+            output.innerHTML = this.value;
+        }
+    </script>
+
+    <script>
+
+        setTimeout(
+            function()
+            {
+                var data = {{redirectionDict|tojson }}
+                if (data['do_redirect']) 
+                {
+                    window.location = data.redirection_url
+                }
+            }, 
+            4500);
+
+
+
+    </script>
+
+</html>

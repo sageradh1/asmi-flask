@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+<!--     {{url_for('static',filename='css/normal_views/canvas_jabir_integrated.css')}} -->
+    <link rel="stylesheet" href="{{url_for('static',filename='css/normal_views/style1_jabir_integrated.css')}}">
+    <link rel="stylesheet" href="{{url_for('static',filename='css/normal_views/canvas_jabir_integrated.css')}}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.0.0-beta/css/bootstrap.min.css" crossorigin="anonymous" />
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+
+    <title>ASMI</title>
+
+    <body>
+        <div class="container-player">
+            <div id="mediaPlayer">
+
+                <div class="lds-ring" id=preload></div>
+
+                <div class="container1">
+                    <div class="padding-container">
+                        <div class="selector" id="selector"></div>
+                    </div>
+                    <div class="video-container-outer">
+                        <div class="video-stage" id="stage">
+                            <div class="interaction-overlay" id="interaction_overlay"></div>
+                            <canvas id="market_overlay" width="100" height="100" class="market-overlay overlay-video"></canvas>
+                            <video id='video' preload>
+                                <source src="{{url_for('static',filename='video/uploaded/20200229085730Angrezi Medium.mp4')}}">
+                                <source src='parrots.webm' type='video/webm'>
+                            </video>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="controls">
+                    <button id=play><i class="fas fa-pause"></i></button>
+                    <button id=audioVolume class="fas fa-volume-off"></button>
+                    <div id="progressBar">
+                        <div id="progress"></div>
+                    </div>
+                    <div id="timer">
+                        <span id="start"> 0 : 00</span>
+                    </div>
+                    <!--  <button id=expand><i class="fas fa-expand"></i></button> -->
+                </div>
+            </div>
+            <div id="playlist" style="border: 5px solid ; ">
+            </div>
+
+        </div>
+        <script type="text/javascript" src="{{url_for('static',filename='js/normal_views/canvas-render-jabir-integrated.js')}}"></script>
+        <script type="text/javascript" src="{{url_for('static',filename='js/normal_views/main-jabir-integrated.js')}}"></script>
+<!--         <script src="scripts/canvas-render.js"></script>
+        <script src="scripts/main.js"></script> -->
+
+    </body>
+
+</html>

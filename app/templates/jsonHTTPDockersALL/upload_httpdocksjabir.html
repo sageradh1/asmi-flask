@@ -1,0 +1,108 @@
+{% extends "jsonHTTPDockersALL/master_httpdocksjabir.html" %} {% block title %}Upload{% endblock %} {% block main %}
+<div class="alert_msg"></div>
+<div class="container">
+
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+        <main class="main_full" style="border:1px solid ;">
+            <div class="container">
+
+                <script>
+                    function send() {
+                        var options = document.getElementsByName("options");
+                        var selected = false;
+
+                        for (var i = 0; i < options.length; i++) {
+                            if (options[i].checked == true) {
+                                selected = true;
+                            }
+                        }
+                        if (!selected) {
+                            $('.alert_msg').notify(
+                                "You must select at least one item to inject.", {
+                                    className: "warn",
+                                    position: "top center"
+                                }
+                            );
+                            return false;
+                        }
+
+                    }
+                </script>
+
+                <h4>What do you want to inject ?</h4>
+
+                <div class="btn-group btn-group-toggle" data-toggle="buttons">
+                    <label class="btn btn-danger active">
+                        <input type="radio" name="options" required="true" id="shirt" autocomplete="off" value="1"> Bottle
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="options" required="true" id="tie" autocomplete="off" value="2" > Dog
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="options" required="true" id="shoe" autocomplete="off" value="3"> Car
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="options" required="true" id="glass" autocomplete="off" value="4"> Sofa
+                    </label>
+
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="options" required="true" id="coke" autocomplete="off" value="5"> Motorbike
+                    </label>
+
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="options" required="true" id="oreo" autocomplete="off" value="6"> Person
+                    </label>
+                    <label class="btn btn-secondary">
+                        <input type="radio" name="options" required="true" id="oreo" autocomplete="off" value="7"> Tie
+                    </label>
+                    
+
+                </div>
+
+                <div class="panel">
+                    <p class="loading_text"></p>
+                    <div class="button_outer">
+                        <div class="btn_upload">
+                            <input oninput="videosize(this);" type="file" class="form-control" name="videofile" id="video" onclick="return send();" />
+                            <i class="fa fa-paperclip 3x"></i> Choose File
+                        </div>
+                        <div class="processing_bar"></div>
+                        <div class="success_box"></div>
+                    </div>
+                </div>
+                <div class="msg_btn">
+                    <div class="error_msg"></div>
+                    <div class="success_msg"></div>
+                    <div class="btn-submit"></div>
+                </div>
+            </div>
+        </main>
+    </form>
+
+    <script src="{{ url_for('static', filename='js/normal_views/upload.js')}}"></script>
+    <script src="{{ url_for('static', filename='js/normal_views/notify.js')}}"></script>
+    <script>
+        $(document).ready(function() {
+            $('.alert_msg').notify(
+                "{{message}}", {
+                    className: "{{category}}",
+                    position: "top center"
+                }
+            );
+        });
+    </script>
+
+</div>
+
+<script>
+    function videosize(elem) {
+        console.log(elem.files[0].size)
+        document.cookie = `videosize=${elem.files[0].size}`
+    }
+
+    function csvsize(elem) {
+        console.log(elem.files[0].size)
+        document.cookie = `csvsize=${elem.files[0].size}`
+    }
+</script>
+{% endblock %}

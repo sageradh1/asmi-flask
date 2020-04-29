@@ -12,30 +12,42 @@ from app.darkflowMerge.openCVTFNet import extractFrameInfosFromVideo,extractIndi
 from flask_login import current_user, login_required
 
 
+def isVideoNameAllowedWithExtension(filename):
+    # We only want files with a . in the filename
+    if not "." in filename:
+        return False
+    counter = filename.count('.')
+
+    if counter == 1: 
+        # Split the extension from the filename
+        ext = filename.rsplit(".", 1)[1]
+        # Check if the extension is in ALLOWED_VIDEO_EXTENSIONS
+    else:
+        temp = filename.split(".")
+        ext = temp[counter]
+
+    if ext.lower() in app.config["ALLOWED_VIDEO_EXTENSIONS"]:
+        return True,ext
+    else:
+        return False,ext
+
 def isVideoNameAllowed(filename):
     # We only want files with a . in the filename
     if not "." in filename:
         return False
+
+    counter = filename.count('.')
     # Split the extension from the filename
     ext = filename.rsplit(".", 1)[1]
-    # Check if the extension is in ALLOWED_VIDEO_EXTENSIONS
-    if ext.lower() in app.config["ALLOWED_VIDEO_EXTENSIONS"]:
-        return True
+
+    if counter == 1: 
+        if ext.lower() in app.config["ALLOWED_VIDEO_EXTENSIONS"]:
+            return True
+        else:
+            return False
     else:
         return False
 
-
-def isCSVNameAllowed(filename):
-    # We only want files with a . in the filename
-    if not "." in filename:
-        return False
-    # Split the extension from the filename
-    ext = filename.rsplit(".", 1)[1]
-    # Check if the extension is in ALLOWED_USERDATA_EXTENSIONS
-    if ext.lower() in app.config["ALLOWED_USERDATA_EXTENSIONS"]:
-        return True
-    else:
-        return False
 
 def isVideoFilesizeAllowed(videosize):
     if int(videosize) <= app.config["MAX_VIDEO_FILESIZE"]:
@@ -43,52 +55,72 @@ def isVideoFilesizeAllowed(videosize):
     else:
         return False
 
-def isCSVFilesizeAllowed(csvsize):
-    if int(csvsize) <= app.config["MAX_CSV_FILESIZE"]:
-        return True
-    else:
-        return False
+def getRightOptionAccordingToValue(option_value):
+    
+    options_dict = {
+        "1":"bottle",
+        "2":"dog",
+        "3":"car",
+        "4":"sofa",
+        "5":"motorbike",
+        "6":"person",
+        "7":"tie"
+    }
+
+    return options_dict[option_value]
 
 
 @app.route('/upload', methods=["GET", "POST"])
-@login_required
+# @login_required
 def upload():
     
     if request.method == 'GET':
 
         message = "Please upload the video(<20MB size) and csv files(<10MB size)"
         print(message)
-        return render_template('jsonHTTPDockersALL/upload.html',message=message)
+        return render_template('jsonHTTPDockersALL/upload_httpdocksjabir.html',message=message)
+        # return render_template('jsonHTTPDockersALL/upload.html',message=message)
     
     if request.method == 'POST':
 
         _videoUploadStartingTime=datetime.utcnow()
         startingdt_string = _videoUploadStartingTime.strftime("%Y%m%d%H%M%S")
 
-        # check if the post request has the file part
+        # check if the post request has selected label
+        selected_option = request.form['options']
+
+        if not selected_option:
+            message ="No label received "
+            print(message)
+            return redirect(request.url)            
+
+
         if not request.files:
             message ="No files received "
             print(message)
             return redirect(request.url)
-        if ('videofile' not in request.files) or ('csvfile' not in request.files):
+        # if ('videofile' not in request.files) or ('csvfile' not in request.files):
+        if ('videofile' not in request.files):    
             message ="Missing files "
             print(message)
             return render_template("jsonHTTPDockersALL/upload.html",message=message)
-		#file = request.files['file']
+        #file = request.files['file']
         videofile = request.files['videofile']
-        csvfile = request.files['csvfile']
+        # csvfile = request.files['csvfile']
+
 
         if not isVideoNameAllowed(secure_filename(videofile.filename)):
-            message="Please make sure video file is in valid format"
+            message="Please make sure video file is in valid format.There must be only one dot in the filename"
             print(message)
             return render_template("jsonHTTPDockersALL/upload.html",message=message)
         
-        if not isCSVNameAllowed(secure_filename(csvfile.filename)):
-            message="Please make sure CSV file is in valid format"
-            print(message)
-            return render_template("jsonHTTPDockersALL/upload.html",message=message)
+        # if not isCSVNameAllowed(secure_filename(csvfile.filename)):
+        #     message="Please make sure CSV file is in valid format"
+        #     print(message)
+        #     return render_template("jsonHTTPDockersALL/upload.html",message=message)
         
-        if ("videosize" not in request.cookies) or ("csvsize" not in request.cookies):
+        # if ("videosize" not in request.cookies) or ("csvsize" not in request.cookies):
+        if ("videosize" not in request.cookies):
             message="Your browser is not supporting cookie functionality"
             print(message)
             return render_template("jsonHTTPDockersALL/upload.html",message=message)
@@ -98,57 +130,62 @@ def upload():
             print(message)
             return render_template("jsonHTTPDockersALL/upload.html",message=message)
         
-        if not isCSVFilesizeAllowed(request.cookies["csvsize"]):
-            message="CSV filesize exceeded maximum limit"
-            print(message)
-            return render_template("jsonHTTPDockersALL/upload.html",message=message)
+        # if not isCSVFilesizeAllowed(request.cookies["csvsize"]):
+        #     message="CSV filesize exceeded maximum limit"
+        #     print(message)
+        #     return render_template("jsonHTTPDockersALL/upload.html",message=message)
 
         _videostorageLocation = app.config["VIDEO_UPLOADS_FOLDER"]
         _videofilename= videofile.filename
 
+        #Revived
         _basename=startingdt_string+_videofilename.split('.')[0]
         _extension=_videofilename.split('.')[1]
 
         print("Video Saving Started ....")
         videofile.save(os.path.join(app.config["VIDEO_UPLOADS_FOLDER"], startingdt_string+videofile.filename))
-        csvfile.save(os.path.join(app.config["CSV_UPLOADS_FOLDER"], csvfile.filename))
+        # csvfile.save(os.path.join(app.config["CSV_UPLOADS_FOLDER"], csvfile.filename))
         print("Video Saving Completed ....")
 
         ###################### Video is saved till now ###########################
         
         _videoUploadCompletedTime=datetime.utcnow()
 
-        listOfResultsWithTuple,listOfResultsWithoutTuple,originalFrameArray,newframeArray,fps=extractFrameInfosFromVideo(startingdt_string+videofile.filename)
+        # DONT FORGET TO UNCOMMENT LATER
+        listOfResultsWithTuple,listOfResultsWithoutTuple,originalFrameArray,newframeArray,fps,totalduration,thumbnail_filename=extractFrameInfosFromVideo(startingdt_string+videofile.filename,getRightOptionAccordingToValue(selected_option))
 
         myUniqueClassSet,myClassDict = uniqueClassSetAndDict(listOfResultsWithoutTuple)
-        # print("\nmyUniqueClassSet")
-        # print(myUniqueClassSet)
-        # print("\nmyClassDict")
-        # print(myClassDict)
+        print("\nmyUniqueClassSet")
+        print(myUniqueClassSet)
+        print("\nmyClassDict")
+        print(myClassDict)
         confidenceDict,numberOfTimesEmergedDict,averageConfidenceDict = uniqueDictonairies(myUniqueClassSet,myClassDict,listOfResultsWithoutTuple)
 
-        # print("\n confidenceDict")
-        # print(confidenceDict)
-        # print("\n numberOfTimesEmergedDict")
-        # print(numberOfTimesEmergedDict)
-        # print("\n averageConfidenceDict")
-        # print(averageConfidenceDict)
+        print("\n confidenceDict")
+        print(confidenceDict)
+        print("\n numberOfTimesEmergedDict")
+        print(numberOfTimesEmergedDict)
+        print("\n averageConfidenceDict")
+        print(averageConfidenceDict)
 
         outputstringfordb = getDetectedObjectsforDatabase(myClassDict,averageConfidenceDict)
 
+        print("Output string : "+str(outputstringfordb))
         if current_user.is_authenticated:
             currentuserid=current_user.id
         else:
             currentuserid=-1
 
-        _uploadedVideo=UploadedVideo(filename = _basename, extension = _extension,storagelocation = _videostorageLocation,uploadStartedTime = _videoUploadStartingTime,uploadCompletedTime = _videoUploadCompletedTime,detected_objects_withconfidence=outputstringfordb,uploader_id=currentuserid)
+        _uploadedVideo=UploadedVideo(filename = _basename, extension = _extension,storagelocation = _videostorageLocation,uploadStartedTime = _videoUploadStartingTime,uploadCompletedTime = _videoUploadCompletedTime,detected_objects_withconfidence=outputstringfordb,uploader_id=currentuserid,totalduration=totalduration,thumbnail_filename=thumbnail_filename)
 
         db.session.add(_uploadedVideo)
         db.session.commit()
 
 
         #x=int(input("Enter the number of classes with highest confidence : "))
-        x=len(myClassDict)
+        # x=10
+        x=1
+        # x=len(myClassDict)
         newSortedClassDict,newSortedAvgConfidenceDictWithRequiredNumber = arrangeNnumberOfDictionary(x,myClassDict,averageConfidenceDict)
 
         print("See here if the dict is only length {}: ".format(x))
@@ -172,6 +209,8 @@ def upload():
 
 
         frameToVid(indexOfRequiredFrame,originalFrameArray,newframeArray,app.config['VIDEO_GENERATED_FOLDER']+"/"+generatedVideoFilename+".webm", fps)
+        
+
         #frameToVid(listOfResultsWithTuple,newSortedClassDict,originalFrameArray,newframeArray,app.config['VIDEO_GENERATED_FOLDER']+"/"+generatedVideoFilename,fps)
         
         generatedVideo = GeneratedVideo(filename = generatedVideoFilename,storagelocation = app.config['VIDEO_GENERATED_FOLDER'],createdTime = generatedVideoStartingTime,video_id = _uploadedVideo.videoid)
@@ -180,46 +219,45 @@ def upload():
     
     message = "Till now no error"
     print(message)
-    return render_template("jsonHTTPDockersALL/upload.html",message=message)
+    return render_template("jsonHTTPDockersALL/upload_httpdocksjabir.html",message=message)
+    # return render_template('jsonHTTPDockersALL/upload.html',message=message)
 
 
-
-
-@app.route("/json",methods=["POST"])
-def json():
-    if request.is_json:
-        #Accessing JSON from request
-        req = request.get_json()
-        #Now req can be treated as python dictionary
+# @app.route("/json",methods=["POST"])
+# def json():
+#     if request.is_json:
+#         #Accessing JSON from request
+#         req = request.get_json()
+#         #Now req can be treated as python dictionary
         
-        #Parsing value from key
-        name = req.get("name")
+#         #Parsing value from key
+#         name = req.get("name")
 
-        #making response dictionary
-        res ={
-            "key":"This is response",
-            "Received name value":name
-        }
+#         #making response dictionary
+#         res ={
+#             "key":"This is response",
+#             "Received name value":name
+#         }
 
-        #Converting Dictionary into json
-        jsonifiedResponse = jsonify(res)
-        httpStatusCode = 200
+#         #Converting Dictionary into json
+#         jsonifiedResponse = jsonify(res)
+#         httpStatusCode = 200
 
-        finalHttpResponse = make_response(jsonifiedResponse,httpStatusCode) 
+#         finalHttpResponse = make_response(jsonifiedResponse,httpStatusCode) 
         
-        return finalHttpResponse
-    else:
-        return make_response("No JSON has been Received",400)
+#         return finalHttpResponse
+#     else:
+#         return make_response("No JSON has been Received",400)
 
 
-@app.route("/flaskappconfiguration")
-def configuration():
-    #To see configuration
-    print("Before app config")
-    print(app.config)
-    #We can change values of already present keys and also we can create our own new key-value pair in app config dictionary
-    app.config["MyOwnKey"]="My Own Value"
-    print("After app config")
-    print(app.config)
+# @app.route("/flaskappconfiguration")
+# def configuration():
+#     #To see configuration
+#     print("Before app config")
+#     print(app.config)
+#     #We can change values of already present keys and also we can create our own new key-value pair in app config dictionary
+#     app.config["MyOwnKey"]="My Own Value"
+#     print("After app config")
+#     print(app.config)
     
-    return "This is a page for configuraiton of flask app.asdasd"
+#     return "This is a page for configuraiton of flask app.asdasd"

@@ -46,9 +46,9 @@ class Config(object):
     VIDEO_UPLOADS_FOLDER =  basedir+"/app/static/video/uploaded"
     VIDEO_GENERATED_FOLDER =  basedir+"/app/static/video/generated"
     VIDEOANALYTICS_GENERATED_FOLDER =  basedir+"/app/static/analyticsFolder/generated"
-    THUMBNAIL_FOR_UPLOADED_VIDEO_FOLDER = basedir+"app/static/img/generated/thumbnails"
+    THUMBNAIL_FOR_UPLOADED_VIDEO_FOLDER = basedir+"/app/static/img/generated/thumbnails"
     
-    MAX_VIDEO_FILESIZE = 50 * 1024 * 1024 #max allowed video filesize is 16MB
+    MAX_VIDEO_FILESIZE = 100 * 1024 * 1024 #max allowed video filesize is 16MB
     MAX_CSV_FILESIZE = 10 * 1024 * 1024 #max allowed csv filesize is 10MB
 
     BASE_URL_WITH_PORT = "http://127.0.0.1:5000"

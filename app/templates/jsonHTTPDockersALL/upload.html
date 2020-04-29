@@ -13,18 +13,57 @@
 
       <form action="/upload" method="POST" enctype="multipart/form-data">
 
+<!-- "aeroplane", "bicycle", "bird", "boat", "bottle",
+    "bus", "car", "cat", "chair", "cow", "diningtable", "dog",
+    "horse", "motorbike", "person", "pottedplant", "sheep", "sofa",
+    "train", "tvmonitor"
+
+
+
+                if eachObject['label']=="bottle":
+                    # print("Bottle is detected")
+                    # print(basedir +"/bottle.png")
+                    icon_img = cv2.imread(app.config["ADIMAGE_UPLOADS_FOLDER"] +"/cup.png")
+                    icon_img1= cv2.resize(icon_img, (iconWidth,iconHeight))
+                elif eachObject['label']=="car":
+                    # print("Person is detected")
+                    icon_img = cv2.imread(app.config["ADIMAGE_UPLOADS_FOLDER"] +"/tesla.png")
+                    icon_img1= cv2.resize(icon_img, (iconWidth,iconHeight))
+                elif eachObject['label']=="sofa":
+                    icon_img = cv2.imread(app.config["ADIMAGE_UPLOADS_FOLDER"] +"/furniture.png")
+                    icon_img1= cv2.resize(icon_img, (iconWidth,iconHeight))
+                elif eachObject['label']=="motorbike":
+                    icon_img = cv2.imread(app.config["ADIMAGE_UPLOADS_FOLDER"] +"/suzuki.png")
+                    icon_img1= cv2.resize(icon_img, (iconWidth,iconHeight))
+                else:
+                    icon_img = cv2.imread(app.config["ADIMAGE_UPLOADS_FOLDER"] +"/amazon.png")
+ -->
+
+        <label>Choose what to detect and inject</label>
+
+          <p>
+            
+            <input type="radio" name="options" id="option1" value="1"> Bottle <br>
+            <input type="radio" name="options" id="option5" value="2"> Dog <br>
+            <input type="radio" name="options" id="option2" value="3"> Car <br>
+            <input type="radio" name="options" id="option3" value="4"> Sofa <br>
+            <input type="radio" name="options" id="option4" value="5"> Motorbike <br>
+            <input type="radio" name="options" id="option5" value="6"> Person <br>
+            <input type="radio" name="options" id="option5" value="7"> Tie <br>
+          </p>
+
         <div class="form-group">
-          <label>Select Video</label>
+          <label>Select video</label>
           <div class="custom-file">
             <input oninput="videosize(this);" type="file" name="videofile" id="video">
-            </div>
+          </div>
 
-          <label>Select CSV</label>
+<!--           <label>Select CSV</label>
           <div class="custom-file">
             <input oninput="csvsize(this);" type="file" class="custom-file-input" name="csvfile" id="csv">
             </div>
         </div>
-
+ -->
         <button type="submit" class="btn btn-primary">Upload</button>
 
       </form>

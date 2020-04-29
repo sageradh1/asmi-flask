@@ -128,6 +128,20 @@ def getDetectedObjectsforDatabase(_myDict,_averageConfidenceDict):
 
 def returnList(_sortedClassDict,_allResultsWithTupleList):
 
+    mainOutput = dict()
+    
+    mainOutput["dataForAds"]=returnDataForAds()
+
+    mainOutput["dataPerObject"]=returnDataPerObject(_sortedClassDict,_allResultsWithTupleList)
+ 
+    mainOutput["dataPerTimestamp"]=returnTimeStampsList(_sortedClassDict,_allResultsWithTupleList)
+
+    print("\nmainOutput")
+    print(mainOutput)
+    return mainOutput
+
+
+def returnDataPerObject(_sortedClassDict,_allResultsWithTupleList):
     finalJsonArray = []
     eachJsonObject = dict()
 
@@ -158,14 +172,34 @@ def returnList(_sortedClassDict,_allResultsWithTupleList):
         finalJsonArray.append(eachJsonObject.copy())
     # print("Final list length is {:d} may not be the accurate order".format(len(finalJsonArray)))
     # print(finalJsonArray)
+    return finalJsonArray
+    
+def returnDataForAds():
+    infoForAllLabelsList=[]
 
-    mainOutput = dict()
-    mainOutput["dataPerObject"]=finalJsonArray
-    mainOutput["dataPerTimestamp"]=returnTimeStampsList(_sortedClassDict,_allResultsWithTupleList)
+    try:
+        mergedAd =  MergedAdCategory.query.filter(MergedAdCategory.id >= 11)
 
-    print("\nmainOutput")
-    print(mainOutput)
-    return mainOutput
+        for eachCategory in mergedAd:
+            allinfoForThisCategory={}
+          #   if mergedAd is None:
+                # allinfoForThisCategory['ItemName']=eachCategory.category_name
+                # allinfoForThisCategory['ImageUrl']="No information"
+                # allinfoForThisCategory['IconUrl']="No information"
+                # allinfoForThisCategory['Price']="No information"
+          #   else:
+            allinfoForThisCategory['ItemName']=str(eachCategory.category_name)            
+            allinfoForThisCategory['ImageUrl']=str(app.config["BASE_URL_WITH_PORT"]+str("/static/img/ad-images/")+str(eachCategory.image_filename))
+            allinfoForThisCategory['IconUrl']=str(app.config["BASE_URL_WITH_PORT"]+str("/static/img/ad-images/")+str(eachCategory.image_filename))
+            allinfoForThisCategory['Price']=str(eachCategory.adprice)
+
+            infoForAllLabelsList.append(allinfoForThisCategory.copy())
+            
+    except Exception as err:
+        print("Problem while extracting information from Merged Ad Category Table")
+        print(err)
+
+    return infoForAllLabelsList
 
 def returnTimeStampsList(_sortedClassDict,_allResultsWithTupleList):
 

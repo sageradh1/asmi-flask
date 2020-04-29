@@ -9,6 +9,7 @@ from app.database.models import User,UploadedVideo,MergedAdCategory,VideoAnalyti
 # from app.utils.dataUtilsCode import dynamicJsonFile
 # from sqlalchemy import exists,or_
 # from sqlalchemy import in_
+from sqlalchemy.sql.expression import func
 
 
 def returnNotSetIfNull(stringvariable):
@@ -34,6 +35,28 @@ def returnZeroIfEmptyString(variable):
 		return 0
 	else:
 		return variable
+
+
+#-------------------------------------- For viewvideos -------------------------------------------------------------
+def getLatestUploadedVideos(currentid,numberofvideos):
+	latestvideolist = UploadedVideo.query.filter(UploadedVideo.videoid <= currentid).order_by(UploadedVideo.videoid.desc()).limit(numberofvideos)
+	return latestvideolist
+
+def getjsonfilename(associated_videoid):
+	jsonFile = VideoAnalyticsFile.query.filter_by(video_id=associated_videoid).scalar()
+	if jsonFile is None:
+		return "FileNotFound"
+	else:
+		return app.config["BASE_URL_WITH_PORT"]+"/static/analyticsFolder/generated/"+jsonFile.filename
+
+def getvideofilename(video_filename):
+	if video_filename is None:
+		return "FileNotFound"
+	else:
+		return app.config["BASE_URL_WITH_PORT"]+"/static/video/uploaded/"+video_filename
+#----------------------------------------------------------------------------------------------------------------------
+
+
 
 @app.route('/login', methods=["GET", "POST"])
 def login():
@@ -429,8 +452,6 @@ def edit_profile():
 			if profile is None:
 				return redirect(app.config["BASE_URL_WITH_PORT"]+"/home")
 
-
-
 			form = EditProfileForm(obj=profile)
 			return render_template('demo_views/edit-profile.html',
 				form=form
@@ -493,7 +514,74 @@ def edit_profile():
 	# email=request.form['email']
 	# description=request.form['description']
 
+@app.route('/viewvideos')
+# @login_required
+def viewvideos_jabir():
+	if not current_user.is_authenticated:
+		# return redirect(url_for('login'))
+		return redirect(app.config["BASE_URL_WITH_PORT"]+"/login")
+	else:
+		userid=current_user.id
 
+	currentvideoid = request.args.get('videoid')
+	
+	if currentvideoid is None:
+		# for only max-videoid
+		max_video_id=db.session.query(func.max(UploadedVideo.videoid)).scalar()
+	else:
+		max_video_id=currentvideoid
+
+	print("max_video_id is "+str(max_video_id))
+	latestvideolist = getLatestUploadedVideos(max_video_id,6)
+	
+	# for the UploadedVideo object with max-videoid
+	# latestvideo=UploadedVideo.query.order_by(UploadedVideo.videoid.desc()).limit(1)
+	# print("The max videoid is "+str(max_video_id))
+	# latestvideolist = getLatestUploadedVideos(latestvideo[0].videoid,6)
+
+	pageinfojson=dict()
+	side_playlist_info=[]
+	count=1
+	for eachvideo in latestvideolist:
+
+		print("eachvideoid in list " + str(eachvideo.videoid))
+		if count==1:
+			current_video_info=dict()
+			current_video_info["videoid"]=eachvideo.videoid
+
+			##Removing the 14 datetime info added before filename
+			current_video_info["videoname"]=(eachvideo.filename)[14:]
+			current_video_info["source"]=getvideofilename(eachvideo.filename)+"."+eachvideo.extension
+			#TODO:
+			current_video_info["duration"]=eachvideo.totalduration
+			current_video_info["thumbnailurl"]=app.config["BASE_URL_WITH_PORT"]+"/static/img/generated/thumbnails/"+eachvideo.thumbnail_filename
+			current_video_info["current_video_json"]=getjsonfilename(eachvideo.videoid)
+		else:
+			eachPlaylistVideo=dict()
+			eachPlaylistVideo["videoid"]=eachvideo.videoid
+			#ignoring the added number
+			eachPlaylistVideo["videoname"]=eachvideo.filename[14:]
+			eachPlaylistVideo["source"]=getvideofilename(eachvideo.filename)+"."+eachvideo.extension
+			#TODO:
+			eachPlaylistVideo["duration"]=app.config["BASE_URL_WITH_PORT"]+"/static/img/generated/thumbnails/"+eachvideo.totalduration
+			eachPlaylistVideo["thumbnailurl"]=eachvideo.thumbnail_filename
+			eachPlaylistVideo["current_video_json"]=getjsonfilename(eachvideo.videoid)
+
+			side_playlist_info.append(eachPlaylistVideo.copy())
+		count=count+1
+	
+	pageinfojson["current_video_info"]=current_video_info
+	pageinfojson["side_playlist_info"]=side_playlist_info
+
+	print("The Page information Json is")
+	print(pageinfojson)
+
+	# filename="20200229134607AngreziMediumLowerQuality.mp4"
+	# # main_video_url=request.url_root+str("static/video/uploaded/")+str(filename)
+	# main_video_url=app.config["BASE_URL_WITH_PORT"]+"/"+str("static/video/uploaded/")+str(filename)
+	# print(main_video_url)
+
+	return render_template('demo_views/viewvideos_jabir_integrated.html',pageinfojson=pageinfojson)
 
 
 

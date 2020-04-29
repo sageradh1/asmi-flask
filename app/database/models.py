@@ -103,6 +103,8 @@ class UploadedVideo(db.Model):
     uploadCompletedTime = db.Column(db.DateTime, index=True, default=datetime.utcnow)    
     detected_objects_withconfidence=db.Column(db.String(1000))
     uploader_id =  db.Column(db.Integer)
+    totalduration = db.Column(db.String())
+    thumbnail_filename =  db.Column(db.String())
     analyticsFile = db.relationship('VideoAnalyticsFile', backref='videoFile', lazy='dynamic')
 
     # def __init__(self, name, extension,storagelocation,uploadStartedTime,uploadCompletedTime,analyticsFile):
@@ -191,7 +193,7 @@ class MergedAdCategory(db.Model):
     adtitle = db.Column(db.String(500),nullable=False)
     adbrand = db.Column(db.String(200))
     adseller = db.Column(db.String(200))
-    adprice = db.Column(db.Numeric(5,2),nullable=False)
+    adprice = db.Column(db.Numeric(12,2),nullable=False,default=0)
     adimage_url = db.Column(db.String(500),nullable=False)
     image_filename= db.Column(db.String(500))
     adinitial_quantity = db.Column(db.Integer)

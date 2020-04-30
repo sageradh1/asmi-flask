@@ -31,14 +31,15 @@
                             <canvas id="market_overlay" width="100" height="100" class="market-overlay overlay-video"></canvas>
                             <video id='video' preload>
                                 <source src="{{ url_for('static', filename='video/uploaded/20200229085730Angrezi Medium.mp4') }}">
-                                <source src='' type='video/webm'>
+                                    
+                               <!--  <source src='parrots.webm' type='video/webm'> -->
                             </video>
                         </div>
                     </div>
                 </div>
                 
                 <div id="controls">
-                    <button id=play class="fas fa-pause"></button>
+                    <button id=play><!-- <i class="fas fa-pause"></i> --></button>
                     <button id=audioVolume class="fas fa-volume-off"></button>
                     <div id="progressBar">
                         <div id="progress"></div>

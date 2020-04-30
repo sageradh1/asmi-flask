@@ -47,13 +47,13 @@ def getjsonfilename(associated_videoid):
 	if jsonFile is None:
 		return "FileNotFound"
 	else:
-		return app.config["BASE_URL_WITH_PORT"]+"/static/analyticsFolder/generated/"+jsonFile.filename
+		return app.config["BASE_URL_WITH_PORT"]+"/static/analyticsFolder/generated/"+returnEmptyStringIfNull(jsonFile.filename)
 
 def getvideofilename(video_filename):
 	if video_filename is None:
 		return "FileNotFound"
 	else:
-		return app.config["BASE_URL_WITH_PORT"]+"/static/video/uploaded/"+video_filename
+		return app.config["BASE_URL_WITH_PORT"]+"/static/video/uploaded/"+returnEmptyStringIfNull(video_filename)
 #----------------------------------------------------------------------------------------------------------------------
 
 
@@ -550,28 +550,46 @@ def viewvideos_jabir():
 			current_video_info["videoid"]=eachvideo.videoid
 
 			##Removing the 14 datetime info added before filename
-			current_video_info["videoname"]=(eachvideo.filename)[14:]
+			## Only returning only n number of charaters so that it may fit in the frontend
+			current_video_info["videoname"]=returnEmptyStringIfNull((eachvideo.filename)[14:])
 			current_video_info["source"]=getvideofilename(eachvideo.filename)+"."+eachvideo.extension
 			#TODO:
-			current_video_info["duration"]=eachvideo.totalduration
-			current_video_info["thumbnailurl"]=app.config["BASE_URL_WITH_PORT"]+"/static/img/generated/thumbnails/"+eachvideo.thumbnail_filename
+			current_video_info["duration"]=returnEmptyStringIfNull(eachvideo.totalduration)
+
+			if eachvideo.thumbnail_filename is None:
+				current_video_info["thumbnailurl"]=returnEmptyStringIfNull(app.config["BASE_URL_WITH_PORT"]+"/static/img/asmilogo.png")
+			else:
+				current_video_info["thumbnailurl"]=returnEmptyStringIfNull(app.config["BASE_URL_WITH_PORT"]+"/static/img/generated/thumbnails/"+eachvideo.thumbnail_filename)
 			current_video_info["current_video_json"]=getjsonfilename(eachvideo.videoid)
 		else:
 			eachPlaylistVideo=dict()
 			eachPlaylistVideo["videoid"]=eachvideo.videoid
 			#ignoring the added number
-			eachPlaylistVideo["videoname"]=eachvideo.filename[14:]
+			# eachPlaylistVideo["videoname"]=returnEmptyStringIfNull((eachvideo.filename)[14:])
+			
+			eachPlaylistVideo["videoname"]=(eachvideo.filename)[14:][:21]
 			eachPlaylistVideo["source"]=getvideofilename(eachvideo.filename)+"."+eachvideo.extension
-			#TODO:
-			eachPlaylistVideo["duration"]=app.config["BASE_URL_WITH_PORT"]+"/static/img/generated/thumbnails/"+eachvideo.totalduration
-			eachPlaylistVideo["thumbnailurl"]=eachvideo.thumbnail_filename
+			
+			eachPlaylistVideo["duration"]=returnEmptyStringIfNull(eachvideo.totalduration)
+			
+			if eachvideo.thumbnail_filename is None:
+				eachPlaylistVideo["thumbnailurl"]=returnEmptyStringIfNull(app.config["BASE_URL_WITH_PORT"]+"/static/img/asmilogo.png")
+			else:
+				eachPlaylistVideo["thumbnailurl"]=returnEmptyStringIfNull(app.config["BASE_URL_WITH_PORT"]+"/static/img/generated/thumbnails/"+eachvideo.thumbnail_filename)
+			
+
 			eachPlaylistVideo["current_video_json"]=getjsonfilename(eachvideo.videoid)
 
 			side_playlist_info.append(eachPlaylistVideo.copy())
 		count=count+1
 	
+
+	
 	pageinfojson["current_video_info"]=current_video_info
 	pageinfojson["side_playlist_info"]=side_playlist_info
+
+
+	# pageinfojson = {'current_video_info': {'videoid': 56, 'videoname': '20200229090011Angrezi Medium', 'source': 'http://127.0.0.1:5000/static/video/uploaded/German Shepherd Dog Running In 4K Slow Motion ( Alsatian Shepherd Dog ).mp4', 'duration': '0:8', 'thumbnailurl': 'http://127.0.0.1:5000/static/img/generated/thumbnails/thumbnail_for_2020042814115120200229090011Angrezi Medium.png', 'current_video_json': 'http://127.0.0.1:5000/static/analyticsFolder/generated/2020042814120320200229090011Angrezi Medium.json'}, 'side_playlist_info': [{'videoid': 55, 'videoname': '20200229090011Angrezi', 'source': 'http://127.0.0.1:5000/static/video/uploaded/2020042814090820200229090011Angrezi Medium.mp4', 'duration': '0:8', 'thumbnailurl': 'http://127.0.0.1:5000/static/img/generated/thumbnails/thumbnail_for_2020042814090820200229090011Angrezi Medium.png', 'current_video_json': 'http://127.0.0.1:5000/static/analyticsFolder/generated/2020042814092220200229090011Angrezi Medium.json'}, {'videoid': 54, 'videoname': '20200229090011Angrezi', 'source': 'http://127.0.0.1:5000/static/video/uploaded/2020042813563920200229090011Angrezi Medium.mp4', 'duration': '0:8', 'thumbnailurl': 'http://127.0.0.1:5000/static/img/generated/thumbnails/thumbnail_for_2020042813563920200229090011Angrezi Medium.png', 'current_video_json': 'http://127.0.0.1:5000/static/analyticsFolder/generated/2020042813565220200229090011Angrezi Medium.json'}, {'videoid': 53, 'videoname': '20200229090011Angrezi', 'source': 'http://127.0.0.1:5000/static/video/uploaded/2020042813460720200229090011Angrezi Medium.mp4', 'duration': '0:8', 'thumbnailurl': 'http://127.0.0.1:5000/static/img/asmilogo.png', 'current_video_json': 'http://127.0.0.1:5000/static/analyticsFolder/generated/2020042813462020200229090011Angrezi Medium.json'}, {'videoid': 52, 'videoname': '20200229090011Angrezi', 'source': 'http://127.0.0.1:5000/static/video/uploaded/2020042813364120200229090011Angrezi Medium.mp4', 'duration': '0:8', 'thumbnailurl': 'http://127.0.0.1:5000/static/img/asmilogo.png', 'current_video_json': 'http://127.0.0.1:5000/static/analyticsFolder/generated/2020042813365320200229090011Angrezi Medium.json'}, {'videoid': 51, 'videoname': '20200229090011Angrezi', 'source': 'http://127.0.0.1:5000/static/video/uploaded/2020042813285220200229090011Angrezi Medium.mp4', 'duration': '0:8', 'thumbnailurl': 'http://127.0.0.1:5000/static/img/asmilogo.png', 'current_video_json': 'http://127.0.0.1:5000/static/analyticsFolder/generated/2020042813290520200229090011Angrezi Medium.json'}]}
 
 	print("The Page information Json is")
 	print(pageinfojson)

@@ -56,7 +56,8 @@ def frameToVid(indexOfRequiredFrame,originalFrameArray,newframeArray,vOutPath, f
 options = {
     "model": basedir+"/cfg/yolo.cfg", 
     "load": basedir+"/bin/yolov2.weights", 
-    "threshold": 0.6
+    "threshold": 0.6,
+    'gpu': 1.0
     }
 
 tfnet = TFNet(options)
@@ -203,10 +204,11 @@ def extractFrameInfosFromVideo(_videoname,selected_option):
                     icon_img = cv2.imread(app.config["ADIMAGE_UPLOADS_FOLDER"] +"/suzuki.png")
                     isRequiredObjectDetected = True
                 elif eachObject['label']=="person":
-                    icon_img = cv2.imread(app.config["ADIMAGE_UPLOADS_FOLDER"] +"/amazon.png")
+                    # icon_img = cv2.imread(app.config["ADIMAGE_UPLOADS_FOLDER"] +"/amazon.png")
+                    icon_img = cv2.imread(app.config["ADIMAGE_UPLOADS_FOLDER"] +"/tesla.png")
                     isRequiredObjectDetected = True
                 elif eachObject['label']=="tie":
-                    icon_img = cv2.imread(app.config["ADIMAGE_UPLOADS_FOLDER"] +"/suzuki.png")
+                    icon_img = cv2.imread(app.config["ADIMAGE_UPLOADS_FOLDER"] +"/raymondpng.png")
                     isRequiredObjectDetected = True
 
                 if isRequiredObjectDetected:

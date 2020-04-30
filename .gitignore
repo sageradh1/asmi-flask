@@ -7,3 +7,6 @@ webapp_env
 \_\_pycache\_\_
 darkflowDirectory
 *.webm
+*.mp4
+*.json
+

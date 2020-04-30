@@ -9,23 +9,19 @@ var player = (function () {
     finish = document.getElementById("finish"),
     preload = document.getElementById("preload");
 
-    pause =document.getElementById("pause");
-
   var mediaPlayer, // global para que los listener sepan el estado a modificar
     currentTrack = "0", // que video se esta reproduciendo ahora.
     videos,
     videoNodes;
 
   play.addEventListener("click", (e) => {
-    
     if (mediaPlayer.paused || mediaPlayer.ended) {
       e.target.setAttribute("class", "fas fa-pause");
       mediaPlayer.play();
-    } else{
+    } else {
       mediaPlayer.pause();
       e.target.setAttribute("class", "fas fa-play");
     }
-
   });
 
   audioVolume.addEventListener("click", (e) => {
@@ -54,8 +50,8 @@ var player = (function () {
 
       preload.classList.add("lds-ring");
       higlight(id, currentTrack.toString());
+      set(videos[id].source);
       window.injector.init(videos[id].current_video_json);
-      set(videos[id].source);      
       mediaPlayer.addEventListener("canplay", videoIsReady);
     }
   });
@@ -129,6 +125,8 @@ var player = (function () {
 
     return div;
   }
+
+
   /**
    * Recibe un array de objetos y devuelve su representacion en un Nodos HTML
    * Returns an Node Collection
@@ -168,13 +166,10 @@ var player = (function () {
     //     loadList(videos)
     //     higlight(currentTrack);
     // });
-    default_video = window.myjson.current_video_info;
-
     videos = window.myjson.side_playlist_info;
-    set(default_video.source)
     console.log(videos)
     loadList(videos);
-    //higlight(currentTrack);
+    higlight(currentTrack);
   };
 
   /************************************

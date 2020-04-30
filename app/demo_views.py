@@ -83,49 +83,59 @@ def login():
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-	if current_user.is_authenticated:
-		# return redirect(url_for('home'))
-		return redirect(app.config["BASE_URL_WITH_PORT"]+"/home")
-	form = RegistrationForm()
+	try:
 
-	redirectionDict = {
-		"do_redirect":False,
-		"redirection_url":app.config["BASE_URL_WITH_PORT"]+"/survey",	
-	}
+		if current_user.is_authenticated:
+			# return redirect(url_for('home'))
+			return redirect(app.config["BASE_URL_WITH_PORT"]+"/home")
+		form = RegistrationForm()
 
-	if request.method=="GET":
+		redirectionDict = {
+			"do_redirect":False,
+			"redirection_url":app.config["BASE_URL_WITH_PORT"]+"/survey",	
+		}
+
+		if request.method=="GET":
+			return render_template('demo_views/register.html', form=form,redirectionDict=redirectionDict)
+
+		if request.method=="POST":
+			if form.validate_on_submit():
+				try:
+					#All email and username duplication validation are handled while the form were created
+					user = User(username=form.username.data, email=form.email.data)
+					user.set_password(form.password.data)
+					db.session.add(user)
+					db.session.commit()
+
+
+					profile = Profile(login_email=form.email.data,user_id=user.id)
+					db.session.add(profile)
+					db.session.commit()
+
+					flash('Congratulations, you are now a registered user!')
+
+					login_user(user, remember=True,duration=app.config["REMEMBER_COOKIE_DURATION"])
+
+					redirectionDict["do_redirect"]=True
+
+					return render_template('demo_views/register.html', form=form,redirectionDict=redirectionDict)
+					# return redirect(app.config["BASE_URL_WITH_PORT"]+"/survey")
+				except Exception as exp:
+					print(exp)
+					flash('Problem while registering user!')
+					return render_template('demo_views/register.html', form=form,redirectionDict=redirectionDict)
+			else:
+				flash('Problem while validating data!')
+				return render_template('demo_views/register.html', form=form,redirectionDict=redirectionDict)
+		return render_template('demo_views/register.html', form=form,redirectionDict=redirectionDict)
+	except Exception as err:
+		form = RegistrationForm()
+		redirectionDict = {
+			"do_redirect":False,
+			"redirection_url":app.config["BASE_URL_WITH_PORT"]+"/survey",	
+		}
 		return render_template('demo_views/register.html', form=form,redirectionDict=redirectionDict)
 
-	if request.method=="POST":
-		if form.validate_on_submit():
-			try:
-				#All email and username duplication validation are handled while the form were created
-				user = User(username=form.username.data, email=form.email.data)
-				user.set_password(form.password.data)
-				db.session.add(user)
-				db.session.commit()
-
-
-				profile = Profile(login_email=form.email.data,user_id=user.id)
-				db.session.add(profile)
-				db.session.commit()
-
-				flash('Congratulations, you are now a registered user!')
-
-				login_user(user, remember=True,duration=app.config["REMEMBER_COOKIE_DURATION"])
-
-				redirectionDict["do_redirect"]=True
-
-				return render_template('demo_views/register.html', form=form,redirectionDict=redirectionDict)
-				# return redirect(app.config["BASE_URL_WITH_PORT"]+"/survey")
-			except Exception as exp:
-				print(exp)
-				flash('Problem while registering user!')
-				return render_template('demo_views/register.html', form=form,redirectionDict=redirectionDict)
-		else:
-			flash('Problem while validating data!')
-			return render_template('demo_views/register.html', form=form,redirectionDict=redirectionDict)
-	return render_template('demo_views/register.html', form=form,redirectionDict=redirectionDict)
 
 
 

@@ -51,8 +51,8 @@ class Config(object):
     MAX_VIDEO_FILESIZE = 100 * 1024 * 1024 #max allowed video filesize is 16MB
     MAX_CSV_FILESIZE = 10 * 1024 * 1024 #max allowed csv filesize is 10MB
 
-    # BASE_URL_WITH_PORT = "http://127.0.0.1:5000"
-    BASE_URL_WITH_PORT = "http://18.221.137.201"
+    BASE_URL_WITH_PORT = "http://127.0.0.1:5000"
+    # BASE_URL_WITH_PORT = "http://18.221.137.201"
 
     ALLOWED_VIDEO_EXTENSIONS = set(['mp4', 'mkv'])
     ALLOWED_USERDATA_EXTENSIONS = set(['csv'])

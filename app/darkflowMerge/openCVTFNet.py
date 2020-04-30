@@ -146,10 +146,10 @@ def extractFrameInfosFromVideo(_videoname,selected_option):
                 save_frame_as_image(app.config["THUMBNAIL_FOR_UPLOADED_VIDEO_FOLDER"],thumbnail_name,originalFrame)
 
             frame_msec = capture.get(cv2.CAP_PROP_POS_MSEC)
-            print("Frame number : {:d} TimeStamp: {:f}".format(framecounter,frame_msec))
+            # print("Frame number : {:d} TimeStamp: {:f}".format(framecounter,frame_msec))
             #print("Frame No \t Objects Count \t Object Label \t Confidence ")        
             results = tfnet.return_predict(frame)
-            print("Results : ",results)
+            # print("Results : ",results)
 
             new_result = []
             for eachObject in results:
@@ -204,8 +204,8 @@ def extractFrameInfosFromVideo(_videoname,selected_option):
                     icon_img = cv2.imread(app.config["ADIMAGE_UPLOADS_FOLDER"] +"/suzuki.png")
                     isRequiredObjectDetected = True
                 elif eachObject['label']=="person":
-                    # icon_img = cv2.imread(app.config["ADIMAGE_UPLOADS_FOLDER"] +"/amazon.png")
-                    icon_img = cv2.imread(app.config["ADIMAGE_UPLOADS_FOLDER"] +"/tesla.png")
+                    icon_img = cv2.imread(app.config["ADIMAGE_UPLOADS_FOLDER"] +"/amazon.png")
+                    # icon_img = cv2.imread(app.config["ADIMAGE_UPLOADS_FOLDER"] +"/tesla.png")
                     isRequiredObjectDetected = True
                 elif eachObject['label']=="tie":
                     icon_img = cv2.imread(app.config["ADIMAGE_UPLOADS_FOLDER"] +"/raymondpng.png")
@@ -234,10 +234,10 @@ def extractFrameInfosFromVideo(_videoname,selected_option):
         else:
             capture.release()
             cv2.destroyAllWindows()
-            print("listOfResultsWithTuple")
-            print(listOfResultsWithTuple)
-            print("\nlistOfResultsWithoutTuple")
-            print(listOfResultsWithoutTuple)
+            # print("listOfResultsWithTuple")
+            # print(listOfResultsWithTuple)
+            # print("\nlistOfResultsWithoutTuple")
+            # print(listOfResultsWithoutTuple)
 
             #frameToVid(originalFrameArray,newframeArray,app.config['VIDEO_GENERATED_FOLDER']+"/"+generatedVideoFilename,fps)
             return listOfResultsWithTuple,listOfResultsWithoutTuple,originalFrameArray,newframeArray,fps,totalduration,thumbnail_name

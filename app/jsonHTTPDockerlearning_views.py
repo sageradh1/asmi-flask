@@ -73,153 +73,159 @@ def getRightOptionAccordingToValue(option_value):
 @app.route('/upload', methods=["GET", "POST"])
 # @login_required
 def upload():
-    
-    if request.method == 'GET':
+    try:
 
-        message = "Please upload the video(<20MB size) and csv files(<10MB size)"
+        if request.method == 'GET':
+
+            message = "Please upload a short video clip to inject"
+            print(message)
+            return render_template('jsonHTTPDockersALL/upload_httpdocksjabir.html',message=message)
+            # return render_template('jsonHTTPDockersALL/upload.html',message=message)
+        
+        if request.method == 'POST':
+
+            _videoUploadStartingTime=datetime.utcnow()
+            startingdt_string = _videoUploadStartingTime.strftime("%Y%m%d%H%M%S")
+
+            # check if the post request has selected label
+            selected_option = request.form['options']
+
+            if not selected_option:
+                message ="No label received "
+                print(message)
+                return redirect(request.url)            
+
+
+            if not request.files:
+                message ="No files received "
+                print(message)
+                return redirect(request.url)
+            # if ('videofile' not in request.files) or ('csvfile' not in request.files):
+            if ('videofile' not in request.files):    
+                message ="Missing files "
+                print(message)
+                return render_template("jsonHTTPDockersALL/upload.html",message=message)
+            #file = request.files['file']
+            videofile = request.files['videofile']
+            # csvfile = request.files['csvfile']
+
+
+            if not isVideoNameAllowed(secure_filename(videofile.filename)):
+                message="Please make sure video file is in valid format.There must be only one dot in the filename"
+                print(message)
+                return render_template("jsonHTTPDockersALL/upload.html",message=message)
+            
+            # if not isCSVNameAllowed(secure_filename(csvfile.filename)):
+            #     message="Please make sure CSV file is in valid format"
+            #     print(message)
+            #     return render_template("jsonHTTPDockersALL/upload.html",message=message)
+            
+            # if ("videosize" not in request.cookies) or ("csvsize" not in request.cookies):
+            if ("videosize" not in request.cookies):
+                message="Your browser is not supporting cookie functionality"
+                print(message)
+                return render_template("jsonHTTPDockersALL/upload.html",message=message)
+            
+            if not isVideoFilesizeAllowed(request.cookies["videosize"]):
+                message="Videosize exceeded maximum limit"
+                print(message)
+                return render_template("jsonHTTPDockersALL/upload.html",message=message)
+            
+            # if not isCSVFilesizeAllowed(request.cookies["csvsize"]):
+            #     message="CSV filesize exceeded maximum limit"
+            #     print(message)
+            #     return render_template("jsonHTTPDockersALL/upload.html",message=message)
+
+            _videostorageLocation = app.config["VIDEO_UPLOADS_FOLDER"]
+            _videofilename= videofile.filename
+
+            #Revived
+            _basename=startingdt_string+_videofilename.split('.')[0]
+            _extension=_videofilename.split('.')[1]
+
+            print("Video Saving Started ....")
+            videofile.save(os.path.join(app.config["VIDEO_UPLOADS_FOLDER"], startingdt_string+videofile.filename))
+            # csvfile.save(os.path.join(app.config["CSV_UPLOADS_FOLDER"], csvfile.filename))
+            print("Video Saving Completed ....")
+
+            ###################### Video is saved till now ###########################
+            
+            _videoUploadCompletedTime=datetime.utcnow()
+
+            # DONT FORGET TO UNCOMMENT LATER
+            listOfResultsWithTuple,listOfResultsWithoutTuple,originalFrameArray,newframeArray,fps,totalduration,thumbnail_filename=extractFrameInfosFromVideo(startingdt_string+videofile.filename,getRightOptionAccordingToValue(selected_option))
+
+            myUniqueClassSet,myClassDict = uniqueClassSetAndDict(listOfResultsWithoutTuple)
+            # print("\nmyUniqueClassSet")
+            # print(myUniqueClassSet)
+            # print("\nmyClassDict")
+            # print(myClassDict)
+            confidenceDict,numberOfTimesEmergedDict,averageConfidenceDict = uniqueDictonairies(myUniqueClassSet,myClassDict,listOfResultsWithoutTuple)
+
+            # print("\n confidenceDict")
+            # print(confidenceDict)
+            # print("\n numberOfTimesEmergedDict")
+            # print(numberOfTimesEmergedDict)
+            # print("\n averageConfidenceDict")
+            # print(averageConfidenceDict)
+
+            outputstringfordb = getDetectedObjectsforDatabase(myClassDict,averageConfidenceDict)
+
+            # print("Output string : "+str(outputstringfordb))
+            if current_user.is_authenticated:
+                currentuserid=current_user.id
+            else:
+                currentuserid=-1
+
+            _uploadedVideo=UploadedVideo(filename = _basename, extension = _extension,storagelocation = _videostorageLocation,uploadStartedTime = _videoUploadStartingTime,uploadCompletedTime = _videoUploadCompletedTime,detected_objects_withconfidence=outputstringfordb,uploader_id=currentuserid,totalduration=totalduration,thumbnail_filename=thumbnail_filename)
+
+            db.session.add(_uploadedVideo)
+            db.session.commit()
+
+
+            #x=int(input("Enter the number of classes with highest confidence : "))
+            # x=10
+            x=1
+            # x=len(myClassDict)
+            newSortedClassDict,newSortedAvgConfidenceDictWithRequiredNumber = arrangeNnumberOfDictionary(x,myClassDict,averageConfidenceDict)
+
+            # print("See here if the dict is only length {}: ".format(x))
+            # print(newSortedClassDict)
+            finalJsonArray = returnList(newSortedClassDict,listOfResultsWithTuple)
+
+            _analyticsFileUploadTime=datetime.utcnow()
+            analyticsstartingdt_string = _analyticsFileUploadTime.strftime("%Y%m%d%H%M%S")
+            analyticsFileName = analyticsstartingdt_string+_videofilename.split('.')[0]+".json"
+            writeListAsAJsonFile(finalJsonArray,analyticsFileName)
+
+            generatedAnalyticsFile = VideoAnalyticsFile(filename=analyticsFileName,storagelocation=app.config["VIDEOANALYTICS_GENERATED_FOLDER"],createdTime = _analyticsFileUploadTime,videoFile=_uploadedVideo)
+            db.session.add(generatedAnalyticsFile)
+            db.session.commit()
+
+            generatedVideoStartingTime=datetime.utcnow()
+            gen_video_dt_string = generatedVideoStartingTime.strftime("%Y%m%d%H%M%S")
+            generatedVideoFilename = gen_video_dt_string+"_generated_"+_videofilename.split('.')[0]
+
+            indexOfRequiredFrame=extractIndicesFromTuple(listOfResultsWithTuple,newSortedClassDict)
+
+
+            frameToVid(indexOfRequiredFrame,originalFrameArray,newframeArray,app.config['VIDEO_GENERATED_FOLDER']+"/"+generatedVideoFilename+".webm", fps)
+            
+
+            #frameToVid(listOfResultsWithTuple,newSortedClassDict,originalFrameArray,newframeArray,app.config['VIDEO_GENERATED_FOLDER']+"/"+generatedVideoFilename,fps)
+            
+            generatedVideo = GeneratedVideo(filename = generatedVideoFilename,storagelocation = app.config['VIDEO_GENERATED_FOLDER'],createdTime = generatedVideoStartingTime,video_id = _uploadedVideo.videoid)
+            db.session.add(generatedVideo)
+            db.session.commit()
+        
+        message = "Successfully uploaded...."
         print(message)
-        return render_template('jsonHTTPDockersALL/upload_httpdocksjabir.html',message=message)
-        # return render_template('jsonHTTPDockersALL/upload.html',message=message)
-    
-    if request.method == 'POST':
+        return render_template("jsonHTTPDockersALL/upload_httpdocksjabir.html",message=message)
+    except Exception as err:
+        message = "Problem while uploading....Please upload next video..."
+        print(message)
+        return render_template("jsonHTTPDockersALL/upload_httpdocksjabir.html",message=message)
 
-        _videoUploadStartingTime=datetime.utcnow()
-        startingdt_string = _videoUploadStartingTime.strftime("%Y%m%d%H%M%S")
-
-        # check if the post request has selected label
-        selected_option = request.form['options']
-
-        if not selected_option:
-            message ="No label received "
-            print(message)
-            return redirect(request.url)            
-
-
-        if not request.files:
-            message ="No files received "
-            print(message)
-            return redirect(request.url)
-        # if ('videofile' not in request.files) or ('csvfile' not in request.files):
-        if ('videofile' not in request.files):    
-            message ="Missing files "
-            print(message)
-            return render_template("jsonHTTPDockersALL/upload.html",message=message)
-        #file = request.files['file']
-        videofile = request.files['videofile']
-        # csvfile = request.files['csvfile']
-
-
-        if not isVideoNameAllowed(secure_filename(videofile.filename)):
-            message="Please make sure video file is in valid format.There must be only one dot in the filename"
-            print(message)
-            return render_template("jsonHTTPDockersALL/upload.html",message=message)
-        
-        # if not isCSVNameAllowed(secure_filename(csvfile.filename)):
-        #     message="Please make sure CSV file is in valid format"
-        #     print(message)
-        #     return render_template("jsonHTTPDockersALL/upload.html",message=message)
-        
-        # if ("videosize" not in request.cookies) or ("csvsize" not in request.cookies):
-        if ("videosize" not in request.cookies):
-            message="Your browser is not supporting cookie functionality"
-            print(message)
-            return render_template("jsonHTTPDockersALL/upload.html",message=message)
-        
-        if not isVideoFilesizeAllowed(request.cookies["videosize"]):
-            message="Videosize exceeded maximum limit"
-            print(message)
-            return render_template("jsonHTTPDockersALL/upload.html",message=message)
-        
-        # if not isCSVFilesizeAllowed(request.cookies["csvsize"]):
-        #     message="CSV filesize exceeded maximum limit"
-        #     print(message)
-        #     return render_template("jsonHTTPDockersALL/upload.html",message=message)
-
-        _videostorageLocation = app.config["VIDEO_UPLOADS_FOLDER"]
-        _videofilename= videofile.filename
-
-        #Revived
-        _basename=startingdt_string+_videofilename.split('.')[0]
-        _extension=_videofilename.split('.')[1]
-
-        print("Video Saving Started ....")
-        videofile.save(os.path.join(app.config["VIDEO_UPLOADS_FOLDER"], startingdt_string+videofile.filename))
-        # csvfile.save(os.path.join(app.config["CSV_UPLOADS_FOLDER"], csvfile.filename))
-        print("Video Saving Completed ....")
-
-        ###################### Video is saved till now ###########################
-        
-        _videoUploadCompletedTime=datetime.utcnow()
-
-        # DONT FORGET TO UNCOMMENT LATER
-        listOfResultsWithTuple,listOfResultsWithoutTuple,originalFrameArray,newframeArray,fps,totalduration,thumbnail_filename=extractFrameInfosFromVideo(startingdt_string+videofile.filename,getRightOptionAccordingToValue(selected_option))
-
-        myUniqueClassSet,myClassDict = uniqueClassSetAndDict(listOfResultsWithoutTuple)
-        print("\nmyUniqueClassSet")
-        print(myUniqueClassSet)
-        print("\nmyClassDict")
-        print(myClassDict)
-        confidenceDict,numberOfTimesEmergedDict,averageConfidenceDict = uniqueDictonairies(myUniqueClassSet,myClassDict,listOfResultsWithoutTuple)
-
-        print("\n confidenceDict")
-        print(confidenceDict)
-        print("\n numberOfTimesEmergedDict")
-        print(numberOfTimesEmergedDict)
-        print("\n averageConfidenceDict")
-        print(averageConfidenceDict)
-
-        outputstringfordb = getDetectedObjectsforDatabase(myClassDict,averageConfidenceDict)
-
-        print("Output string : "+str(outputstringfordb))
-        if current_user.is_authenticated:
-            currentuserid=current_user.id
-        else:
-            currentuserid=-1
-
-        _uploadedVideo=UploadedVideo(filename = _basename, extension = _extension,storagelocation = _videostorageLocation,uploadStartedTime = _videoUploadStartingTime,uploadCompletedTime = _videoUploadCompletedTime,detected_objects_withconfidence=outputstringfordb,uploader_id=currentuserid,totalduration=totalduration,thumbnail_filename=thumbnail_filename)
-
-        db.session.add(_uploadedVideo)
-        db.session.commit()
-
-
-        #x=int(input("Enter the number of classes with highest confidence : "))
-        # x=10
-        x=1
-        # x=len(myClassDict)
-        newSortedClassDict,newSortedAvgConfidenceDictWithRequiredNumber = arrangeNnumberOfDictionary(x,myClassDict,averageConfidenceDict)
-
-        print("See here if the dict is only length {}: ".format(x))
-        print(newSortedClassDict)
-        finalJsonArray = returnList(newSortedClassDict,listOfResultsWithTuple)
-
-        _analyticsFileUploadTime=datetime.utcnow()
-        analyticsstartingdt_string = _analyticsFileUploadTime.strftime("%Y%m%d%H%M%S")
-        analyticsFileName = analyticsstartingdt_string+_videofilename.split('.')[0]+".json"
-        writeListAsAJsonFile(finalJsonArray,analyticsFileName)
-
-        generatedAnalyticsFile = VideoAnalyticsFile(filename=analyticsFileName,storagelocation=app.config["VIDEOANALYTICS_GENERATED_FOLDER"],createdTime = _analyticsFileUploadTime,videoFile=_uploadedVideo)
-        db.session.add(generatedAnalyticsFile)
-        db.session.commit()
-
-        generatedVideoStartingTime=datetime.utcnow()
-        gen_video_dt_string = generatedVideoStartingTime.strftime("%Y%m%d%H%M%S")
-        generatedVideoFilename = gen_video_dt_string+"_generated_"+_videofilename.split('.')[0]
-
-        indexOfRequiredFrame=extractIndicesFromTuple(listOfResultsWithTuple,newSortedClassDict)
-
-
-        frameToVid(indexOfRequiredFrame,originalFrameArray,newframeArray,app.config['VIDEO_GENERATED_FOLDER']+"/"+generatedVideoFilename+".webm", fps)
-        
-
-        #frameToVid(listOfResultsWithTuple,newSortedClassDict,originalFrameArray,newframeArray,app.config['VIDEO_GENERATED_FOLDER']+"/"+generatedVideoFilename,fps)
-        
-        generatedVideo = GeneratedVideo(filename = generatedVideoFilename,storagelocation = app.config['VIDEO_GENERATED_FOLDER'],createdTime = generatedVideoStartingTime,video_id = _uploadedVideo.videoid)
-        db.session.add(generatedVideo)
-        db.session.commit()
-    
-    message = "Till now no error"
-    print(message)
-    return render_template("jsonHTTPDockersALL/upload_httpdocksjabir.html",message=message)
     # return render_template('jsonHTTPDockersALL/upload.html',message=message)
 
 

@@ -73,6 +73,14 @@ def getRightOptionAccordingToValue(option_value):
 @app.route('/upload', methods=["GET", "POST"])
 # @login_required
 def upload():
+
+    currentuserid = -1
+
+    if not current_user.is_authenticated:
+        # return redirect(url_for('login'))
+        return redirect(app.config["BASE_URL_WITH_PORT"]+"/login")
+    else:
+        currentuserid=current_user.id
     try:
 
         if request.method == 'GET':
@@ -172,10 +180,7 @@ def upload():
             outputstringfordb = getDetectedObjectsforDatabase(myClassDict,averageConfidenceDict)
 
             # print("Output string : "+str(outputstringfordb))
-            if current_user.is_authenticated:
-                currentuserid=current_user.id
-            else:
-                currentuserid=-1
+
 
             _uploadedVideo=UploadedVideo(filename = _basename, extension = _extension,storagelocation = _videostorageLocation,uploadStartedTime = _videoUploadStartingTime,uploadCompletedTime = _videoUploadCompletedTime,detected_objects_withconfidence=outputstringfordb,uploader_id=currentuserid,totalduration=totalduration,thumbnail_filename=thumbnail_filename)
 

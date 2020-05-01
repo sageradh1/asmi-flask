@@ -15,13 +15,25 @@ var btnUpload = $("#video"),
 			setTimeout(function(){
 				// $("#uploaded_view").append('<img src="'+uploadedFile+'" />').addClass("show");
 				$(".loading_text").text("");
-				$(".success_msg").text("File loaded.");
-				var x = $('<button type="submit" class="btn btn-default" style="width:150px;">Submit</button>');
-                $(".btn-submit").append(x);				
+				// $(".success_msg").text("File loaded.");
+				var x = $('<button type="submit" class="btn btn-danger" style="width:150px;">Submit</button>');
+                $(".btn-submit").append(x);								
 			},3500);
 			
 		}
 	});
+	$(".btn-submit").on("click", function(e){
+		btnOuter.removeClass("file_uploading");
+	 	btnOuter.removeClass("file_uploaded");
+		
+		$.LoadingOverlay("show", {
+		image       : "",
+		fontawesome : "fa fa-cog fa-spin"
+		}); 
+		
+	});
+
+
 	// $(".file_remove").on("click", function(e){
 	// 	$("#uploaded_view").removeClass("show");
 	// 	$("#uploaded_view").find("img").remove();

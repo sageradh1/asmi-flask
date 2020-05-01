@@ -39,8 +39,14 @@ def returnZeroIfEmptyString(variable):
 
 #-------------------------------------- For viewvideos -------------------------------------------------------------
 def getLatestUploadedVideos(currentid,numberofvideos):
-	latestvideolist = UploadedVideo.query.filter(UploadedVideo.videoid <= currentid).order_by(UploadedVideo.videoid.desc()).limit(numberofvideos)
-	return latestvideolist
+
+	latestvideolist=[]
+
+	if currentid is None:
+		return latestvideolist
+	else:
+		return UploadedVideo.query.filter(UploadedVideo.videoid <= currentid).order_by(UploadedVideo.videoid.desc()).limit(numberofvideos)
+
 
 def getjsonfilename(associated_videoid):
 	jsonFile = VideoAnalyticsFile.query.filter_by(video_id=associated_videoid).scalar()
@@ -527,89 +533,103 @@ def edit_profile():
 @app.route('/viewvideos')
 # @login_required
 def viewvideos_jabir():
-	if not current_user.is_authenticated:
-		# return redirect(url_for('login'))
-		return redirect(app.config["BASE_URL_WITH_PORT"]+"/login")
-	else:
-		userid=current_user.id
 
-	currentvideoid = request.args.get('videoid')
-	
-	if currentvideoid is None:
-		# for only max-videoid
-		max_video_id=db.session.query(func.max(UploadedVideo.videoid)).scalar()
-	else:
-		max_video_id=currentvideoid
+	try:
 
-	print("max_video_id is "+str(max_video_id))
-	latestvideolist = getLatestUploadedVideos(max_video_id,6)
-	
-	# for the UploadedVideo object with max-videoid
-	# latestvideo=UploadedVideo.query.order_by(UploadedVideo.videoid.desc()).limit(1)
-	# print("The max videoid is "+str(max_video_id))
-	# latestvideolist = getLatestUploadedVideos(latestvideo[0].videoid,6)
-
-	pageinfojson=dict()
-	side_playlist_info=[]
-	count=1
-	for eachvideo in latestvideolist:
-
-		print("eachvideoid in list " + str(eachvideo.videoid))
-		if count==1:
-			current_video_info=dict()
-			current_video_info["videoid"]=eachvideo.videoid
-
-			##Removing the 14 datetime info added before filename
-			## Only returning only n number of charaters so that it may fit in the frontend
-			current_video_info["videoname"]=returnEmptyStringIfNull((eachvideo.filename)[14:])
-			current_video_info["source"]=getvideofilename(eachvideo.filename)+"."+eachvideo.extension
-			#TODO:
-			current_video_info["duration"]=returnEmptyStringIfNull(eachvideo.totalduration)
-
-			if eachvideo.thumbnail_filename is None:
-				current_video_info["thumbnailurl"]=returnEmptyStringIfNull(app.config["BASE_URL_WITH_PORT"]+"/static/img/asmilogo.png")
-			else:
-				current_video_info["thumbnailurl"]=returnEmptyStringIfNull(app.config["BASE_URL_WITH_PORT"]+"/static/img/generated/thumbnails/"+eachvideo.thumbnail_filename)
-			current_video_info["current_video_json"]=getjsonfilename(eachvideo.videoid)
+		if not current_user.is_authenticated:
+			# return redirect(url_for('login'))
+			return redirect(app.config["BASE_URL_WITH_PORT"]+"/login")
 		else:
-			eachPlaylistVideo=dict()
-			eachPlaylistVideo["videoid"]=eachvideo.videoid
-			#ignoring the added number
-			# eachPlaylistVideo["videoname"]=returnEmptyStringIfNull((eachvideo.filename)[14:])
-			
-			eachPlaylistVideo["videoname"]=(eachvideo.filename)[14:][:21]
-			eachPlaylistVideo["source"]=getvideofilename(eachvideo.filename)+"."+eachvideo.extension
-			
-			eachPlaylistVideo["duration"]=returnEmptyStringIfNull(eachvideo.totalduration)
-			
-			if eachvideo.thumbnail_filename is None:
-				eachPlaylistVideo["thumbnailurl"]=returnEmptyStringIfNull(app.config["BASE_URL_WITH_PORT"]+"/static/img/asmilogo.png")
+			userid=current_user.id
+
+		currentvideoid = request.args.get('videoid')
+		
+		if currentvideoid is None:
+			# for only max-videoid
+			max_video_id=db.session.query(func.max(UploadedVideo.videoid)).scalar()
+		else:
+			max_video_id=currentvideoid
+
+		print("max_video_id is "+str(max_video_id))
+		latestvideolist = getLatestUploadedVideos(max_video_id,6)
+		
+		# for the UploadedVideo object with max-videoid
+		# latestvideo=UploadedVideo.query.order_by(UploadedVideo.videoid.desc()).limit(1)
+		# print("The max videoid is "+str(max_video_id))
+		# latestvideolist = getLatestUploadedVideos(latestvideo[0].videoid,6)
+
+		pageinfojson=dict()
+		side_playlist_info=[]
+		current_video_info=dict()
+		count=1
+		for eachvideo in latestvideolist:
+
+			print("eachvideoid in list " + str(eachvideo.videoid))
+			if count==1:
+				
+				current_video_info["videoid"]=eachvideo.videoid
+
+				##Removing the 14 datetime info added before filename
+				## Only returning only n number of charaters so that it may fit in the frontend
+				current_video_info["videoname"]=returnEmptyStringIfNull((eachvideo.filename)[14:])
+				current_video_info["source"]=getvideofilename(eachvideo.filename)+"."+eachvideo.extension
+				#TODO:
+				current_video_info["duration"]=returnEmptyStringIfNull(eachvideo.totalduration)
+
+				if eachvideo.thumbnail_filename is None:
+					current_video_info["thumbnailurl"]=returnEmptyStringIfNull(app.config["BASE_URL_WITH_PORT"]+"/static/img/asmilogo.png")
+				else:
+					current_video_info["thumbnailurl"]=returnEmptyStringIfNull(app.config["BASE_URL_WITH_PORT"]+"/static/img/generated/thumbnails/"+eachvideo.thumbnail_filename)
+				current_video_info["current_video_json"]=getjsonfilename(eachvideo.videoid)
 			else:
-				eachPlaylistVideo["thumbnailurl"]=returnEmptyStringIfNull(app.config["BASE_URL_WITH_PORT"]+"/static/img/generated/thumbnails/"+eachvideo.thumbnail_filename)
-			
+				eachPlaylistVideo=dict()
+				eachPlaylistVideo["videoid"]=eachvideo.videoid
+				#ignoring the added number
+				# eachPlaylistVideo["videoname"]=returnEmptyStringIfNull((eachvideo.filename)[14:])
+				
+				eachPlaylistVideo["videoname"]=(eachvideo.filename)[14:][:21]
+				eachPlaylistVideo["source"]=getvideofilename(eachvideo.filename)+"."+eachvideo.extension
+				
+				eachPlaylistVideo["duration"]=returnEmptyStringIfNull(eachvideo.totalduration)
+				
+				if eachvideo.thumbnail_filename is None:
+					eachPlaylistVideo["thumbnailurl"]=returnEmptyStringIfNull(app.config["BASE_URL_WITH_PORT"]+"/static/img/asmilogo.png")
+				else:
+					eachPlaylistVideo["thumbnailurl"]=returnEmptyStringIfNull(app.config["BASE_URL_WITH_PORT"]+"/static/img/generated/thumbnails/"+eachvideo.thumbnail_filename)
+				
 
-			eachPlaylistVideo["current_video_json"]=getjsonfilename(eachvideo.videoid)
+				eachPlaylistVideo["current_video_json"]=getjsonfilename(eachvideo.videoid)
 
-			side_playlist_info.append(eachPlaylistVideo.copy())
-		count=count+1
-	
+				side_playlist_info.append(eachPlaylistVideo.copy())
+			count=count+1
+		
 
-	
-	pageinfojson["current_video_info"]=current_video_info
-	pageinfojson["side_playlist_info"]=side_playlist_info
+		
+		pageinfojson["current_video_info"]=current_video_info
+		pageinfojson["side_playlist_info"]=side_playlist_info
 
 
-	# pageinfojson = {'current_video_info': {'videoid': 56, 'videoname': '20200229090011Angrezi Medium', 'source': 'http://127.0.0.1:5000/static/video/uploaded/German Shepherd Dog Running In 4K Slow Motion ( Alsatian Shepherd Dog ).mp4', 'duration': '0:8', 'thumbnailurl': 'http://127.0.0.1:5000/static/img/generated/thumbnails/thumbnail_for_2020042814115120200229090011Angrezi Medium.png', 'current_video_json': 'http://127.0.0.1:5000/static/analyticsFolder/generated/2020042814120320200229090011Angrezi Medium.json'}, 'side_playlist_info': [{'videoid': 55, 'videoname': '20200229090011Angrezi', 'source': 'http://127.0.0.1:5000/static/video/uploaded/2020042814090820200229090011Angrezi Medium.mp4', 'duration': '0:8', 'thumbnailurl': 'http://127.0.0.1:5000/static/img/generated/thumbnails/thumbnail_for_2020042814090820200229090011Angrezi Medium.png', 'current_video_json': 'http://127.0.0.1:5000/static/analyticsFolder/generated/2020042814092220200229090011Angrezi Medium.json'}, {'videoid': 54, 'videoname': '20200229090011Angrezi', 'source': 'http://127.0.0.1:5000/static/video/uploaded/2020042813563920200229090011Angrezi Medium.mp4', 'duration': '0:8', 'thumbnailurl': 'http://127.0.0.1:5000/static/img/generated/thumbnails/thumbnail_for_2020042813563920200229090011Angrezi Medium.png', 'current_video_json': 'http://127.0.0.1:5000/static/analyticsFolder/generated/2020042813565220200229090011Angrezi Medium.json'}, {'videoid': 53, 'videoname': '20200229090011Angrezi', 'source': 'http://127.0.0.1:5000/static/video/uploaded/2020042813460720200229090011Angrezi Medium.mp4', 'duration': '0:8', 'thumbnailurl': 'http://127.0.0.1:5000/static/img/asmilogo.png', 'current_video_json': 'http://127.0.0.1:5000/static/analyticsFolder/generated/2020042813462020200229090011Angrezi Medium.json'}, {'videoid': 52, 'videoname': '20200229090011Angrezi', 'source': 'http://127.0.0.1:5000/static/video/uploaded/2020042813364120200229090011Angrezi Medium.mp4', 'duration': '0:8', 'thumbnailurl': 'http://127.0.0.1:5000/static/img/asmilogo.png', 'current_video_json': 'http://127.0.0.1:5000/static/analyticsFolder/generated/2020042813365320200229090011Angrezi Medium.json'}, {'videoid': 51, 'videoname': '20200229090011Angrezi', 'source': 'http://127.0.0.1:5000/static/video/uploaded/2020042813285220200229090011Angrezi Medium.mp4', 'duration': '0:8', 'thumbnailurl': 'http://127.0.0.1:5000/static/img/asmilogo.png', 'current_video_json': 'http://127.0.0.1:5000/static/analyticsFolder/generated/2020042813290520200229090011Angrezi Medium.json'}]}
+		# pageinfojson = {'current_video_info': {'videoid': 56, 'videoname': '20200229090011Angrezi Medium', 'source': 'http://127.0.0.1:5000/static/video/uploaded/German Shepherd Dog Running In 4K Slow Motion ( Alsatian Shepherd Dog ).mp4', 'duration': '0:8', 'thumbnailurl': 'http://127.0.0.1:5000/static/img/generated/thumbnails/thumbnail_for_2020042814115120200229090011Angrezi Medium.png', 'current_video_json': 'http://127.0.0.1:5000/static/analyticsFolder/generated/2020042814120320200229090011Angrezi Medium.json'}, 'side_playlist_info': [{'videoid': 55, 'videoname': '20200229090011Angrezi', 'source': 'http://127.0.0.1:5000/static/video/uploaded/2020042814090820200229090011Angrezi Medium.mp4', 'duration': '0:8', 'thumbnailurl': 'http://127.0.0.1:5000/static/img/generated/thumbnails/thumbnail_for_2020042814090820200229090011Angrezi Medium.png', 'current_video_json': 'http://127.0.0.1:5000/static/analyticsFolder/generated/2020042814092220200229090011Angrezi Medium.json'}, {'videoid': 54, 'videoname': '20200229090011Angrezi', 'source': 'http://127.0.0.1:5000/static/video/uploaded/2020042813563920200229090011Angrezi Medium.mp4', 'duration': '0:8', 'thumbnailurl': 'http://127.0.0.1:5000/static/img/generated/thumbnails/thumbnail_for_2020042813563920200229090011Angrezi Medium.png', 'current_video_json': 'http://127.0.0.1:5000/static/analyticsFolder/generated/2020042813565220200229090011Angrezi Medium.json'}, {'videoid': 53, 'videoname': '20200229090011Angrezi', 'source': 'http://127.0.0.1:5000/static/video/uploaded/2020042813460720200229090011Angrezi Medium.mp4', 'duration': '0:8', 'thumbnailurl': 'http://127.0.0.1:5000/static/img/asmilogo.png', 'current_video_json': 'http://127.0.0.1:5000/static/analyticsFolder/generated/2020042813462020200229090011Angrezi Medium.json'}, {'videoid': 52, 'videoname': '20200229090011Angrezi', 'source': 'http://127.0.0.1:5000/static/video/uploaded/2020042813364120200229090011Angrezi Medium.mp4', 'duration': '0:8', 'thumbnailurl': 'http://127.0.0.1:5000/static/img/asmilogo.png', 'current_video_json': 'http://127.0.0.1:5000/static/analyticsFolder/generated/2020042813365320200229090011Angrezi Medium.json'}, {'videoid': 51, 'videoname': '20200229090011Angrezi', 'source': 'http://127.0.0.1:5000/static/video/uploaded/2020042813285220200229090011Angrezi Medium.mp4', 'duration': '0:8', 'thumbnailurl': 'http://127.0.0.1:5000/static/img/asmilogo.png', 'current_video_json': 'http://127.0.0.1:5000/static/analyticsFolder/generated/2020042813290520200229090011Angrezi Medium.json'}]}
 
-	print("The Page information Json is")
-	print(pageinfojson)
+		print("The Page information Json is")
+		print(pageinfojson)
 
-	# filename="20200229134607AngreziMediumLowerQuality.mp4"
-	# # main_video_url=request.url_root+str("static/video/uploaded/")+str(filename)
-	# main_video_url=app.config["BASE_URL_WITH_PORT"]+"/"+str("static/video/uploaded/")+str(filename)
-	# print(main_video_url)
+		# filename="20200229134607AngreziMediumLowerQuality.mp4"
+		# # main_video_url=request.url_root+str("static/video/uploaded/")+str(filename)
+		# main_video_url=app.config["BASE_URL_WITH_PORT"]+"/"+str("static/video/uploaded/")+str(filename)
+		# print(main_video_url)
 
-	return render_template('demo_views/viewvideos_jabir_integrated.html',pageinfojson=pageinfojson)
+		return render_template('demo_views/viewvideos_jabir_integrated.html',pageinfojson=pageinfojson)
+	except Exception as err:
+		
+		pageinfojson=dict()
+		side_playlist_info=[]
+		current_video_info=dict()
+
+		pageinfojson["current_video_info"]=current_video_info
+		pageinfojson["side_playlist_info"]=side_playlist_info
+
+		return render_template('demo_views/viewvideos_jabir_integrated.html',pageinfojson=pageinfojson)
 
 
 

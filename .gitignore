@@ -9,4 +9,5 @@ darkflowDirectory
 *.webm
 *.mp4
 *.json
+[thumbnail_for_]*.png
 

@@ -38,7 +38,8 @@ migrate = Migrate(app, db)
 
 #Loading login manager 
 login = LoginManager(app)
-login.login_view = 'http://18.221.137.201/login'
+login.login_view = 'http://asmi.co/login'
+# login.login_view = 'http://18.221.137.201/login'
 
 
 # Setting timeout for session cookie (It is not a setting for remember_token cookie set by flask_login)

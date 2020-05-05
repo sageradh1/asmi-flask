@@ -146,7 +146,7 @@ def extractFrameInfosFromVideo(_videoname,selected_option):
                 save_frame_as_image(app.config["THUMBNAIL_FOR_UPLOADED_VIDEO_FOLDER"],thumbnail_name,originalFrame)
 
             frame_msec = capture.get(cv2.CAP_PROP_POS_MSEC)
-            # print("Frame number : {:d} TimeStamp: {:f}".format(framecounter,frame_msec))
+            print("Frame number : {:d} TimeStamp: {:f}".format(framecounter,frame_msec))
             #print("Frame No \t Objects Count \t Object Label \t Confidence ")        
             results = tfnet.return_predict(frame)
             # print("Results : ",results)

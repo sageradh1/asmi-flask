@@ -708,3 +708,11 @@ def analytics():
 
 	return render_template('demo_views/analytics.html',analyticsFileList=analyticsFileList,current_username=current_user.username)
 
+
+@app.route('/aboutus')
+# @login_required
+def aboutus():
+	if not current_user.is_authenticated:
+		# return redirect(url_for('login'))
+		return redirect(app.config["BASE_URL_WITH_PORT"]+"/login")
+	return render_template('demo_views/aboutus.html')

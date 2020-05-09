@@ -1,0 +1,324 @@
+ <html>
+
+<title>ASMI</title>
+
+     <link rel="stylesheet"  href="{{ url_for('static', filename='css/normal_views/navbar.css') }}"/>
+     <link rel="stylesheet" href="{{ url_for('static', filename='css/normal_views/indexstyle.css') }}">
+
+    <script src="{{ url_for('static', filename='js/normal_views/navbarjs.js') }}"></script>
+    <link rel="stylesheet"  href="{{ url_for('static', filename='css/normal_views/product.css') }}"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
+
+<!-- 
+<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+-->  <!-- css -->
+<!--   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,300,700,800" rel="stylesheet" media="screen">
+
+   <link href="{{ url_for('static', filename='css/normal_views/bootstrap.min.css') }}" rel="stylesheet" media="screen">
+   <link href="{{ url_for('static', filename='css/normal_views/default.css') }}" rel="stylesheet" media="screen">
+ <link href="{{ url_for('static', filename='css/normal_views/font-awesome.min.css') }}" rel="stylesheet" media="screen">
+ -->
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.11.2/css/all.css">
+
+<!------ Include the above in your HEAD tag ---------->
+
+<style type="text/css">
+  #success_message{ display: none;}
+
+  .well{
+    height:500px;
+  }
+
+.inputstl { 
+   /* margin-left: 239px;*/
+    padding: 9px; 
+    border: solid 1px #173955; 
+    outline: 0; 
+    background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF), color-stop(4%, #AACCE8), to(#FFFFFF)); 
+    background: -moz-linear-gradient(top, #FFFFFF, #AACCE8 1px, #FFFFFF 25px); 
+    box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px; 
+    -moz-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px; 
+    -webkit-box-shadow: rgba(0,0,0, 0.1) 0px 0px 8px; 
+
+    } 
+    /* css for dropdown */
+.dropbtn {
+ background-color: rgba(0,0,0,0.9);
+  color: white;
+  padding: 21px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  right: 0;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown-content a:hover {background-color: #ff343c; color: white;}
+.dropdown:hover .dropdown-content {display: block;}
+.dropdown:hover .dropbtn {background-color: #ff343c;}
+
+
+.paddingTB60 {padding:60px 0px 60px 0px;}
+.gray-bg {background: #F1F1F1 !important;}
+.about-title {}
+.about-title h1 {color: #535353; font-size:45px;font-weight:600;}
+.about-title span {color: #AF0808; font-size:45px;font-weight:700;}
+.about-title h3 {color: #535353; font-size:23px;margin-bottom:24px;}
+.about-title p {color: #7a7a7a;line-height: 1.8;margin: 0 0 15px;}
+.about-paddingB {padding-bottom: 12px;}
+.about-img {padding-left: 57px;}
+
+.team-boxed {
+  color:#313437;
+  background-color:#eef4f7;
+}
+
+.team-boxed p {
+  color:#7d8285;
+}
+
+.team-boxed h2 {
+  font-weight:bold;
+  margin-bottom:40px;
+  padding-top:40px;
+  color:inherit;
+}
+
+@media (max-width:767px) {
+  .team-boxed h2 {
+    margin-bottom:25px;
+    padding-top:25px;
+    font-size:24px;
+  }
+}
+
+.team-boxed .intro {
+  font-size:16px;
+  max-width:500px;
+  margin:0 auto;
+}
+
+.team-boxed .intro p {
+  margin-bottom:0;
+}
+
+.team-boxed .people {
+  padding:50px 0;
+}
+
+.team-boxed .item {
+  text-align:center;
+}
+
+.team-boxed .item .box {
+  text-align:center;
+  padding:30px;
+  background-color:#fff;
+  margin-bottom:30px;
+}
+
+.team-boxed .item .name {
+  font-weight:bold;
+  margin-top:28px;
+  margin-bottom:8px;
+  color:inherit;
+}
+
+.team-boxed .item .title {
+  text-transform:uppercase;
+  font-weight:bold;
+  color:#d0d0d0;
+  letter-spacing:2px;
+  font-size:13px;
+}
+
+.team-boxed .item .description {
+  font-size:15px;
+  margin-top:15px;
+  margin-bottom:20px;
+}
+
+.team-boxed .item img {
+  max-width:160px;
+}
+
+.team-boxed .social {
+  font-size:18px;
+  color:#a2a8ae;
+}
+
+.team-boxed .social a {
+  color:inherit;
+  margin:0 10px;
+  display:inline-block;
+  opacity:0.7;
+}
+
+.team-boxed .social a:hover {
+  opacity:1;
+}
+
+</style>
+
+<header>
+  <!--  Remove dark nav  -->
+  <nav class="nav dark-nav">
+    <div class="container">
+      <div class="nav-heading">
+        <button class="toggle-nav" data-toggle="open-navbar1"><i class="fa fa-align-right"></i></button>
+                <a href="{{ url_for('home')}}" >
+        <img src="{{ url_for('static', filename='img/asmilogo.png') }}" width="106" height="53"  alt="Logo Geeks and the City" />    
+        </a>
+      </div>
+      <div class="menu" id="open-navbar1">
+        <ul class="list">
+        <!--   <li><a href="{{ url_for('home')}}">Welcome  {{current_username}}</a></li> -->
+
+          <li><a href="{{ url_for('home')}}">Home</a></li>
+          <!-- <li><a href="/product.html">Product Upload</a></li> -->
+          {% if current_user.is_authenticated %}
+
+          <!-- drop down -->
+          <li>
+           <div class="dropdown" style="float:right;">
+              <button class="dropbtn">Contents</button>
+              <div class="dropdown-content">
+                <a href="{{ url_for('uploaded')}}">Uploaded Video</a>
+                <!-- <a href="Generated.html">Generated Video</a> -->
+                <a href="{{ url_for('analytics')}}">Analytics Files</a>
+              </div>
+          </li>
+
+          <li>
+            <div class="dropdown" style="float:right;">
+              <button class="dropbtn">TestAPI</button>
+              <div class="dropdown-content">
+                <!-- <a href="#">Upload Video</a> -->
+                <a href="{{ url_for('upload')}}">Upload video</a>
+                <a href="{{ url_for('viewvideos_jabir')}}">View Uploaded Videos</a>
+                <!-- <a href="{{ url_for('view_2d')}}">View 2d Video</a> -->
+              </div>
+            </div>
+          </li>
+
+         <li>
+            <div class="dropdown" style="float:right;">
+              <button class="dropbtn">Setting</button>
+              <div class="dropdown-content">
+                <a href="{{ url_for('view_profile')}}">Profile</a>
+                <a href="{{ url_for('logout')}}">Logout</a>
+                
+                </div>
+            </div>
+          </li>
+          {% else %}
+            <li><a href="{{ url_for('login')}}">Login</a></li>
+            <li><a href="{{ url_for('register')}}">Signup</a></li>
+          {% endif %}
+           <li><a href="{{ url_for('aboutus')}}">About Us</a></li>
+          </div>
+        </ul>
+      </div>
+    </div>
+  </nav>
+</header>
+<!-- end -->
+
+
+<body>
+    <div class="container">
+    <div class="row">
+            <div class="col-md-12 col-sm-12">
+              <div class="about-title clearfix">
+                <h1><span>About Us<span></h1>
+                <h3>AI-Driven tech for scaled video content monetization.</h3>
+                <p class="about-paddingB">ASMI automates advertising within video content through a proprietary method of analyzing video and instantaneously inserting an ultra-contextual ad.It is the first of its kind technology, and is pivotal to some of the tougher spaces to advertise like short video platforms and streaming services. The manner in which we advertise outperforms other advertising creatives and methods including the popularly-used banners, pre-roll and post-rolls. </p>
+                
+            
+              </div>
+            </div>
+          
+      </div>
+    </div>
+
+   <div class="team-boxed">
+        <div class="container">
+            <div class="intro">
+                <h2 >Team </h2>
+                
+            </div>
+            <div class="row people">
+                <div class="col-md-6 col-lg-4 item">
+                    <div class="box"><img class="rounded-circle" src="{{ url_for('static', filename='img/normal_views/sambab.jpg') }}">
+                        <h3 class="name">Sambab Thapaliya</h3>
+                        <p class="title">Chief Executive Officer</p>
+                        
+                        <div class="social"><a href="#"></a><a href="#"></a><a href="#"></a></div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 item">
+                    <div class="box"><img class="rounded-circle" src="{{ url_for('static', filename='img/normal_views/david.jpg') }}">
+                        <h3 class="name">David Thomas</h3>
+                        <p class="title">Chief Operations Officer</p>
+                        
+                        <div class="social"><a href="#"></a><a href="#"></a><a href="#"></a></div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 item">
+                    <div class="box"><img class="rounded-circle" src="{{ url_for('static', filename='img/normal_views/sjjn.jpg') }}">
+                        <h3 class="name">Sajjan Thapaliya</h3>
+                        <p class="title">Vice President</p>
+                  
+                        <div class="social"><a href="#"></a><a href="#"></a><a href="#"></a></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+      </div>
+</body>
+
+
+
+  <script
+  src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js">
+  </script>
+<!-- caresoul (small ) js-->
+  <script>
+    
+    $('.carousel').carousel({
+  interval: 2000
+})
+  </script>
+
+
+<!-- footer -->
+<footer>
+<h5 class="letter">&copy; Copyright 2020, ASMI</h5>
+</footer>
+</html>

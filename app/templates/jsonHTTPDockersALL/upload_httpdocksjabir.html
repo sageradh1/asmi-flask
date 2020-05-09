@@ -101,7 +101,7 @@
       </div>
       <div class="menu" id="open-navbar1">
         <ul class="list">
-          <li><a href="{{ url_for('home')}}">Welcome  {{current_username}}</a></li>
+ <!--          <li><a href="{{ url_for('home')}}">Welcome  {{current_username}}</a></li> -->
 
           <li><a href="{{ url_for('home')}}">Home</a></li>
           <!-- <li><a href="/product.html">Product Upload</a></li> -->
@@ -144,7 +144,7 @@
             <li><a href="{{ url_for('login')}}">Login</a></li>
             <li><a href="{{ url_for('register')}}">Signup</a></li>
           {% endif %}
-
+          <li><a href="{{ url_for('aboutus')}}">About Us</a></li>
           </div>
         </ul>
       </div>

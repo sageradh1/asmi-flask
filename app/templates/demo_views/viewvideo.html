@@ -67,19 +67,20 @@
   min-height: 100%;
 }
 </style>
-<header style="height: 65px;">
+<header style="height: 60px;">
+  <!--  Remove dark nav  -->
   <!--  Remove dark nav  -->
   <nav class="nav dark-nav">
     <div class="container">
       <div class="nav-heading">
         <button class="toggle-nav" data-toggle="open-navbar1"><i class="fa fa-align-right"></i></button>
-            <a href="{{ url_for('home')}}" >
+                <a href="{{ url_for('home')}}" >
         <img src="{{ url_for('static', filename='img/asmilogo.png') }}" width="106" height="53"  alt="Logo Geeks and the City" />    
         </a>
       </div>
       <div class="menu" id="open-navbar1">
         <ul class="list">
-          <li><a href="{{ url_for('home')}}">Welcome  {{current_username}}</a></li>
+        <!--   <li><a href="{{ url_for('home')}}">Welcome  {{current_username}}</a></li> -->
 
           <li><a href="{{ url_for('home')}}">Home</a></li>
           <!-- <li><a href="/product.html">Product Upload</a></li> -->
@@ -122,14 +123,14 @@
             <li><a href="{{ url_for('login')}}">Login</a></li>
             <li><a href="{{ url_for('register')}}">Signup</a></li>
           {% endif %}
-
+           <li><a href="{{ url_for('aboutus')}}">About Us</a></li>
           </div>
         </ul>
       </div>
     </div>
   </nav>
 </header>
-<!-- end -->
+
 
 <body>
 <div class="mybody">

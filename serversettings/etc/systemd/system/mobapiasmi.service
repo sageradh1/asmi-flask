@@ -1,0 +1,11 @@
+[Unit]
+Description=Asmi Mob API Flask App
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+Environment="PATH=/home/ubuntu/workingDir/asmi-flask/webapp_env/bin"
+WorkingDirectory=/home/ubuntu/workingDir/mob-asmiapi
+ExecStart=/home/ubuntu/workingDir/asmi-flask/webapp_env/bin/gunicorn --access-logfile - --workers 3 --timeout 300 --bind unix:/home/ubuntu/workingDir/mob-asmiapi/run/mobapiasmi.sock -m 007 run:app
+

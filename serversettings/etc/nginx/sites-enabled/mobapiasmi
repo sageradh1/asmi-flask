@@ -1,0 +1,9 @@
+server{
+	listen 8080;
+	server_name 18.221.137.201;
+	
+	location / {
+		proxy_pass http://unix:/home/ubuntu/workingDir/mob-asmiapi/run/mobapiasmi.sock;
+
+	}
+}
